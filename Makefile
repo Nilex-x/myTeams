@@ -5,21 +5,54 @@
 ## Makefile
 ##
 
-CC		=		gcc
+CC			=		gcc
 
-SRC		=		src/main.c
+SRC_SERV	=		src_server/teams_serv.c
 
-OBJ		=		$(SRC:.c=.o)
+OBJ_SERV	=		$(SRC_SERV:.c=.o)
 
-all: compil_bin
+SRC_CLIENT	=		src_client/teams_client.c
 
-compil_bin: $(OBJ)
-	$(CC)
+OBJ_CLIENT	=		$(SRC_CLIENT:.c=.o)
+
+HEADER_DIR	=		include
+
+LIB_PATH	=		lib
+
+NAME_LIB	=		my_teams
+
+SERV_NAME	=		myteams_server
+
+CLIENT_NAME	=		myteams_cli
+
+CFLAGS		=		-W -Wall -Wextra -I$(HEADER_DIR) -L$(LIB_PATH) -l$(NAME_LIB)
+
+all: compil_lib compil_server compil_client
+
+compil_lib:
+	@make -C $(LIB_PATH)
+
+compil_server: $(OBJ_SERV)
+	$(CC) -o $(SERV_NAME) $(OBJ_SERV) -I$(HEADER_DIR) -L$(LIB_PATH) -l$(NAME_LIB)
+
+compil_client: $(OBJ_CLIENT)
+	$(CC) -o $(CLIENT_NAME) $(OBJ_CLIENT) -I$(HEADER_DIR) -L$(LIB_PATH) -l$(NAME_LIB)
+
+debug_server: $(OBJ_SERV)
+	$(CC) -o $(SERV_NAME) $(OBJ_SERV) -I$(HEADER_DIR) -L$(LIB_PATH) -l$(NAME_LIB) -g3
+
+debug_server: $(OBJ_SERV)
+	$(CC) -o $(CLIENT_NAME) $(OBJ_CLIENT) -I$(HEADER_DIR) -L$(LIB_PATH) -l$(NAME_LIB) -g3
 
 clean:
-	rm
+	@make clean -C $(LIB_PATH)
+	rm -f $(OBJ_SERV)
 
-fclean: clean
-
+fclean:
+	@make fclean -C $(LIB_PATH)
+	rm -f $(OBJ_SERV)
+	rm -f $(SERV_NAME)
 
 re: fclean all
+
+.PHONY: compil_server debug fclean clean re all

@@ -1,11 +1,11 @@
 /*
 ** EPITECH PROJECT, 2022
-** my_teams.c
+** teams_serv.c
 ** File description:
-** my_teams
+** teams_serv
 */
 
-#include "my_teams.h"
+#include "teams_serv.h"
 
 int main(int argc, char **argv)
 {
