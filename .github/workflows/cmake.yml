@@ -1,0 +1,50 @@
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Update Kernel
+      run: sudo apt update ; sudo apt -y upgrade
+
+    # - name: Install Lib
+    #   run: sudo apt install -y libsdl2-dev libsfml-dev libncurses-dev libsdl2-ttf-dev
+
+    - name: Makefile
+      run: make -C ${{github.workspace}}
+
+    - if: ${{ success() }}
+      uses: andstor/copycat-action@v3
+      with:
+        personal_token: ${{ secrets.API_GITHUB }}
+        src_path: /.
+        src_branch: main
+        dst_branch: main
+        dst_path: /.
+        dst_owner: EpitechPromo2025
+        dst_repo_name: B-NWP-400-TLS-4-1-myteams-nicolas.moreau
+        commit-message: "Push to ID: ${{ github.run_id }} by github action from ${{ github.repository	}}"
+
+    - if: ${{ failure() }}
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: ssl0.ovh.net
+        server_port: 465
+        subject: Github Actions test result
+        username: ${{secrets.MAIL_USERNAME}}
+        password: ${{secrets.MAIL_PASSWORD}}
+        to: nicolas.moreau@epitech.eu
+        from: NilexBot
+        body: "Compilation was failed"
