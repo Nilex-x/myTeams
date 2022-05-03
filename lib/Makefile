@@ -5,7 +5,17 @@
 ## Makefile
 ##
 
-SRC			=
+SRC			=		src/my_str_to_word_array.c \
+					src/find_char_in_str.c \
+					src/array_to_str.c \
+					src/clear_str.c \
+					src/remove_to_last_char.c \
+					src/str_to_word_array_separator.c \
+					src/strlen_array.c \
+					src/intlen.c \
+					src/free_array.c \
+					src/remove_part_of_array.c \
+					src/strcatdup.c
 
 
 OBJ 		=		$(SRC:.c=.o)

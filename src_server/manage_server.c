@@ -7,20 +7,47 @@
 
 #include "teams_serv.h"
 
-// void clear_list(ftp_t *info)
-// {
-//     client_t *temp = info->list_client->head;
+void clear_list(server_t *info)
+{
+    client_t *temp = info->list_client;
 
-//     FD_ZERO(&info->wfds);
-//     FD_ZERO(&info->rfds);
-//     while (temp) {
-//         if (temp->status == READ)
-//             FD_SET(temp->socket, &info->rfds);
-//         if (temp->status == WRITE)
-//             FD_SET(temp->socket, &info->wfds);
-//         temp = temp->next;
-//     }
-// }
+    FD_ZERO(&info->wfds);
+    FD_ZERO(&info->rfds);
+    while (temp) {
+        if (temp->status == READ)
+            FD_SET(temp->socket, &info->rfds);
+        if (temp->status == WRITE)
+            FD_SET(temp->socket, &info->wfds);
+        temp = temp->next;
+    }
+}
+
+void find_socket(server_t *info)
+{
+    client_t *temp = info->list_client;
+    client_t *next = NULL;
+
+    while (temp) {
+        next = temp->next;
+        if (FD_ISSET(temp->socket, &info->rfds))
+            printf("read value: %S\n", get_client_command(info, temp->socket));
+        else if (FD_ISSET(temp->socket, &info->wfds))
+            printf("Send data to client: %s\n", temp->user);
+        temp = next;
+    }
+    return;
+}
+
+int handler_connection(server_t *info)
+{
+    while (1) {
+        clear_list(info);
+        if (select(info->max_fd + 1, &info->rfds, &info->wfds, NULL, NULL) < 0)
+            perror("Select()");
+        else
+            find_socket(info);
+    }
+}
 
 int create_socket(server_t *info)
 {
@@ -42,15 +69,4 @@ int create_socket(server_t *info)
     FD_ZERO(&info->wfds);
     FD_SET(info->fd_server, &info->rfds);
     return (0);
-}
-
-int handler_connection(server_t *info)
-{
-    while (1) {
-        clear_list(info);
-        if (select(info->max_fd + 1, &info->rfds, &info->wfds, NULL, NULL) < 0)
-            perror("Select()");
-        else
-            find_socket(info);
-    }
 }
