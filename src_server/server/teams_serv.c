@@ -26,8 +26,9 @@ int main(int argc, char **argv)
         printf("0 to 1024 port number is not allowed to be used\n");
         return (84);
     }
-    if (create_socket(&info) != -1)
+    if (create_socket(&info) == -1)
         return (84);
+    handler_connection(&info);
     close(info.fd_server);
     return (0);
 }

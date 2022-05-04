@@ -22,12 +22,14 @@ OBJ 		=		$(SRC:.c=.o)
 
 NAME_LIB	=		libmy_teams.a
 
-CFLAGS		=		-W -Wall -Wextra
+INCLUDE_PATH	=	../include
+
+CFLAGS		=		-W -Wall -Wextra -I$(INCLUDE_PATH)
 
 all: compil_files create_lib
 
 compil_files: $(OBJ)
-	@gcc -c $(SRC) -Wall -Wextra -I../include -lmy -g3
+	@gcc -c $(SRC) -Wall -Wextra -I$(INCLUDE_PATH)
 	@echo "Compil finish"
 
 create_lib:

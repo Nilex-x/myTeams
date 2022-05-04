@@ -50,5 +50,9 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
-
-.github
+Archi.mdj
+myteams_cli
+myteams_server
+.vscode/*
+new_rfc.pdf
+temp.c

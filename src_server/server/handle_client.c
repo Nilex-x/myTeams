@@ -7,44 +7,23 @@
 
 #include "teams_serv.h"
 
-void init_client(server_t *info, char *ip)
+void init_client(server_t *info)
 {
     client_t *list_client = malloc(sizeof(client_t));
     if (!list_client)
         return;
-    list_client->data_send = NULL;
-    list_client->isConnected = false;
     list_client->next = NULL;
     list_client->prev = NULL;
     list_client->status = READ;
-    list_client->user = NULL;
     list_client->socket = info->fd_server;
+    list_client->buff = malloc(sizeof(buffer_t));
+    if (!list_client->buff)
+        return;
+    for (int i = 0; i < LENGTH_COMMAND; i++)
+        list_client->buff->buffer[i] = '\0';
+    list_client->buff->rdonly = list_client->buff->buffer;
+    list_client->buff->wronly = list_client->buff->buffer;
     info->list_client = list_client;
-}
-
-void get_client_command(server_t *info, int client_socket)
-{
-    char **tab = NULL;
-    char *value = read_client(info, client_socket);
-
-    if (client_socket == 0 && value) {
-        sort_command(info, client_socket, value);
-        return;
-    }
-    tab = malloc(sizeof(char *) * 5);
-    if (!value || !tab)
-        return;
-    for (int i = 0; value; i++) {
-        tab[i] = strdup(value);
-        tab[i + 1] = NULL;
-        if (find_char_in_str('\r', tab[i]) && find_char_in_str('\n', tab[i]))
-            break;
-        free(value);
-        value = read_client(info, client_socket);
-    }
-    free(value);
-    return (arr)
-    sort_command(info, client_socket, array_to_str(tab));
 }
 
 client_t *add_client(server_t *info, int client)
@@ -61,9 +40,7 @@ client_t *add_client(server_t *info, int client)
     node->socket = client;
     node->prev = temp;
     node->next = NULL;
-    node->user = NULL;
     node->status = READ;
-    temp->isConnected = false;
     return (node);
 }
 
@@ -86,7 +63,7 @@ void remove_client(server_t *info, int client)
     while (temp) {
         if (temp->socket == client) {
             temp->prev->next = temp->next;
-            free_client(temp);
+            free(temp);
             return;
         }
         temp = temp->next;

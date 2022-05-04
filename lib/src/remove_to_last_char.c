@@ -5,7 +5,7 @@
 ** remove_to_last_char
 */
 
-#include "ftp.h"
+#include "lib.h"
 
 char *remove_to_last_char(char *str, char to_find)
 {

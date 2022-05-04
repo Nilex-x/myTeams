@@ -26,3 +26,15 @@ int count_char_in_str(char c, char *to_find)
     }
     return (count);
 }
+
+int count_until_char(char *str, char c)
+{
+    int count = 0;
+
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (str[i] == c)
+            return (count);
+        count++;
+    }
+    return (-1);
+}

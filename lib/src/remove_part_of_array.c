@@ -5,7 +5,7 @@
 ** remove_part_of_array
 */
 
-#include "ftp.h"
+#include "lib.h"
 
 char **remove_part_of_array(char **array, int last_index)
 {

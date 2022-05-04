@@ -5,7 +5,7 @@
 ** str_to_word_array
 */
 
-#include "ftp.h"
+#include "lib.h"
 
 int count_arg(char *str)
 {

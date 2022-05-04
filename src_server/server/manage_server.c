@@ -22,6 +22,16 @@ void clear_list(server_t *info)
     }
 }
 
+void sort_client(client_t *client, server_t *info)
+{
+    if (client->socket == info->fd_server) {
+        accept_connect(info);
+    } else {
+        read_client(info, client);
+        printf("read value: %s\n", read_to_buffer(client->buff));
+    }
+}
+
 void find_socket(server_t *info)
 {
     client_t *temp = info->list_client;
@@ -30,9 +40,9 @@ void find_socket(server_t *info)
     while (temp) {
         next = temp->next;
         if (FD_ISSET(temp->socket, &info->rfds))
-            printf("read value: %S\n", get_client_command(info, temp->socket));
-        else if (FD_ISSET(temp->socket, &info->wfds))
-            printf("Send data to client: %s\n", temp->user);
+            sort_client(temp, info);
+        // else if (FD_ISSET(temp->socket, &info->wfds))
+            // write_client(info, temp->socket);
         temp = next;
     }
     return;
@@ -40,6 +50,7 @@ void find_socket(server_t *info)
 
 int handler_connection(server_t *info)
 {
+    init_client(info);
     while (1) {
         clear_list(info);
         if (select(info->max_fd + 1, &info->rfds, &info->wfds, NULL, NULL) < 0)
@@ -60,8 +71,10 @@ int create_socket(server_t *info)
     my_addr.sin_family = AF_INET;
     my_addr.sin_port = htons((uint16_t) info->port);
     my_addr.sin_addr.s_addr = INADDR_ANY;
-    if (bind(info->fd_server, (struct sockaddr *) &my_addr, len) == -1)
+    if (bind(info->fd_server, (struct sockaddr *) &my_addr, len) == -1) {
+        perror("Bind()");
         return -1;
+    }
     if (listen(info->fd_server, NB_LISTEN) == -1)
         return -1;
     info->max_fd = info->fd_server;

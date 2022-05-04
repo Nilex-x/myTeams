@@ -5,7 +5,7 @@
 ** array_to_str
 */
 
-#include "ftp.h"
+#include "lib.h"
 
 int get_size_array(char **array)
 {

@@ -5,7 +5,7 @@
 ** str_to_word_array_separator
 */
 
-#include "ftp.h"
+#include "lib.h"
 
 char *my_strncpy_n(char *dest, char *str, int index, int n);
 
