@@ -50,7 +50,6 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
-Archi.mdj
 myteams_cli
 myteams_server
 .vscode/*
