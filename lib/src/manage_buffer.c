@@ -30,6 +30,7 @@ char *read_to_buffer(buffer_t *buff, char end_of_line, int length_max)
         if ((buff->rdonly - buff->buffer) == length_max)
             buff->rdonly = buff->buffer;
         value[i] = buff->rdonly[0];
+        buff->rdonly[0] = '\0';
         value[i + 1] = '\0';
     }
     value[i] = '\n';

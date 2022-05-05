@@ -52,5 +52,6 @@ client_t *find_client(server_t *info, int client);
 void free_client(client_t *client);
 void accept_connect(server_t *info);
 void write_client(server_t *info, int s_client);
+void close_server(server_t *info);
 
 #endif /* !TEAMS_SERV */

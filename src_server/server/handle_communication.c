@@ -49,3 +49,21 @@ void write_client(server_t *info, int s_client)
         free(value);
     }
 }
+
+void close_server(server_t *info)
+{
+    client_t *temp = info->list_client;
+    client_t *next = NULL;
+
+    FD_ZERO(&info->rfds);
+    FD_ZERO(&info->wfds);
+    while (temp) {
+        next = temp->next;
+        free(temp->buff_read);
+        free(temp->buff_write);
+        free(temp);
+        temp = next;
+    }
+    close(info->fd_server);
+    exit(0);
+}

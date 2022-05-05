@@ -24,11 +24,19 @@ void clear_list(server_t *info)
 
 void sort_client(client_t *client, server_t *info)
 {
+    char *value = NULL;
+
     if (client->socket == info->fd_server) {
         accept_connect(info);
-    } else {
-        if (read_client(info, client) != -1)
-            printf("read value: %s\n", read_to_buffer(client->buff_read, '\n', LENGTH_COMMAND));
+        return;
+    }
+    if (read_client(info, client) != -1) {
+        value = read_to_buffer(client->buff_read, '\n', LENGTH_COMMAND);
+        if (client->socket == 0 && strcmp(value, "quit\n") == 0) {
+            free(value);
+            close_server(info);
+        }
+        free(value);
     }
 }
 

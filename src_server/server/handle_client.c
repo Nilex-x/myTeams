@@ -68,6 +68,8 @@ void remove_client(server_t *info, int client)
     while (temp) {
         if (temp->socket == client) {
             temp->prev->next = temp->next;
+            free(temp->buff_read);
+            free(temp->buff_write);
             free(temp);
             return;
         }
