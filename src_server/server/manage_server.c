@@ -36,6 +36,7 @@ void sort_client(client_t *client, server_t *info)
             free(value);
             close_server(info);
         }
+        printf("value client [%s]\n", value);
         free(value);
     }
 }
