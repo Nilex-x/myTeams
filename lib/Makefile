@@ -15,7 +15,8 @@ SRC			=		src/my_str_to_word_array.c \
 					src/intlen.c \
 					src/free_array.c \
 					src/remove_part_of_array.c \
-					src/strcatdup.c
+					src/strcatdup.c \
+					src/manage_buffer.c
 
 
 OBJ 		=		$(SRC:.c=.o)

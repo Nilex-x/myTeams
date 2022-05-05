@@ -12,6 +12,12 @@
     #include <unistd.h>
     #include <string.h>
 
+typedef struct buffer_s {
+    char buffer[512];
+    char *wronly;
+    char *rdonly;
+} buffer_t;
+
 char *array_to_str(char **array);
 char *array_to_str_separator(char **array, char separator);
 char *clear_str(char *str);
@@ -26,5 +32,8 @@ char **str_to_word_array_separator(char *str, char separator);
 char *strcatdup(char *src, char *to_add, char *between);
 int strlen_array(char **array);
 int count_until_char(char *str, char c);
+char *read_to_buffer(buffer_t *buff, char end_of_line, int length_max);
+void add_to_write(buffer_t *buff, char *value, int length_max);
+void init_buffer(buffer_t *buff, int length_command);
 
 #endif /* !LIB_H_ */

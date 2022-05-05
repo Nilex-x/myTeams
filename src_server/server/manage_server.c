@@ -27,8 +27,8 @@ void sort_client(client_t *client, server_t *info)
     if (client->socket == info->fd_server) {
         accept_connect(info);
     } else {
-        read_client(info, client);
-        printf("read value: %s\n", read_to_buffer(client->buff));
+        if (read_client(info, client) != -1)
+            printf("read value: %s\n", read_to_buffer(client->buff_read, '\n', LENGTH_COMMAND));
     }
 }
 
@@ -41,8 +41,8 @@ void find_socket(server_t *info)
         next = temp->next;
         if (FD_ISSET(temp->socket, &info->rfds))
             sort_client(temp, info);
-        // else if (FD_ISSET(temp->socket, &info->wfds))
-            // write_client(info, temp->socket);
+        else if (FD_ISSET(temp->socket, &info->wfds))
+            write_client(info, temp->socket);
         temp = next;
     }
     return;
@@ -51,6 +51,7 @@ void find_socket(server_t *info)
 int handler_connection(server_t *info)
 {
     init_client(info);
+    add_client(info, 0);
     while (1) {
         clear_list(info);
         if (select(info->max_fd + 1, &info->rfds, &info->wfds, NULL, NULL) < 0)

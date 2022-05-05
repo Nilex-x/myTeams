@@ -16,13 +16,12 @@ void init_client(server_t *info)
     list_client->prev = NULL;
     list_client->status = READ;
     list_client->socket = info->fd_server;
-    list_client->buff = malloc(sizeof(buffer_t));
-    if (!list_client->buff)
+    list_client->buff_read = malloc(sizeof(buffer_t));
+    list_client->buff_write = malloc(sizeof(buffer_t));
+    if (!list_client->buff_read || !list_client->buff_write)
         return;
-    for (int i = 0; i < LENGTH_COMMAND; i++)
-        list_client->buff->buffer[i] = '\0';
-    list_client->buff->rdonly = list_client->buff->buffer;
-    list_client->buff->wronly = list_client->buff->buffer;
+    init_buffer(list_client->buff_read, LENGTH_COMMAND);
+    init_buffer(list_client->buff_write, LENGTH_COMMAND);
     info->list_client = list_client;
 }
 
@@ -41,6 +40,12 @@ client_t *add_client(server_t *info, int client)
     node->prev = temp;
     node->next = NULL;
     node->status = READ;
+    node->buff_read = malloc(sizeof(buffer_t));
+    node->buff_write = malloc(sizeof(buffer_t));
+    if (!node->buff_read || !node->buff_write)
+        return (NULL);
+    init_buffer(node->buff_read, LENGTH_COMMAND);
+    init_buffer(node->buff_write, LENGTH_COMMAND);
     return (node);
 }
 
@@ -68,4 +73,20 @@ void remove_client(server_t *info, int client)
         }
         temp = temp->next;
     }
+}
+
+void accept_connect(server_t *info)
+{
+    struct sockaddr_in client;
+    socklen_t len = sizeof(struct sockaddr_in);
+    client_t *new_client = NULL;
+    int incomming_fd = accept(info->fd_server, (struct sockaddr *) &client, \
+                                &len);
+
+    FD_SET(incomming_fd, &info->wfds);
+    new_client = add_client(info, incomming_fd);
+    add_to_write(new_client->buff_write, "220\n", LENGTH_COMMAND);
+    new_client->status = WRITE;
+    if (incomming_fd > info->max_fd)
+        info->max_fd = incomming_fd;
 }
