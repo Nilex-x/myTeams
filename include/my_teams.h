@@ -16,13 +16,14 @@
     #include <string.h>
     #include <uuid/uuid.h>
 
-typedef struct client_s client_t;
+    #define UUID_REGEX "([0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-\
+[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12})"
 
 typedef struct message_s
 {
     char *message;
-    struct userinfo_s *from;
-    struct userinfo_s *to;
+    char *from;
+    char *to;
     bool isRead;
     struct message_s *next;
 } message_t;
@@ -37,6 +38,8 @@ typedef struct userinfo_s
 
 typedef struct thread_s
 {
+    char *id;
+    char *name;
     char *description;
     char **comment;
     struct thread_s *next;
@@ -44,6 +47,8 @@ typedef struct thread_s
 
 typedef struct channel_s
 {
+    char *id;
+    char *name;
     char *description;
     thread_t *threads;
     struct channel_s *next;
@@ -51,6 +56,8 @@ typedef struct channel_s
 
 typedef struct team_s
 {
+    char *id;
+    char *name;
     char *description;
     channel_t *channels;
     userinfo_t *subcribed;

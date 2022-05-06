@@ -24,7 +24,7 @@ int logout(client_t *client, char **arg)
     return (0);
 }
 
-void sort_command(client_t *client, data_server_t *data, char *value)
+void sort_command(struct client_s *client, data_server_t *data, char *value)
 {
     char **tab = my_str_to_word_array(clear_str(value));
     char **commands = my_str_to_word_array("LOGIN LOGOUT");
