@@ -35,19 +35,23 @@ int read_client(server_t *info, client_t *client)
 
 void write_client(server_t *info, int s_client)
 {
-    int w_value = 0;
+    int w_value = 1;
     client_t *client = find_client(info, s_client);
-    char *value = read_to_buffer(client->buff_write, '\n', LENGTH_COMMAND);
-    printf("value to write: [%s]\n", value);
+    int len = strlen(client->data_send);
+    int value_write = LENGTH_COMMAND;
 
-    w_value += write(s_client, value, strlen(value));
-    if (w_value == 0) {
+    while (w_value < len && w_value > 0) {
+        if (len < LENGTH_COMMAND)
+            value_write = len;
+        w_value += write(s_client, client->data_send, value_write);
+        len -= value_write;
+    }
+    free(client->data_send);
+    client->status = READ;
+    if (w_value < 0)
         remove_client(info, s_client);
-    }
-    if (w_value != -1){
-        client->status = READ;
-        free(value);
-    }
+    if (client->isQuit)
+        close(s_client);
 }
 
 void close_server(server_t *info)
@@ -60,7 +64,6 @@ void close_server(server_t *info)
     while (temp) {
         next = temp->next;
         free(temp->buff_read);
-        free(temp->buff_write);
         free(temp);
         temp = next;
     }

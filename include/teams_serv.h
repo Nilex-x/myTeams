@@ -24,8 +24,9 @@
 typedef struct client_s {
     int socket;
     int status;
+    bool isQuit;
+    char *data_send;
     buffer_t *buff_read;
-    buffer_t *buff_write;
     struct client_s *next;
     struct client_s *prev;
 } client_t;
