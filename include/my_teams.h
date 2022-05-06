@@ -12,18 +12,21 @@
     #include <stdlib.h>
     #include <unistd.h>
 
+    #define UUID_REGEX "([0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-\
+[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12})"
+
 typedef struct data_server_s
 {
-    userinfo_t *userinfos;
-    users_t *users;
-    team_t *teams;
+    struct userinfo_s *userinfos;
+    struct users_s *users;
+    struct team_s *teams;
 } data_server_t;
 
 typedef struct message_s
 {
     char *message;
-    userinfo_t *from;
-    userinfo_t *to;
+    char *from;
+    char *to;
     bool isRead;
     struct message_s *next;
 } message_t;
@@ -38,14 +41,16 @@ typedef struct userinfo_s
 typedef struct users_s
 {
     userinfo_t *info;
-    team_t *team;
-    channel_t *channel;
-    thread_t *thread;
+    struct team_s *team;
+    struct channel_s *channel;
+    struct thread_s *thread;
     struct users_s *next;
 } users_t;
 
 typedef struct thread_s
 {
+    char *id;
+    char *name;
     char *description;
     char **comment;
     struct thread_s *next;
@@ -53,6 +58,8 @@ typedef struct thread_s
 
 typedef struct channel_s
 {
+    char *id;
+    char *name;
     char *description;
     thread_t *threads;
     struct channel_s *next;
@@ -60,6 +67,8 @@ typedef struct channel_s
 
 typedef struct team_s
 {
+    char *id;
+    char *name;
     char *description;
     channel_t *channels;
     userinfo_t *subcribed;
