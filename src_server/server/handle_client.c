@@ -9,7 +9,9 @@
 
 void init_client(server_t *info)
 {
-    client_t *list_client = malloc(sizeof(client_t));
+    client_t *list_client = NULL;
+
+    list_client = malloc(sizeof(client_t));
     if (!list_client)
         return;
     list_client->next = NULL;
@@ -17,6 +19,7 @@ void init_client(server_t *info)
     list_client->status = READ;
     list_client->socket = info->fd_server;
     list_client->user = NULL;
+    list_client->isQuit = false;
     init_buff_client(list_client);
     info->data = malloc(sizeof(data_server_t));
     if (!info->data)
@@ -40,6 +43,7 @@ client_t *add_client(server_t *info, int client)
     node->next = NULL;
     node->status = READ;
     node->user = NULL;
+    node->isQuit = false;
     init_buff_client(node);
     return (node);
 }
@@ -64,7 +68,6 @@ void remove_client(server_t *info, int client)
         if (temp->socket == client) {
             temp->prev->next = temp->next;
             free(temp->buff_read);
-            free(temp->buff_write);
             free(temp);
             return;
         }
@@ -82,7 +85,7 @@ void accept_connect(server_t *info)
 
     FD_SET(incomming_fd, &info->wfds);
     new_client = add_client(info, incomming_fd);
-    add_to_write(new_client->buff_write, "220\n", LENGTH_COMMAND);
+    new_client->data_send = strdup("220\n");
     new_client->status = WRITE;
     if (incomming_fd > info->max_fd)
         info->max_fd = incomming_fd;

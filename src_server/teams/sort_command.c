@@ -10,7 +10,7 @@
 int login(client_t *client, char **arg)
 {
     if (client->user) {
-        add_to_write(client->buff_write, "500 command unkwon\n", LENGTH_COMMAND);
+        client->data_send = strdup("511 Already logged-in\n");
         client->status = WRITE;
     } else {
         // if create user here ←
@@ -39,7 +39,7 @@ void sort_command(client_t *client, data_server_t *data, char *value)
     }
     free_array(tab);
     free_array(commands);
-    add_to_write(client->buff_write, "500 command unkwon\n", LENGTH_COMMAND);
+    client->data_send = strdup("500 command unkwon\n");
     client->status = WRITE;
     return;
 }
