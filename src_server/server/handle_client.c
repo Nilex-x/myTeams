@@ -16,12 +16,11 @@ void init_client(server_t *info)
     list_client->prev = NULL;
     list_client->status = READ;
     list_client->socket = info->fd_server;
-    list_client->buff_read = malloc(sizeof(buffer_t));
-    list_client->buff_write = malloc(sizeof(buffer_t));
-    if (!list_client->buff_read || !list_client->buff_write)
+    list_client->user = NULL;
+    init_buff_client(list_client);
+    info->data = malloc(sizeof(data_server_t));
+    if (!info->data)
         return;
-    init_buffer(list_client->buff_read, LENGTH_COMMAND);
-    init_buffer(list_client->buff_write, LENGTH_COMMAND);
     info->list_client = list_client;
 }
 
@@ -40,12 +39,8 @@ client_t *add_client(server_t *info, int client)
     node->prev = temp;
     node->next = NULL;
     node->status = READ;
-    node->buff_read = malloc(sizeof(buffer_t));
-    node->buff_write = malloc(sizeof(buffer_t));
-    if (!node->buff_read || !node->buff_write)
-        return (NULL);
-    init_buffer(node->buff_read, LENGTH_COMMAND);
-    init_buffer(node->buff_write, LENGTH_COMMAND);
+    node->user = NULL;
+    init_buff_client(node);
     return (node);
 }
 

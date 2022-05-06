@@ -11,6 +11,8 @@ SRC_SERV	=		src_server/server/teams_serv.c \
 					src_server/server/handle_client.c \
 					src_server/server/handle_communication.c \
 					src_server/server/manage_server.c \
+					src_server/server/manage_init.c \
+					src_server/teams/sort_command.c
 
 OBJ_SERV	=		$(SRC_SERV:.c=.o)
 

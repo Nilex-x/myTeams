@@ -5,9 +5,10 @@
 ** my_teams
 */
 
-#ifndef TEAMS_SERV
-    #define TEAMS_SERV
+#ifndef TEAMS_SERV_H_
+    #define TEAMS_SERV_H_
     #include "lib.h"
+    #include "my_teams.h"
     #include <stdio.h>
     #include <unistd.h>
     #include <string.h>
@@ -26,6 +27,7 @@ typedef struct client_s {
     int status;
     buffer_t *buff_read;
     buffer_t *buff_write;
+    struct users_s *user;
     struct client_s *next;
     struct client_s *prev;
 } client_t;
@@ -38,6 +40,7 @@ typedef struct server_s
     fd_set wfds;
     fd_set rfds;
     client_t *list_client;
+    struct data_server_s *data;
 }server_t;
 
 int create_socket(server_t *info);
@@ -53,5 +56,6 @@ void free_client(client_t *client);
 void accept_connect(server_t *info);
 void write_client(server_t *info, int s_client);
 void close_server(server_t *info);
+void init_buff_client(client_t *node);
 
-#endif /* !TEAMS_SERV */
+#endif /* !TEAMS_SERV_H_ */

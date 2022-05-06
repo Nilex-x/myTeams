@@ -40,14 +40,21 @@ void write_client(server_t *info, int s_client)
     char *value = read_to_buffer(client->buff_write, '\n', LENGTH_COMMAND);
     printf("value to write: [%s]\n", value);
 
-    w_value += write(s_client, value, strlen(value));
-    if (w_value == 0) {
-        remove_client(info, s_client);
-    }
-    if (w_value != -1){
+    if (!value) {
         client->status = READ;
-        free(value);
+        return;
     }
+    w_value += write(s_client, value, strlen(value));
+    if (w_value == 0)
+        remove_client(info, s_client);
+    if (w_value != -1)
+        client->status = READ;
+    free(value);
+}
+
+void free_data(struct data_server_s *data)
+{
+    free(data);
 }
 
 void close_server(server_t *info)
@@ -64,6 +71,7 @@ void close_server(server_t *info)
         free(temp);
         temp = next;
     }
+    free_data(info->data);
     close(info->fd_server);
     exit(0);
 }

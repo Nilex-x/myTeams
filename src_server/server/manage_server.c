@@ -32,11 +32,16 @@ void sort_client(client_t *client, server_t *info)
     }
     if (read_client(info, client) != -1) {
         value = read_to_buffer(client->buff_read, '\n', LENGTH_COMMAND);
+        if (!value || value[0] == '\n') {
+            free(value);
+            return;
+        }
         if (client->socket == 0 && strcmp(value, "quit\n") == 0) {
             free(value);
             close_server(info);
         }
         printf("value client [%s]\n", value);
+        sort_command(client, info->data, value);
         free(value);
     }
 }
