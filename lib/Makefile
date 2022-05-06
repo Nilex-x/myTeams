@@ -9,15 +9,24 @@ LIB_PATH	=	lib/
 
 LIB_NAME	=	libmy_teams.a
 
-all: compil_lib
+FILE_IO_PATH	=	file_io/
+
+FILE_IO_NAME	=	file_io.a
+
+all: compil_lib compil_file_io
 
 compil_lib:
 	@make -C $(LIB_PATH)
 	mv $(LIB_PATH)$(LIB_NAME) .
 
+compil_file_io:
+	@make -C $(FILE_IO_PATH)
+	mv $(FILE_IO_PATH)$(FILE_IO_NAME) .
+
 clean:
 	@make clean -C $(LIB_PATH)
 
 fclean: clean
-	@rm -f $(LIB_NAME)
+	@rm -f $(LIB_NAME) $(FILE_IO_NAME)
 
+re: fclean all

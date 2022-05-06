@@ -15,7 +15,6 @@ CFLAGS = -Wall -Wextra -I../../include
 
 $(NAME):	$(OBJ)
 	ar rc $(NAME) $(OBJ)
-	cp $(NAME) ..
 	cp file_io.h ../../include/
 	make fclean
 
