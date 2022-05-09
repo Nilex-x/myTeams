@@ -7,6 +7,24 @@
 
 #include "file_io.h"
 
+char **get_comments(file_io_t *file_io, char *thread_id)
+{
+    int size = 1;
+    char **comms = malloc(sizeof(char *));
+    int len = strlen(thread_id) + 16;
+    char *p = malloc(len);
+
+    sprintf(p, "CREATE COMMENT %s", thread_id);
+    for (line_t *curr = file_io->lines; curr; curr = curr->next)
+        if (curr->type == CREATE && !strncmp(curr->line, p, len)) {
+            comms = realloc(comms, (size + 1) * sizeof(char *));
+            comms[size - 1] = strdup(curr->line + len + 1);
+            size++;
+        }
+    comms[size - 1] = 0;
+    return comms;
+}
+
 thread_t *get_threads(file_io_t *file_io, char *team_id, char *chan_id)
 {
     thread_t *threads = NULL;
@@ -17,12 +35,12 @@ thread_t *get_threads(file_io_t *file_io, char *team_id, char *chan_id)
 
     sprintf(p, "CREATE THREAD %s %s", team_id, chan_id);
     for (line_t *curr = file_io->lines; curr; curr = curr->next)
-        if (curr->type == CREATE && !strcmp(curr->line, p)) {
+        if (curr->type == CREATE && !strncmp(curr->line, p, len)) {
             tmp = malloc(sizeof(thread_t));
             tmp->id = strdup(strtok(curr->line + len, " "));
             tmp->name = strdup(get_quotes_content(strtok(NULL, " ")));
             tmp->description = strdup(get_quotes_content(strtok(NULL, " ")));
-            tmp->comment = NULL;
+            tmp->comment = get_comments(file_io, tmp->id);
             (threads) ? (last->next = tmp) : (threads = tmp);
             last = tmp;
         }

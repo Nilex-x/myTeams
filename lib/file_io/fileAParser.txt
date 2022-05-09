@@ -7,5 +7,6 @@ MESSAGE NR azertyuiop ihgvbzregz "Ouais Salut ouais !"
 CREATE TEAM teamID teamName teamDesc
 CREATE CHANNEL teamID channelId channelName channelDescr
 CREATE THREAD teamID channelId threadID threadName threadMessage
+CREATE COMMENT threadID ComContent
 
 SUBSCRIBED userID teamID
