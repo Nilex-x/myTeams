@@ -7,20 +7,18 @@
 
 #ifndef MY_TEAMS_H_
     #define MY_TEAMS_H_
+    #include "lib.h"
+    #include "teams_serv.h"
+    #include "file_io.h"
     #include <stdbool.h>
     #include <stdio.h>
     #include <stdlib.h>
     #include <unistd.h>
+    #include <string.h>
+    #include <uuid/uuid.h>
 
-    #define UUID_REGEX "([0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-\
-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12})"
-
-typedef struct data_server_s
-{
-    struct userinfo_s *userinfos;
-    struct users_s *users;
-    struct team_s *teams;
-} data_server_t;
+    #define UUID_REGEX "([0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-\
+                        [0-9a-fA-F]{4}\b-[0-9a-fA-F]{12})"
 
 typedef struct message_s
 {
@@ -36,16 +34,8 @@ typedef struct userinfo_s
     char *name;
     char *id;
     message_t *messages;
+    struct userinfo_s *next;
 } userinfo_t;
-
-typedef struct users_s
-{
-    userinfo_t *info;
-    struct team_s *team;
-    struct channel_s *channel;
-    struct thread_s *thread;
-    struct users_s *next;
-} users_t;
 
 typedef struct thread_s
 {
@@ -75,5 +65,34 @@ typedef struct team_s
     struct team_s *next;
 } team_t;
 
+typedef struct users_s
+{
+    userinfo_t *info;
+    team_t *team;
+    channel_t *channel;
+    thread_t *thread;
+    struct data_server_s *data;
+    struct users_s *next;
+} users_t;
+
+typedef struct data_server_s
+{
+    struct file_io_s *list;
+    userinfo_t *userinfos;
+    users_t *users;
+    team_t *teams;
+} data_server_t;
+
+struct client_s;
+
+int sort_command(struct client_s *client, data_server_t *data, char *value);
+users_t *init_user(userinfo_t *info, data_server_t *data);
+void free_users(users_t *users);
+void add_user(users_t *toadd, data_server_t *data);
+void remove_user(users_t *torm, data_server_t *data);
+void free_user_infos(userinfo_t *infos);
+void add_userinfo(userinfo_t *toadd, data_server_t *data);
+void remove_userinfo(userinfo_t *torm, data_server_t *data);
+void free_message(message_t *msgs);
 
 #endif /* !MY_TEAMS_H_ */

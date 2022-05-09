@@ -7,8 +7,6 @@
 
 #include "teams_serv.h"
 
-
-
 int read_client(server_t *info, client_t *client)
 {
     char *read_buffer = NULL;
@@ -50,8 +48,18 @@ void write_client(server_t *info, int s_client)
     client->status = READ;
     if (w_value < 0)
         remove_client(info, s_client);
-    if (client->isQuit)
+    if (client->isQuit) {
+        remove_client(info, s_client);
         close(s_client);
+    }
+}
+
+void free_data(data_server_t *data)
+{
+    file_io_destroy(data->list);
+    free_user_infos(data->userinfos);
+    free_users(data->users);
+    free(data);
 }
 
 void close_server(server_t *info)
@@ -67,6 +75,7 @@ void close_server(server_t *info)
         free(temp);
         temp = next;
     }
+    free_data(info->data);
     close(info->fd_server);
     exit(0);
 }

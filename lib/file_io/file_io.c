@@ -80,7 +80,7 @@ file_io_t *file_io_create(char *filepath)
 
     if (!file_io)
         return (NULL);
-    file_io->file_name = filepath;
+    file_io->file_name = strdup(filepath);
     file_io->lines = NULL;
     if (!file)
         return file_io;

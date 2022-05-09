@@ -22,6 +22,8 @@ char *get_uid_by_name(file_io_t *file_io, char *name)
             return (c->line + mat[0].rm_so);
         c = c->next;
     }
+    regfree(&regex);
+    free(pattern);
     return NULL;
 }
 
@@ -65,6 +67,7 @@ message_t *get_messages_by_user(file_io_t *file_io, char *id)
             (msg) ? (cmsg) ? (cmsg->next = msg) : (messages = msg) : 0;
             (msg) ? cmsg = msg : 0;
         }
+    regfree(&r);
     free(p);
     return messages;
 }
