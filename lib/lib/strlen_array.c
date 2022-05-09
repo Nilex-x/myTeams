@@ -15,3 +15,12 @@ int strlen_array(char **array)
         count += (int) strlen(array[i]);
     return (count);
 }
+
+int len_array(char **array)
+{
+    int count = 0;
+
+    while (array[count])
+        count++;
+    return (count);
+}

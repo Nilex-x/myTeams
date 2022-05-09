@@ -8,6 +8,7 @@
 #ifndef TEAMS_SERV_H_
     #define TEAMS_SERV_H_
     #include "lib.h"
+    #include "my_teams.h"
     #include <stdio.h>
     #include <unistd.h>
     #include <string.h>
@@ -57,8 +58,7 @@ void accept_connect(server_t *info);
 void write_client(server_t *info, int s_client);
 void close_server(server_t *info);
 void init_buff_client(client_t *node);
-
-    #include "my_teams.h"
+void handle_command(server_t *info, client_t *client);
 
 
 #endif /* !TEAMS_SERV_H_ */

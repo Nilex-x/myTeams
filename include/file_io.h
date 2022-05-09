@@ -50,19 +50,19 @@
     char *get_uid_by_name(file_io_t *file_io, char *name);
 
     /* Creates a user with it's name */
-    userinfo_t *create_user_by_name(file_io_t *file_io, char *name);
+    struct userinfo_s *create_user_by_name(file_io_t *file_io, char *name);
 
     /* Gets a chained list of messages received and sent by the user */
-    message_t *get_messages_by_user(file_io_t *file_io, char *id);
+    struct message_s *get_messages_by_user(file_io_t *file_io, char *id);
 
     /* Get a chained list of teams with it's channels and threads */
-    team_t *get_teams(file_io_t *file_io);
+    struct team_s *get_teams(file_io_t *file_io);
 
     /* Get a chained list of channels with it's threads */
-    channel_t *get_channels(file_io_t *file_io, char *team_id);
+    struct channel_s *get_channels(file_io_t *file_io, char *team_id);
 
     /* Get a chained list of threads with it's messages */
-    thread_t *get_threads(file_io_t *file_io, char *team_id, char *chan_id);
+    struct thread_s *get_threads(file_io_t *file_io, char *team_id, char *chan_id);
 
 
     /* TOOLS */

@@ -50,8 +50,10 @@ void write_client(server_t *info, int s_client)
     client->status = READ;
     if (w_value < 0)
         remove_client(info, s_client);
-    if (client->isQuit)
+    if (client->isQuit) {
+        remove_client(info, s_client);
         close(s_client);
+    }
 }
 
 void close_server(server_t *info)

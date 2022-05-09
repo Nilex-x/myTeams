@@ -11,7 +11,7 @@ LIB_NAME	=	libmy_teams.a
 
 FILE_IO_PATH	=	file_io/
 
-FILE_IO_NAME	=	file_io.a
+FILE_IO_NAME	=	libfile_io.a
 
 all: compil_lib compil_file_io
 
@@ -25,8 +25,12 @@ compil_file_io:
 
 clean:
 	@make clean -C $(LIB_PATH)
+	@make clean -C $(FILE_IO_PATH)
 
-fclean: clean
+fclean:
+	@make fclean -C $(LIB_PATH)
+	@make fclean -C $(FILE_IO_PATH)
 	@rm -f $(LIB_NAME) $(FILE_IO_NAME)
+
 
 re: fclean all

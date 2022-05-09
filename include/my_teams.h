@@ -9,6 +9,7 @@
     #define MY_TEAMS_H_
     #include "lib.h"
     #include "teams_serv.h"
+    #include "file_io.h"
     #include <stdbool.h>
     #include <stdio.h>
     #include <stdlib.h>
@@ -16,8 +17,8 @@
     #include <string.h>
     #include <uuid/uuid.h>
 
-    #define UUID_REGEX "([0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-\
-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12})"
+    #define UUID_REGEX "([0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-\
+                        [0-9a-fA-F]{4}\b-[0-9a-fA-F]{12})"
 
 typedef struct message_s
 {
@@ -76,11 +77,15 @@ typedef struct users_s
 
 typedef struct data_server_s
 {
+    struct file_io_s *list;
     userinfo_t *userinfos;
     users_t *users;
     team_t *teams;
 } data_server_t;
 
-void sort_command(client_t *client, data_server_t *data, char *value);
+struct client_s;
+
+int sort_command(struct client_s *client, data_server_t *data, char *value);
+users_t *init_user(userinfo_t *info, data_server_t *data);
 
 #endif /* !MY_TEAMS_H_ */

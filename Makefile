@@ -12,7 +12,8 @@ SRC_SERV	=		src_server/server/teams_serv.c \
 					src_server/server/handle_communication.c \
 					src_server/server/manage_server.c \
 					src_server/server/manage_init.c \
-					src_server/teams/sort_command.c
+					src_server/teams/sort_command.c \
+					src_server/teams/manage_init_data.c
 
 OBJ_SERV	=		$(SRC_SERV:.c=.o)
 
@@ -26,6 +27,8 @@ LIB_PATH	=		lib
 
 NAME_LIB	=		my_teams
 
+FILE_LIB	=		file_io
+
 SERV_NAME	=		myteams_server
 
 CLIENT_NAME	=		myteams_cli
@@ -38,7 +41,7 @@ compil_lib:
 	@make -C $(LIB_PATH)
 
 compil_server: $(OBJ_SERV)
-	$(CC) -o $(SERV_NAME) $(OBJ_SERV) -I$(HEADER_DIR) -L$(LIB_PATH) -l$(NAME_LIB)
+	$(CC) -o $(SERV_NAME) $(OBJ_SERV) -I$(HEADER_DIR) -L$(LIB_PATH) -l$(NAME_LIB) -l$(FILE_LIB) -luuid
 
 compil_client: $(OBJ_CLIENT)
 	$(CC) -o $(CLIENT_NAME) $(OBJ_CLIENT) -I$(HEADER_DIR) -L$(LIB_PATH) -l$(NAME_LIB)
@@ -46,7 +49,7 @@ compil_client: $(OBJ_CLIENT)
 debug:compil_lib debug_server debug_client
 
 debug_server: $(OBJ_SERV)
-	$(CC) -o $(SERV_NAME) $(OBJ_SERV) -I$(HEADER_DIR) -L$(LIB_PATH) -l$(NAME_LIB) -g3
+	$(CC) -o $(SERV_NAME) $(OBJ_SERV) -I$(HEADER_DIR) -L$(LIB_PATH) -l$(NAME_LIB) -l$(FILE_LIB) -g3
 
 debug_client: $(OBJ_SERV)
 	$(CC) -o $(CLIENT_NAME) $(OBJ_CLIENT) -I$(HEADER_DIR) -L$(LIB_PATH) -l$(NAME_LIB) -g3
@@ -54,11 +57,14 @@ debug_client: $(OBJ_SERV)
 clean:
 	@make clean -C $(LIB_PATH)
 	rm -f $(OBJ_SERV)
+	rm -f $(OBJ_CLIENT)
 
 fclean:
 	@make fclean -C $(LIB_PATH)
 	rm -f $(OBJ_SERV)
+	rm -f $(OBJ_CLIENT)
 	rm -f $(SERV_NAME)
+	rm -f $(CLIENT_NAME)
 
 re: fclean all
 

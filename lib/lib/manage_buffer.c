@@ -36,7 +36,6 @@ char *read_to_buffer(buffer_t *buff, char end_of_line, int length_max)
     char *value = NULL;
     int i = 0;
 
-    printf("len: %d diff: %ld\n", len, (buff->rdonly - buff->buffer));
     if (len == -1)
         return NULL;
     value = malloc(sizeof(char) * (len + 2));
