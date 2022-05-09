@@ -21,9 +21,6 @@ void init_client(server_t *info)
     list_client->user = NULL;
     list_client->isQuit = false;
     init_buff_client(list_client);
-    info->data = malloc(sizeof(data_server_t));
-    if (!info->data)
-        return;
     info->list_client = list_client;
 }
 

@@ -59,6 +59,6 @@ void write_client(server_t *info, int s_client);
 void close_server(server_t *info);
 void init_buff_client(client_t *node);
 void handle_command(server_t *info, client_t *client);
-
+void init_data(server_t *info);
 
 #endif /* !TEAMS_SERV_H_ */
