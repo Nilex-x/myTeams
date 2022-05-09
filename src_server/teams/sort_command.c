@@ -36,6 +36,7 @@ int sort_command(struct client_s *client, data_server_t *data, char *value)
         if (strcmp(commands[i], tab[0]) == 0) {
             printf("Nice command: %s\n", commands[i]);
             cmd[i](client, tab, data);
+            free_array(commands);
             free_array(tab);
             return (0);
         }

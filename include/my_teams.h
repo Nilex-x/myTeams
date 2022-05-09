@@ -87,5 +87,12 @@ struct client_s;
 
 int sort_command(struct client_s *client, data_server_t *data, char *value);
 users_t *init_user(userinfo_t *info, data_server_t *data);
+void free_users(users_t *users);
+void add_user(users_t *toadd, data_server_t *data);
+void remove_user(users_t *torm, data_server_t *data);
+void free_user_infos(userinfo_t *infos);
+void add_userinfo(userinfo_t *toadd, data_server_t *data);
+void remove_userinfo(userinfo_t *torm, data_server_t *data);
+void free_message(message_t *msgs);
 
 #endif /* !MY_TEAMS_H_ */
