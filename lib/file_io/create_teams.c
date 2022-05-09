@@ -22,6 +22,7 @@ char **get_comments(file_io_t *file_io, char *thread_id)
             size++;
         }
     comms[size - 1] = 0;
+    free(p);
     return comms;
 }
 

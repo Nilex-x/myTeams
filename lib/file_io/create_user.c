@@ -80,9 +80,7 @@ userinfo_t *create_user_by_name(file_io_t *file_io, char *name)
 
     if (!user)
         return NULL;
-    user->name = strdup(name);
-    user->id = get_uid_by_name(file_io, name);
-    if (!user->id) {
+    if (!get_uid_by_name(file_io, name)) {
         uuid_generate(uid);
         user->id = malloc(sizeof(char) * 37);
         uuid_unparse(uid, user->id);
@@ -91,7 +89,28 @@ userinfo_t *create_user_by_name(file_io_t *file_io, char *name)
         append_to_list(&file_io->lines, line);
         user->messages = NULL;
         free(line);
+        return user;
     } else
         user->messages = get_messages_by_user(file_io, user->id);
-    return user;
+    free(user);
+    return NULL;
+}
+
+userinfo_t *get_all_user_infos(file_io_t *file_io)
+{
+    userinfo_t *users = NULL;
+    userinfo_t *user = NULL;
+    userinfo_t *cuser = NULL;
+    
+    for (line_t *c = file_io->lines; c; c = c->next) {
+        if (c->type == USER) {
+            user = malloc(sizeof(userinfo_t));
+            user->id = strdup(strtok(c->line + 5, " "));
+            user->name = strdup(strtok(NULL, " \0"));
+            user->messages = get_messages_by_user(file_io, user->id);
+            (user) ? (users) ? (cuser->next = user) : (users = user) : 0;
+            (user) ? cuser = user : 0;
+        }
+    }
+    return users;
 }
