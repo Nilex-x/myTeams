@@ -10,12 +10,15 @@
 int login(struct client_s *client, char **arg, data_server_t *data)
 {
     if (client->user) {
-        client->data_send = strdup("102 Already logged-in\n");
+        client->data_send = strdup("102 Already logged-in.\n");
         client->status = WRITE;
     } else if (len_array(arg) == 2) {
         // if create user here ←
-        init_user(create_user_by_name(data->list, arg[1]), data);
+        client->user = init_user(create_user_by_name(data->list, arg[1]), data);
         client->data_send = strdup("301 User created.\n");
+        client->status = WRITE;
+    } else {
+        client->data_send = strdup("502 Command missing arguments.\n");
         client->status = WRITE;
     }
     return (0);
@@ -23,6 +26,14 @@ int login(struct client_s *client, char **arg, data_server_t *data)
 
 int logout(struct client_s *client, char **arg, data_server_t *data)
 {
+    if (client->user) {
+        client->data_send = strdup("303 - User disconnected.\n");
+        client->status = WRITE;
+        client->user = NULL;
+    } else {
+        client->data_send = strdup("503 - Not logged-in.\n");
+        client->status = WRITE;
+    }
     return (0);
 }
 

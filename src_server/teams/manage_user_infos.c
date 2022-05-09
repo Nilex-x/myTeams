@@ -50,7 +50,7 @@ void add_userinfo(userinfo_t *toadd, data_server_t *data)
         data->userinfos = toadd;
         return;
     }
-    while (temp)
+    while (temp->next)
         temp = temp->next;
     temp->next = toadd;
     return;
