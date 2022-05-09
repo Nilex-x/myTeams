@@ -78,10 +78,12 @@ file_io_t *file_io_create(char *filepath)
     ssize_t read;
     char *line = NULL;
 
-    if (!file_io || !file)
+    if (!file_io)
         return (NULL);
     file_io->file_name = filepath;
     file_io->lines = NULL;
+    if (!file)
+        return file_io;
     while ((read = getline(&line, &len, file)) != -1) {
         line[strlen(line) - 1] = '\0';
         (strlen(line) < 4) ? 0 : append_to_list(&file_io->lines, line);
