@@ -52,6 +52,9 @@
     /* Creates a user with it's name */
     struct userinfo_s *create_user_by_name(file_io_t *file_io, char *name);
 
+    /* Gets all users from the save file */
+    struct userinfo_s *get_all_user_infos(file_io_t *file_io);
+
     /* Gets a chained list of messages received and sent by the user */
     struct message_s *get_messages_by_user(file_io_t *file_io, char *id);
 
@@ -64,6 +67,9 @@
     /* Get a chained list of threads with it's messages */
     struct thread_s *get_threads(file_io_t *file_io, char *team_id, char *chan_id);
 
+    /*                   SERVER                   */
+    /* Get all the server data from the save file */
+    struct data_server_s *get_server_data(char *file_name);
 
     /* TOOLS */
 

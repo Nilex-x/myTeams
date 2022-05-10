@@ -7,11 +7,10 @@
 
 #include "file_io.h"
 
-data_server_t *get_server_data(char *file_name)
+struct data_server_s *get_server_data(char *file_name)
 {
     data_server_t *data = malloc(sizeof(data_server_t));
     file_io_t *file_io = file_io_create(file_name);
-    char *line = NULL;
 
     if (!data)
         return NULL;

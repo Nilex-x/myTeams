@@ -67,11 +67,9 @@
     /* Get a chained list of threads with it's messages */
     struct thread_s *get_threads(file_io_t *file_io, char *team_id, char *chan_id);
 
-
-
     /*                   SERVER                   */
     /* Get all the server data from the save file */
-    data_server_t *get_server_data(char *file_name)
+    struct data_server_s *get_server_data(char *file_name);
 
     /* TOOLS */
 
