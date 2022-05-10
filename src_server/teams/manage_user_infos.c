@@ -7,18 +7,28 @@
 
 #include "my_teams.h"
 
-void free_message(message_t *msgs)
+userinfo_t *get_user_info_by_uuid(char *uuid, data_server_t *data)
 {
-    message_t *next = NULL;
+    userinfo_t *temp = data->userinfos;
 
-    while (msgs) {
-        next = msgs->next;
-        free(msgs->from);
-        free(msgs->to);
-        free(msgs->message);
-        msgs = next;
+    while (temp) {
+        if (strcmp(temp->id, uuid) == 0)
+            return temp;
+        temp = temp->next;
     }
-    return;
+    return (NULL);
+}
+
+userinfo_t *get_user_info_by_name(char *name, data_server_t *data)
+{
+    userinfo_t *temp = data->userinfos;
+
+    while (temp) {
+        if (strcmp(temp->name, name) == 0)
+            return temp;
+        temp = temp->next;
+    }
+    return (NULL);
 }
 
 void remove_userinfo(userinfo_t *torm, data_server_t *data)

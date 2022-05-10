@@ -15,7 +15,9 @@ SRC_SERV	=		src_server/server/teams_serv.c \
 					src_server/teams/sort_command.c \
 					src_server/teams/manage_init_data.c \
 					src_server/teams/manage_user_infos.c \
-					src_server/teams/manage_users.c
+					src_server/teams/manage_users.c \
+					src_server/teams/manage_messages.c
+
 
 
 OBJ_SERV	=		$(SRC_SERV:.c=.o)

@@ -88,6 +88,7 @@ userinfo_t *create_user_by_name(file_io_t *file_io, char *name)
         sprintf(line, "USER %s \"%s\"", user->id, name);
         append_to_list(&file_io->lines, line);
         user->messages = NULL;
+        user->name = strdup(name);
         free(line);
         return user;
     } else
@@ -101,7 +102,7 @@ userinfo_t *get_all_user_infos(file_io_t *file_io)
     userinfo_t *users = NULL;
     userinfo_t *user = NULL;
     userinfo_t *cuser = NULL;
-    
+
     for (line_t *c = file_io->lines; c; c = c->next) {
         if (c->type == USER) {
             user = malloc(sizeof(userinfo_t));

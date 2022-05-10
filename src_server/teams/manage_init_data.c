@@ -19,18 +19,22 @@ void init_data(server_t *info)
     info->data->list = file_io_create("../../info.save");
 }
 
-users_t *init_user(userinfo_t *info, data_server_t *data)
+users_t *init_user(char *name, data_server_t *data, userinfo_t *info)
 {
-    users_t *new_user = malloc(sizeof(users_t));
+    users_t *user = NULL;
 
-    if (!new_user)
+    if (!info) {
+        info = create_user_by_name(data->list, name);
+        add_userinfo(info, data);
+    }
+    user = malloc(sizeof(users_t));
+    if (!user)
         return NULL;
-    new_user->info = info;
-    new_user->channel = NULL;
-    new_user->next = NULL;
-    new_user->team = NULL;
-    new_user->thread = NULL;
-    add_userinfo(info, data);
-    add_user(new_user, data);
-    return new_user;
+    user->info = info;
+    user->channel = NULL;
+    user->next = NULL;
+    user->team = NULL;
+    user->thread = NULL;
+    add_user(user, data);
+    return user;
 }

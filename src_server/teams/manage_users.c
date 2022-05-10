@@ -25,6 +25,30 @@ void remove_user(users_t *torm, data_server_t *data)
     return;
 }
 
+users_t *get_user_by_uuid(char *uuid, data_server_t *data)
+{
+    users_t *temp = data->users;
+
+    while (temp) {
+        if (strcmp(temp->info->id, uuid) == 0)
+            return temp;
+        temp = temp->next;
+    }
+    return (NULL);
+}
+
+users_t *get_user_by_name(char *name, data_server_t *data)
+{
+    users_t *temp = data->users;
+
+    while (temp) {
+        if (strcmp(temp->info->name, name) == 0)
+            return temp;
+        temp = temp->next;
+    }
+    return (NULL);
+}
+
 void add_user(users_t *toadd, data_server_t *data)
 {
     users_t *temp = data->users;
