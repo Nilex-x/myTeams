@@ -73,7 +73,28 @@ channel_t *get_channels(file_io_t *file_io, char *team_id)
     return channels;
 }
 
-team_t *get_teams(file_io_t *file_io)
+subscribed_t *get_subscribed(file_io_t *file_io, char *team_id, data_server_t *d)
+{
+    subscribed_t *sub = NULL;
+    subscribed_t *last = NULL;
+    subscribed_t *tmp = NULL;
+    int len = (strlen(team_id) + 12);
+    char *p = malloc(sizeof(char) * len);
+
+    sprintf(p, "SUBSCRIBE %s", team_id);
+    for (line_t *curr = file_io->lines; curr; curr = curr->next)
+        if (curr->type == SUBSCRIBED && strncmp(curr->line, p, len - 1) == 0) {
+            tmp = malloc(sizeof(subscribed_t));
+            tmp->user = get_user_by_id(d, strtok(curr->line + len, " "));
+            tmp->next = NULL;
+            (sub) ? (last->next = tmp) : (sub = tmp);
+            last = tmp;
+        }
+    free(p);
+    return sub;
+}
+
+team_t *get_teams(file_io_t *file_io, data_server_t *data)
 {
     team_t *teams = NULL;
     team_t *last = NULL;
@@ -87,6 +108,7 @@ team_t *get_teams(file_io_t *file_io)
             tmp->name = strdup(strtok(NULL, " "));
             tmp->description = strdup(strtok(NULL, " "));
             tmp->channels = get_channels(file_io, tmp->id);
+            tmp->subcribed = get_subscribed(file_io, tmp->id, data);
             (teams) ? (last->next = tmp) : (teams = tmp);
             last = tmp;
         }
