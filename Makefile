@@ -14,7 +14,8 @@ SRC_SERV	=		src_server/server/teams_serv.c \
 
 OBJ_SERV	=		$(SRC_SERV:.c=.o)
 
-SRC_CLIENT	=		src_client/teams_client.c
+SRC_CLIENT	=		src_client/teams_client.c \
+					src_client/client_command.c
 
 OBJ_CLIENT	=		$(SRC_CLIENT:.c=.o)
 
@@ -57,6 +58,8 @@ fclean:
 	@make fclean -C $(LIB_PATH)
 	rm -f $(OBJ_SERV)
 	rm -f $(SERV_NAME)
+	rm -f $(OBJ_CLIENT)
+	rm -f $(CLIENT_NAME)
 
 re: fclean all
 
