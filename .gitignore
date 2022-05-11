@@ -54,7 +54,6 @@ myteams_server
 .vscode/*
 new_rfc.pdf
 temp.c
-myteams
 uml
 *.save
 outfile
