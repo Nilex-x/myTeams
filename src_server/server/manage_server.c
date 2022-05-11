@@ -50,7 +50,7 @@ void find_socket(server_t *info)
 
 int handler_connection(server_t *info)
 {
-    get_server_data(info);
+    info->data = get_server_data(FILEPATH_SAVE);
     init_client(info);
     add_client(info, 0);
     while (1) {
