@@ -9,6 +9,7 @@
     #define TEAMS_SERV_H_
     #include "lib.h"
     #include "my_teams.h"
+    #include "logging_server.h"
     #include <stdio.h>
     #include <unistd.h>
     #include <string.h>

@@ -24,7 +24,6 @@ userinfo_t *get_user_info_by_name(char *name, data_server_t *data)
     userinfo_t *temp = data->userinfos;
 
     while (temp) {
-        printf("name save: %s name to find: %s\n", temp->name, name);
         if (strcmp(temp->name, name) == 0)
             return temp;
         temp = temp->next;

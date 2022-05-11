@@ -44,7 +44,6 @@ int verif_space(char *str)
     int count = 0;
 
     for (int i = 0; str[i]; i++) {
-        printf("%d - %c\n", str[i], str[i]);
         if (str[i] == ' ' || str[i] == '\t')
             count++;
         else

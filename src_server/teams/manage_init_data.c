@@ -24,9 +24,9 @@ users_t *init_user(char *name, data_server_t *data, userinfo_t *info)
     users_t *user = NULL;
 
     if (!info) {
-        printf("name: %s\n", name);
         info = create_user_by_name(data->list, name);
         add_userinfo(info, data);
+        server_event_user_created(info->id, info->name);
     }
     user = malloc(sizeof(users_t));
     if (!user)
@@ -37,5 +37,6 @@ users_t *init_user(char *name, data_server_t *data, userinfo_t *info)
     user->team = NULL;
     user->thread = NULL;
     add_user(user, data);
+    server_event_user_logged_in(info->id);
     return user;
 }
