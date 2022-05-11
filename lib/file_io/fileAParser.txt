@@ -9,4 +9,4 @@ CREATE CHANNEL teamID channelId channelName channelDescr
 CREATE THREAD teamID channelId threadID threadName threadMessage
 CREATE COMMENT threadID ComContent
 
-SUBSCRIBED userID teamID
+SUBSCRIBED teamID userID

@@ -34,6 +34,8 @@
         line_t *lines;
     } file_io_t;
 
+    typedef struct data_server_s data_server_t;
+
     /* Create a new file_io_t structure */
     file_io_t *file_io_create(char *filepath);
 
@@ -49,6 +51,9 @@
     /* Gets user UUID with it's name */
     char *get_uid_by_name(file_io_t *file_io, char *name);
 
+    /* Gets userinfo_t struct with it's id */
+    struct userinfo_s *get_user_by_id(data_server_t *data, char *id);
+
     /* Creates a user with it's name */
     struct userinfo_s *create_user_by_name(file_io_t *file_io, char *name);
 
@@ -59,7 +64,7 @@
     struct message_s *get_messages_by_user(file_io_t *file_io, char *id);
 
     /* Get a chained list of teams with it's channels and threads */
-    struct team_s *get_teams(file_io_t *file_io);
+    struct team_s *get_teams(file_io_t *file_io, data_server_t *data);
 
     /* Get a chained list of channels with it's threads */
     struct channel_s *get_channels(file_io_t *file_io, char *team_id);
@@ -69,7 +74,7 @@
 
     /*                   SERVER                   */
     /* Get all the server data from the save file */
-    struct data_server_s *get_server_data(char *file_name);
+    data_server_t *get_server_data(char *file_name);
 
     /* TOOLS */
 

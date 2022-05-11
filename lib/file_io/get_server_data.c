@@ -15,8 +15,8 @@ struct data_server_s *get_server_data(char *file_name)
     if (!data)
         return NULL;
     data->list = file_io;
-    data->teams = get_teams(file_io);
-    data->users = NULL;
     data->userinfos = get_all_user_infos(file_io);
+    data->teams = get_teams(file_io, data);
+    data->users = NULL;
     return data;
 }

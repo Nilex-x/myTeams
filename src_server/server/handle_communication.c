@@ -75,6 +75,7 @@ void close_server(server_t *info)
         free(temp);
         temp = next;
     }
+    file_rewrite(info->data->list);
     free_data(info->data);
     close(info->fd_server);
     exit(0);

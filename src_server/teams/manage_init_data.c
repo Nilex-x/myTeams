@@ -16,7 +16,7 @@ void init_data(server_t *info)
     info->data->users = NULL;
     info->data->teams = NULL;
     info->data->userinfos = NULL;
-    info->data->list = file_io_create("../../info.save");
+    info->data->list = file_io_create(FILEPATH_SAVE);
 }
 
 users_t *init_user(char *name, data_server_t *data, userinfo_t *info)

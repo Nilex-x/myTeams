@@ -17,6 +17,7 @@
     #include <string.h>
     #include <uuid/uuid.h>
 
+    #define FILEPATH_SAVE "./info.save"
     #define UUID_REGEX "([0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-\
                         [0-9a-fA-F]{4}\b-[0-9a-fA-F]{12})"
 
@@ -28,6 +29,12 @@ typedef struct message_s
     bool isRead;
     struct message_s *next;
 } message_t;
+
+typedef struct subscribed_s
+{
+    struct userinfo_s *user;
+    struct subscribed_s *next;
+} subscribed_t;
 
 typedef struct userinfo_s
 {
@@ -61,7 +68,7 @@ typedef struct team_s
     char *name;
     char *description;
     channel_t *channels;
-    userinfo_t *subcribed;
+    subscribed_t *subcribed;
     struct team_s *next;
 } team_t;
 
