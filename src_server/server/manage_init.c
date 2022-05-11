@@ -23,11 +23,11 @@ void handle_command(server_t *info, client_t *client)
         free(value);
         return;
     }
-    if (client->socket == 0 && strcmp(value, "quit\n") == 0) {
+    if (client->socket == 0 && strstr(value, "quit")) {
         free(value);
         close_server(info);
     }
-    if (strcmp(value, "QUIT\n") == 0) {
+    if (strstr(value, "QUIT")) {
         free(value);
         client->isQuit = true;
         client->data_send = strdup("304 Goodbye see you soon\n");

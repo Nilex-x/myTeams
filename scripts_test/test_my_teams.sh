@@ -107,11 +107,11 @@ test00()
 {
   local test_name="Authentication"
 
-  local cmd1="LOGIN nicolas"
-  local cmd2="LOGIN temp"
+  local cmd1="LOGIN \"nicolas\""
+  local cmd2="LOGIN \"temp\""
   local cmd3="LOGOUT"
   local cmd4="LOGOUT"
-  local cmd5="LOGIN nicolas"
+  local cmd5="LOGIN \"nicolas\""
   local cmd6="LOGOUT"
   local cmd7="QUIT"
 

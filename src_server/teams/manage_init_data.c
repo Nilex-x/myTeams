@@ -24,6 +24,7 @@ users_t *init_user(char *name, data_server_t *data, userinfo_t *info)
     users_t *user = NULL;
 
     if (!info) {
+        printf("name: %s\n", name);
         info = create_user_by_name(data->list, name);
         add_userinfo(info, data);
     }

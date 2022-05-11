@@ -34,13 +34,13 @@ message_t *create_message(line_t *c, regmatch_t mat[3], char *id)
     if (strncmp(c->line + mat[0].rm_so, id, 36) == 0) {
         msg->from = strdup(id);
         msg->to = strdup(c->line + mat[1].rm_so);
-        msg->message = strdup(c->line + mat[2].rm_so);
+        msg->message = get_quotes_content(c->line + mat[2].rm_so);
         msg->isRead = (c->line[8] == 'R') ? true : false;
         return msg;
     } else if (strncmp(c->line + mat[1].rm_so, id, 36) == 0) {
         msg->from = strdup(c->line + mat[0].rm_so);
         msg->to = strdup(id);
-        msg->message = strdup(c->line + mat[2].rm_so);
+        msg->message = get_quotes_content(c->line + mat[2].rm_so);
         msg->isRead = (c->line[8] == 'R') ? true : false;
         return msg;
     }
@@ -55,7 +55,7 @@ message_t *get_messages_by_user(file_io_t *file_io, char *id)
     message_t *messages = NULL;
     message_t *msg = NULL;
     message_t *cmsg = NULL;
-    char *p = malloc(sizeof(char) * (strlen(id) + 29));
+    char *p = malloc(sizeof(char) * 260);
 
     sprintf(p, "^MESSAGE[ ]*[R-U][ ]*%s[ ]*%s[ ]*([\x20-\x7E]*)"
     , UUID_REGEX, UUID_REGEX);
@@ -106,9 +106,10 @@ userinfo_t *get_all_user_infos(file_io_t *file_io)
     for (line_t *c = file_io->lines; c; c = c->next) {
         if (c->type == USER) {
             user = malloc(sizeof(userinfo_t));
-            user->id = strdup(strtok(c->line + 5, " "));
-            user->name = strdup(strtok(NULL, " \0"));
+            user->id = strndup(c->line + 5, 37);
+            user->name = get_quotes_content(c->line + 42);
             user->messages = get_messages_by_user(file_io, user->id);
+            user->next = NULL;
             (user) ? (users) ? (cuser->next = user) : (users = user) : 0;
             (user) ? cuser = user : 0;
         }

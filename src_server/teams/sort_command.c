@@ -9,6 +9,9 @@
 
 int login(struct client_s *client, char **arg, data_server_t *data)
 {
+    if (!data->userinfos)
+        printf("Zebi\n");
+
     if (client->user) {
         client->data_send = strdup("102 Already logged-in.\n");
         client->status = WRITE;

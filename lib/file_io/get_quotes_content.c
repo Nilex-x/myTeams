@@ -12,8 +12,11 @@ char *get_quotes_content(char *str)
     int i = 0;
     char *new_str = strdup(str + 1);
 
-    while(new_str[i] != '"' && new_str[i] == '\0')
+    printf("old str: %s, new str: %s\n", str, new_str);
+    while(new_str[i] != '"' && new_str[i] != '\0')
         i++;
     new_str[i] = '\0';
+    printf("new str: %s\n", new_str);
+
     return new_str;
 }
