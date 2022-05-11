@@ -35,8 +35,8 @@ int logout(struct client_s *client, char **arg, data_server_t *data)
     if (client->user) {
         client->data_send = strdup("303 - User disconnected.\n");
         client->status = WRITE;
-        client->user = NULL;
         server_event_user_logged_out(client->user->info->id);
+        client->user = NULL;
     } else {
         client->data_send = strdup("503 - Not logged-in.\n");
         client->status = WRITE;
