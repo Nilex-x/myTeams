@@ -17,6 +17,7 @@ int login(struct client_s *client, char **arg, data_server_t *data)
     if (len_array(arg) != 2) {
         client->data_send = strdup("502 Command missing arguments.\n");
         client->status = WRITE;
+        return (0);
     }
     if (!get_user_info_by_name(arg[1], data)) {
         client->user = init_user(arg[1], data, NULL);
