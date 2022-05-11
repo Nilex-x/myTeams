@@ -36,9 +36,11 @@ FILE_LIB	=		file_io
 
 SERV_NAME	=		myteams_server
 
+LIB_SO_NAME	=		myteams
+
 CLIENT_NAME	=		myteams_cli
 
-CFLAGS		=		-W -Wall -Wextra -I$(HEADER_DIR) -L$(LIB_PATH) -l$(NAME_LIB) -g3
+CFLAGS		=		-W -Wall -Wextra -I$(HEADER_DIR) -L$(LIB_PATH) -l$(NAME_LIB) -l$(LIB_SO_NAME) -g3
 
 all: compil_lib compil_server compil_client
 
@@ -46,18 +48,18 @@ compil_lib:
 	@make -C $(LIB_PATH)
 
 compil_server: $(OBJ_SERV)
-	$(CC) -o $(SERV_NAME) $(OBJ_SERV) -I$(HEADER_DIR) -L$(LIB_PATH) -l$(NAME_LIB) -l$(FILE_LIB) -luuid
+	$(CC) -o $(SERV_NAME) $(OBJ_SERV) -I$(HEADER_DIR) -L$(LIB_PATH) -l$(NAME_LIB) -l$(FILE_LIB) -l$(LIB_SO_NAME) -luuid
 
 compil_client: $(OBJ_CLIENT)
-	$(CC) -o $(CLIENT_NAME) $(OBJ_CLIENT) -I$(HEADER_DIR) -L$(LIB_PATH) -l$(NAME_LIB)
+	$(CC) -o $(CLIENT_NAME) $(OBJ_CLIENT) -I$(HEADER_DIR) -L$(LIB_PATH) -l$(NAME_LIB) -l$(LIB_SO_NAME)
 
 debug:compil_lib debug_server debug_client
 
 debug_server: $(OBJ_SERV)
-	$(CC) -o $(SERV_NAME) $(OBJ_SERV) -I$(HEADER_DIR) -L$(LIB_PATH) -l$(NAME_LIB) -l$(FILE_LIB) -g3
+	$(CC) -o $(SERV_NAME) $(OBJ_SERV) -I$(HEADER_DIR) -L$(LIB_PATH) -l$(NAME_LIB) -l$(FILE_LIB) -l$(LIB_SO_NAME) -g3
 
 debug_client: $(OBJ_SERV)
-	$(CC) -o $(CLIENT_NAME) $(OBJ_CLIENT) -I$(HEADER_DIR) -L$(LIB_PATH) -l$(NAME_LIB) -g3
+	$(CC) -o $(CLIENT_NAME) $(OBJ_CLIENT) -I$(HEADER_DIR) -L$(LIB_PATH) -l$(NAME_LIB) -l$(LIB_SO_NAME) -g3
 
 clean:
 	@make clean -C $(LIB_PATH)

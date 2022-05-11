@@ -9,9 +9,6 @@
 
 int login(struct client_s *client, char **arg, data_server_t *data)
 {
-    if (!data->userinfos)
-        printf("Zebi\n");
-
     if (client->user) {
         client->data_send = strdup("102 Already logged-in.\n");
         client->status = WRITE;
@@ -39,6 +36,7 @@ int logout(struct client_s *client, char **arg, data_server_t *data)
         client->data_send = strdup("303 - User disconnected.\n");
         client->status = WRITE;
         client->user = NULL;
+        server_event_user_logged_out(client->user->info->id);
     } else {
         client->data_send = strdup("503 - Not logged-in.\n");
         client->status = WRITE;

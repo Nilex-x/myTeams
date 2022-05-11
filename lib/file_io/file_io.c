@@ -49,7 +49,6 @@ void file_rewrite(file_io_t *file_io)
     if (!file)
         return;
     while (curr) {
-        printf("re write%s\n", curr->line);
         fprintf(file, "%s\n", curr->line);
         curr = curr->next;
     }
