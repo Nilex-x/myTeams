@@ -7,7 +7,7 @@
 
 #include "my_teams.h"
 
-int login(struct client_s *client, char **arg, data_server_t *data)
+int login(client_t *client, char **arg, data_server_t *data)
 {
     if (client->user) {
         client->data_send = strdup("102 Already logged-in.\n");
@@ -31,7 +31,7 @@ int login(struct client_s *client, char **arg, data_server_t *data)
     return (0);
 }
 
-int logout(struct client_s *client, char **arg, data_server_t *data)
+int logout(client_t *client, char **arg, data_server_t *data)
 {
     if (client->user) {
         client->data_send = strdup("303 - User disconnected.\n");
@@ -45,11 +45,11 @@ int logout(struct client_s *client, char **arg, data_server_t *data)
     return (0);
 }
 
-int sort_command(struct client_s *client, data_server_t *data, char *cmd)
+int sort_command(client_t *client, data_server_t *data, char *cmd)
 {
     char **tab = my_str_to_word_array(clear_str(cmd));
     char **commands = my_str_to_word_array("LOGIN LOGOUT");
-    int (*cmds[2])(struct client_s *, char **, data_server_t *) = { \
+    int (*cmds[2])(client_t *, char **, data_server_t *) = { \
                                                             login, logout };
 
     for (int i = 0; commands[i]; i++) {

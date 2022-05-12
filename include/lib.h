@@ -36,5 +36,6 @@ char *read_to_buffer(buffer_t *buff, char end_of_line, int length_max);
 void add_to_write(buffer_t *buff, char *value, int length_max);
 void init_buffer(buffer_t *buff, int length_command);
 int len_array(char **array);
+char *generate_uuid(void);
 
 #endif /* !LIB_H_ */

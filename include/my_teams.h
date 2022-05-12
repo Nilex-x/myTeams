@@ -90,9 +90,10 @@ typedef struct data_server_s
     team_t *teams;
 } data_server_t;
 
-struct client_s;
+typedef struct client_s client_t;
 
 /*                  command handle function                              */
+
 /**
  * @brief Sort command given on paramete
  *
@@ -101,10 +102,10 @@ struct client_s;
  * @param cmd the command string
  * @return int
  */
-int sort_command(struct client_s *client, data_server_t *data, char *cmd);
-
+int sort_command(client_t *client, data_server_t *data, char *cmd);
 
 /*                       init function                                   */
+
 /**
  * @brief Create user with userinfo given on parameter
  *
@@ -114,7 +115,6 @@ int sort_command(struct client_s *client, data_server_t *data, char *cmd);
  * @return users_t *
  */
 users_t *init_user(char *name, data_server_t *data, userinfo_t *info);
-
 
 /*                          users                                        */
 
@@ -134,6 +134,7 @@ void add_user(users_t *toadd, data_server_t *data);
  * @return users_t *
  */
 users_t *get_user_by_uuid(char *uuid, data_server_t *data);
+
 /**
  * @brief Get the user by name strign
  *
@@ -142,6 +143,7 @@ users_t *get_user_by_uuid(char *uuid, data_server_t *data);
  * @return users_t*
  */
 users_t *get_user_by_name(char *name, data_server_t *data);
+
 /**
  * @brief Remove user in list from data_server_t *data
  *
@@ -149,6 +151,7 @@ users_t *get_user_by_name(char *name, data_server_t *data);
  * @param data data_server_t struct
  */
 void remove_user(users_t *torm, data_server_t *data);
+
 /**
  * @brief Free users list
  *
@@ -166,7 +169,7 @@ void free_users(users_t *users);
  * @param data data_server_t struct
  */
 void add_userinfo(userinfo_t *toadd, data_server_t *data);
-/* get user by uuid */
+
 /**
  * @brief Get the user info by uuid string
  *
@@ -175,7 +178,7 @@ void add_userinfo(userinfo_t *toadd, data_server_t *data);
  * @return userinfo_t*
  */
 userinfo_t *get_user_info_by_uuid(char *uuid, data_server_t *data);
-/* get user by name */
+
 /**
  * @brief Get the user info by name string
  *
@@ -184,7 +187,7 @@ userinfo_t *get_user_info_by_uuid(char *uuid, data_server_t *data);
  * @return userinfo_t*
  */
 userinfo_t *get_user_info_by_name(char *name, data_server_t *data);
-/* remove userinfo in list from data_server_t *data */
+
 /**
  * @brief
  *
@@ -192,7 +195,7 @@ userinfo_t *get_user_info_by_name(char *name, data_server_t *data);
  * @param data data_server_t struct
  */
 void remove_userinfo(userinfo_t *torm, data_server_t *data);
-/* free userinfo list */
+
 /**
  * @brief
  *
@@ -210,6 +213,7 @@ void free_user_infos(userinfo_t *infos);
  * @param message message string of user
  */
 void add_message(userinfo_t *info, char *from, char *message);
+
 /**
  * @brief  free message list
  *
@@ -217,5 +221,54 @@ void add_message(userinfo_t *info, char *from, char *message);
  */
 void free_message(message_t *msgs);
 
+
+/*                          team                                         */
+
+/**
+ * @brief Get the teams by id string
+ *
+ * @param uuid id to find
+ * @param data the data struct of server
+ * @return team_t*
+ */
+team_t *get_teams_by_id(char *uuid, data_server_t *data);
+
+/**
+ * @brief Get the teams by name string
+ *
+ * @param name
+ * @param data
+ * @return team_t*
+ */
+team_t *get_teams_by_name(char *name, data_server_t *data);
+
+/**
+ * @brief Create a add teams struct with name and dscription given in parameter
+ *
+ * @param name name of new team
+ * @param desc description of new team
+ * @param data the data struct of server
+ * @return team_t*
+ */
+team_t *create_add_teams(char *name, char *desc, data_server_t *data);
+
+/**
+ * @brief free team list
+ *
+ * @param teams the list of team to free
+ */
+void free_teams(team_t *teams);
+
+/*                         create                                        */
+
+/**
+ * @brief sort create command compared to context of user
+ *
+ * @param arg the array of command arguments
+ * @param client the client who do command
+ * @param data the server data struct
+ * @return int
+ */
+int sort_create(char **arg, client_t *client, data_server_t *data);
 
 #endif /* !MY_TEAMS_H_ */
