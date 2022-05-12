@@ -12,14 +12,10 @@ void clear_list(info_t *info)
     FD_ZERO(&info->readfds);
     FD_ZERO(&info->writefds);
     FD_SET(0, &info->readfds);
-    if (info->read_write == READ) {
+    if (info->read_write == READ)
         FD_SET(info->socket, &info->readfds);
-		printf("ici\n");
-	}
-    else {
+    else
         FD_SET(info->socket, &info->writefds);
-		printf("la\n");
-	}
 }
 
 void get_server_command(info_t *info)
@@ -36,7 +32,6 @@ void get_server_command(info_t *info)
 	printf("MY SERVER COMMAND: %s\n", buffer);
 	add_to_write(&info->read_buffer, buffer, LENGTH_COMMAND);
     free(buffer);
-	info->read_write = WRITE;
 }
 
 void get_user_command(info_t *info)
@@ -51,10 +46,13 @@ void get_user_command(info_t *info)
 	info->read_write = WRITE;
 
 	printf("MY USER COMMAND: %s\n", info->write_buffer);
+	user_command(info);
 }
 
 void write_command(info_t *info)
 {
+	if (info->write_buffer == NULL)
+		printf("la salope\n");
 	write(info->socket, info->write_buffer, strlen(info->write_buffer));
 	free(info->write_buffer);
 	info->read_write = READ;
@@ -62,16 +60,10 @@ void write_command(info_t *info)
 
 void manage_client(info_t *info)
 {
-	if (FD_ISSET(info->socket, &info->readfds)) {
+	if (FD_ISSET(info->socket, &info->readfds))
 		get_server_command(info);
-		printf("1\n");
-	}
-	if (FD_ISSET(0, &info->readfds)) {
+	if (FD_ISSET(0, &info->readfds))
 		get_user_command(info);
-		printf("2\n");
-	}
-	if (FD_ISSET(info->socket, &info->writefds)) {
+	if (FD_ISSET(info->socket, &info->writefds))
 		write_command(info);
-		printf("3\n");
-	}
 }

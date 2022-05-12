@@ -15,7 +15,8 @@ SRC_SERV	=		src_server/server/teams_serv.c \
 OBJ_SERV	=		$(SRC_SERV:.c=.o)
 
 SRC_CLIENT	=		src_client/teams_client.c \
-					src_client/client_command.c
+					src_client/client_command.c \
+					src_client/manage_user_command.c
 
 OBJ_CLIENT	=		$(SRC_CLIENT:.c=.o)
 

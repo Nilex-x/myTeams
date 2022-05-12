@@ -44,11 +44,11 @@ int connect_client(char *ip, int port)
 
 void client_loop(info_t *info)
 {
+    int inf_sock = info->socket + 1;
+
     clear_list(info);
-    if (select(info->socket, &info->readfds, &info->writefds, NULL, NULL) >= 0) {
-        printf("select oui\n");
+    if (select(inf_sock, &info->readfds, &info->writefds, NULL, NULL) >= 0)
         manage_client(info);
-    }
 }
 
 int main(int argc, char **argv)

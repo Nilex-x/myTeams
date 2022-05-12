@@ -37,7 +37,12 @@ typedef struct info_s {
 void get_server_command(info_t *info);
 void get_user_command(info_t *info);
 void write_command(info_t *info);
-void clear_list(info_t *info);
 void manage_client(info_t *info);
+void clear_list(info_t *info);
+
+
+// manage user command
+
+int user_command(info_t *info);
 
 #endif /* !TEAMS_CLIENT_H_ */
