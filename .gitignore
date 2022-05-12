@@ -24,7 +24,6 @@
 
 # Shared objects (inc. Windows DLLs)
 *.dll
-*.so
 *.so.*
 *.dylib
 
@@ -55,4 +54,6 @@ myteams_server
 .vscode/*
 new_rfc.pdf
 temp.c
-myteams
+uml
+*.save
+outfile

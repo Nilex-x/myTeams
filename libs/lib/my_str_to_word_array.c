@@ -1,8 +1,8 @@
 /*
-** EPITECH PROJECT, 2022
-** my_str_to_word_array.c
+** EPITECH PROJECT, 2020
+** test
 ** File description:
-** str_to_word_array
+** test
 */
 
 #include "lib.h"
@@ -12,7 +12,7 @@ int count_arg(char *str)
     int separator = 0;
 
     for (int i = 0; str[i]; i++) {
-        if (str[i] == ' ' || str[i] == '\t')
+        if ((str[i] == ' ' || str[i] == '\t') && (str[i + 1] != ' ' && str[i + 1] != '\t'))
             separator++;
     }
     return (separator);
@@ -39,22 +39,32 @@ int count_word_length(char *str, int index)
     return (size);
 }
 
+int verif_space(char *str)
+{
+    int count = 0;
+
+    for (int i = 0; str[i]; i++) {
+        if (str[i] == ' ' || str[i] == '\t')
+            count++;
+        else
+            return (count);
+    }
+    return (count);
+}
+
 char **my_str_to_word_array(char *str)
 {
     int word_length = 0;
     int i = 0;
     int j = 0;
-    char **array = NULL;
+    char **array = malloc(sizeof(char *) * (count_arg(str) + 2));
 
-    if (!str)
-        return (NULL);
-    array = malloc(sizeof(char *) * (count_arg(str) + 2));
-    if (!array)
-        return (NULL);
-    for (; i < (int) strlen(str); i = i + word_length + 1, j++) {
+    i += verif_space(str);
+    for (; i < strlen(str); i = i + word_length + 1, j++) {
         word_length = count_word_length(str, i);
         array[j] = malloc(sizeof(char) * (word_length + 1));
         array[j] = my_strncpy_n(array[j], str, i, word_length);
+        word_length += verif_space(&str[i + word_length + 1]);
     }
     array[j - 1][strlen(array[j - 1])] = '\0';
     array[j] = NULL;
