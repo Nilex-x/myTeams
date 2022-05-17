@@ -2,7 +2,7 @@ USER azertyuiop "Nicolas"
 USER ihgvbzregz "Patrick"
 
 MESSAGE R ihgvbzregz azertyuiop "Coucou"
-MESSAGE NR azertyuiop ihgvbzregz "Ouais Salut ouais !"
+MESSAGE N azertyuiop ihgvbzregz "Ouais Salut ouais !"
 
 CREATE TEAM teamID teamName teamDesc
 CREATE CHANNEL teamID channelId channelName channelDescr

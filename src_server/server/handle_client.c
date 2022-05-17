@@ -82,7 +82,7 @@ void accept_connect(server_t *info)
 
     FD_SET(incomming_fd, &info->wfds);
     new_client = add_client(info, incomming_fd);
-    new_client->data_send = strdup("220\n");
+    new_client->data_send = add_send(new_client->data_send,"220\n");
     new_client->status = WRITE;
     if (incomming_fd > info->max_fd)
         info->max_fd = incomming_fd;

@@ -35,22 +35,22 @@ void write_client(server_t *info, int s_client)
 {
     int w_value = 1;
     client_t *client = find_client(info, s_client);
-    int len = strlen(client->data_send);
+    size_t start = 0;
     int value_write = LENGTH_COMMAND;
+    char *data = get_next_data_to_send(&client->data_send);
+    int len = (data) ? strlen(data) : 0;
 
     while (w_value < len && w_value > 0) {
         if (len < LENGTH_COMMAND)
             value_write = len;
-        w_value += write(s_client, client->data_send, value_write);
+        w_value += write(s_client, data + start, value_write);
         len -= value_write;
+        start += w_value;
     }
-    free(client->data_send);
-    client->status = READ;
-    if (w_value < 0)
+    client->status = (get_size_data_to_send(client->data_send)) ? WRITE : READ;
+    if (w_value < 0 || client->isQuit) {
         remove_client(info, s_client);
-    if (client->isQuit) {
-        remove_client(info, s_client);
-        close(s_client);
+        (client->isQuit) ? close(s_client) : 0;
     }
 }
 
