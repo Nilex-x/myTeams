@@ -47,23 +47,27 @@ int logout(struct client_s *c, char **arg, data_server_t *data)
 
 int send_msg(struct client_s *c, char **arg, data_server_t *data)
 {
+    printf("sending msg\n");
     if (!c->user) {
+        printf("not logged\n");
         c->data_send = add_send(c->data_send, "503 - Not logged-in.\n");
         c->status = WRITE;
         return (0);
     }
     if (len_array(arg) != 3) {
+        printf("missing args\n");
         c->data_send = add_send(c->data_send, "502 - Missing arguments.\n");
         c->status = WRITE;
         return (0);
     }
     if (!get_user_info_by_uuid(arg[1], data)) {
+        printf("user info not found\n");
         c->data_send = add_send(c->data_send, "521 - Wrong user uuid.\n");
         c->status = WRITE;
         return (0);
     }
-    return send_message(c, get_user_info_by_uuid(arg[1], data)
-    , arg[2], data);
+    printf("Allo je rentre !!\n");
+    return send_message(c, get_user_info_by_uuid(arg[1], data), arg[2], data);
 }
 
 int sort_command(struct client_s *c, data_server_t *data, char *cmd)
