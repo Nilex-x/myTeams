@@ -47,7 +47,6 @@ int logout(struct client_s *c, char **arg, data_server_t *data)
 
 int send_msg(struct client_s *c, char **arg, data_server_t *data)
 {
-    printf("sending msg\n");
     if (!c->user) {
         printf("not logged\n");
         c->data_send = add_send(c->data_send, "503 - Not logged-in.\n");

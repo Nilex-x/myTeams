@@ -47,6 +47,7 @@ void write_client(server_t *info, int s_client)
         len -= value_write;
         start += w_value;
     }
+    free(data);
     client->status = (get_size_data_to_send(client->data_send)) ? WRITE : READ;
     if (w_value < 0 || client->isQuit) {
         remove_client(info, s_client);
