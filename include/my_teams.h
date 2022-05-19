@@ -78,6 +78,7 @@ typedef struct users_s
     team_t *team;
     channel_t *channel;
     thread_t *thread;
+    struct client_s *client;
     struct data_server_s *data;
     struct users_s *next;
 } users_t;
@@ -220,7 +221,17 @@ void add_message(userinfo_t *info, char *from, char *message);
  * @param msgs
  */
 void free_message(message_t *msgs);
-
+/**
+ * @brief send message to user even if disconnected
+ *
+ * @param c client sending the message
+ * @param user user receiving the message
+ * @param message message to send
+ * @param data data_server_t struct
+ * @return 0 if message sent, 0 if not
+ */
+int send_message(struct client_s *c, struct userinfo_s *user
+, char *message, data_server_t *data);
 
 /*                          team                                         */
 
@@ -269,6 +280,6 @@ void free_teams(team_t *teams);
  * @param data the server data struct
  * @return int
  */
-int sort_create(char **arg, client_t *client, data_server_t *data);
+int sort_create(client_t *client, char **args, data_server_t *data);
 
 #endif /* !MY_TEAMS_H_ */

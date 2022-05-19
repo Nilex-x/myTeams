@@ -20,6 +20,7 @@ void init_client(server_t *info)
     list_client->socket = info->fd_server;
     list_client->user = NULL;
     list_client->isQuit = false;
+    list_client->data_send = NULL;
     init_buff_client(list_client);
     info->list_client = list_client;
 }
@@ -74,16 +75,22 @@ void remove_client(server_t *info, int client)
 
 void accept_connect(server_t *info)
 {
+    printf("accept_connect\n");
     struct sockaddr_in client;
     socklen_t len = sizeof(struct sockaddr_in);
     client_t *new_client = NULL;
     int incomming_fd = accept(info->fd_server, (struct sockaddr *) &client, \
                                 &len);
-
+    printf("a\n");
     FD_SET(incomming_fd, &info->wfds);
+    printf("b\n");
     new_client = add_client(info, incomming_fd);
-    new_client->data_send = strdup("220\n");
+    printf("c\n");
+    new_client->data_send = add_send(new_client->data_send,"220\n");
+    printf("d\n");
     new_client->status = WRITE;
+    printf("e\n");
     if (incomming_fd > info->max_fd)
         info->max_fd = incomming_fd;
+    printf("f\n");
 }
