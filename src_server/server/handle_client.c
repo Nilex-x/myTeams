@@ -42,6 +42,7 @@ client_t *add_client(server_t *info, int client)
     node->status = READ;
     node->user = NULL;
     node->isQuit = false;
+    node->data_send = NULL;
     init_buff_client(node);
     return (node);
 }
@@ -64,7 +65,11 @@ void remove_client(server_t *info, int client)
 
     while (temp) {
         if (temp->socket == client) {
-            temp->prev->next = temp->next;
+            (temp->prev) ? (temp->prev->next = temp->next) : 
+            (info->list_client = temp->next);
+            (temp->next) ? (temp->prev) ? (temp->next->prev = temp->prev) : 
+            (temp->next->prev = NULL) : (temp->prev) ? 
+            (temp->prev->next = NULL) : (info->list_client = NULL);
             free(temp->buff_read);
             free(temp);
             return;

@@ -44,7 +44,7 @@ void append_message_to_udata(userinfo_t *from, userinfo_t *to, char *msg, bool i
 
 char *alloc_message(char *from_id, char *to_id, char *message, int is_read)
 {
-    char *line = malloc(strlen(message) + 85);
+    char *line = malloc(strlen(message) + 87);
 
     if (is_read)
         sprintf(line, "MESSAGE R %s %s \"%s\"", from_id, to_id, message);
@@ -68,11 +68,12 @@ int send_message_connected_user(struct client_s *cli
     cli->status = WRITE;
     curr = user->messages;
     for (; curr->next; curr = curr->next);
-    line = malloc(81 + strlen(message));
+    line = malloc(82 + strlen(message));
     for (users_t *u = data->users; u; u = u->next)
         if (u->info->id == user->id) {
-            sprintf(line, "201 %s %s \"%s\"", curr->from, curr->to, message);
+            sprintf(line, "201 %s %s \"%s\"\n", curr->from, curr->to, message);
             u->client->data_send = add_send(u->client->data_send, line);
+            u->client->status = WRITE;
         }
     free(line);
     return 0;
