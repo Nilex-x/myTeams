@@ -70,5 +70,6 @@ void init_data(server_t *info);
 data_send_t *add_send(data_send_t *data_send, char *data);
 char *get_next_data_to_send(data_send_t **data_send);
 size_t get_size_data_to_send(data_send_t *data_send);
+void free_data_send(data_send_t *send);
 
 #endif /* !TEAMS_SERV_H_ */

@@ -82,19 +82,13 @@ int send_message(struct client_s *c, struct userinfo_s *user
     if (strlen(message) > 512)
         c->data_send = add_send(c->data_send, "504 - Command too long.\n");
     else if (!get_user_by_uuid(user->id, data)) {
-        printf("a\n");
         append_message_to_udata(user, c->user->info, message, false);
-        printf("b\n");
         line = alloc_message(c->user->info->id, user->id, message, 0);
-        printf("c\n");
         append_to_list(&data->list->lines, line);
-        printf("d\n");
         free(line);
-        printf("e\n");
         c->data_send = add_send(c->data_send, "313 - Message sent.\n");
     } else
         return send_message_connected_user(c, user, message, data);
-    printf("END\n");
     c->status = WRITE;
     return (0);
 }

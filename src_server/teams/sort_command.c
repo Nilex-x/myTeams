@@ -11,12 +11,10 @@ int login(client_t *client, char **arg, data_server_t *data)
 {
     if (client->user) {
         client->data_send = add_send(client->data_send, "102 Already logged-in.\n");
-        client->status = WRITE;
         return (0);
     }
     if (len_array(arg) != 2) {
         client->data_send = add_send(client->data_send, "502 Missing arguments.\n");
-        client->status = WRITE;
         return (0);
     }
     if (!get_user_info_by_name(arg[1], data)) {
@@ -27,7 +25,6 @@ int login(client_t *client, char **arg, data_server_t *data)
         client->user = init_user(arg[1], data, get_user_info_by_name(arg[1], data));
         client->data_send = add_send(client->data_send, "302 User conneted.\n");
     }
-    client->status = WRITE;
     client->user->client = client;
     return (0);
 }
@@ -36,13 +33,10 @@ int logout(client_t *client, char **arg, data_server_t *data)
 {
     if (client->user) {
         client->data_send = add_send(client->data_send, "303 - User disconnected.\n");
-        client->status = WRITE;
         server_event_user_logged_out(client->user->info->id);
         client->user = NULL;
-    } else {
+    } else
         client->data_send = add_send(client->data_send, "503 - Not logged-in.\n");
-        client->status = WRITE;
-    }
     return (0);
 }
 
@@ -90,6 +84,5 @@ int sort_command(client_t *c, data_server_t *data, char *cmd)
     free_array(tab);
     free_array(commands);
     c->data_send = add_send(c->data_send, "500 command unkwon\n");
-    c->status = WRITE;
     return (0);
 }
