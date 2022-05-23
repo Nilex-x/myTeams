@@ -19,6 +19,7 @@ SRC_SERV	=		src_server/server/teams_serv.c \
 					src_server/teams/manage_messages.c \
 					src_server/teams/send_message.c \
 					src_server/teams/manage_data_send.c \
+					src_server/teams/read_unread_messages.c \
 
 OBJ_SERV	=		$(SRC_SERV:.c=.o)
 

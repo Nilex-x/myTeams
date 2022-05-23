@@ -59,7 +59,6 @@ int send_message_connected_user(struct client_s *cli
     char *line = NULL;
     message_t *curr = NULL;
 
-    printf("Sending message to connected user\n");
     append_message_to_udata(cli->user->info, user, message, true);
     line = alloc_message(cli->user->info->id, user->id, message, 1);
     append_to_list(&data->list->lines, line);
@@ -92,7 +91,6 @@ int send_message(struct client_s *c, struct userinfo_s *user
     if (strlen(message) > 512)
         c->data_send = add_send(c->data_send, "504 - Command too long.\n");
     else if (!get_user_by_uuid(user->id, data)) {
-        printf("User not connected\n");
         append_message_to_udata(user, c->user->info, message, false);
         line = alloc_message(c->user->info->id, user->id, message, 0);
         append_to_list(&data->list->lines, line);

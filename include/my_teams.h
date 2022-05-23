@@ -229,4 +229,13 @@ void free_message(message_t *msgs);
 int send_message(struct client_s *c, struct userinfo_s *user
 , char *message, data_server_t *data);
 
+/**
+ * @brief loads messages received while disconnected and send them to the user
+ * 
+ * @param c client who received the message
+ * @param data data_server_t struct
+ * @return void
+ */
+void load_unread_messages(struct client_s *c, data_server_t *data);
+
 #endif /* !MY_TEAMS_H_ */

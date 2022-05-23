@@ -34,7 +34,6 @@ void handle_command(server_t *info, client_t *cli)
         cli->status = WRITE;
         return;
     }
-    printf("value client [%s]\n", value);
     sort_command(cli, info->data, value);
     free(value);
 }
