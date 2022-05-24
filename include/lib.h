@@ -12,6 +12,7 @@
     #include <stdio.h>
     #include <unistd.h>
     #include <string.h>
+    #include <netinet/in.h>
 
 typedef struct buffer_s {
     char buffer[512];
