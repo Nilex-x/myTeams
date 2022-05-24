@@ -22,7 +22,20 @@ OBJ_SERV	=		$(SRC_SERV:.c=.o)
 
 SRC_CLIENT	=		src_client/teams_client.c \
 					src_client/client_command.c \
-					src_client/manage_user_command.c
+					src_client/manage_user_command.c \
+					src_client/str_to_array.c \
+					\
+					src_client/server_response.c \
+					src_client/informative_response.c \
+					src_client/connection_response.c \
+					src_client/error_response_0.c \
+					src_client/error_response_1.c \
+					src_client/error_response_2.c \
+					src_client/info_response.c \
+					src_client/create_response.c \
+					src_client/list_response.c \
+					src_client/user_response.c \
+					src_client/user_data_response.c \
 
 OBJ_CLIENT	=		$(SRC_CLIENT:.c=.o)
 

@@ -8,7 +8,7 @@
 #include "teams_client.h"
 
 
-info_t *init_info(int socket)
+static info_t *init_info(int socket)
 {
     info_t *info = malloc(sizeof(info_t));
 
@@ -42,18 +42,26 @@ int connect_client(char *ip, int port)
     return client_socket;
 }
 
-void client_loop(info_t *info)
+int client_loop(info_t *info)
 {
+    char *response = read_to_buffer(&info->read_buffer, '\n', LENGTH_COMMAND);
     int inf_sock = info->socket + 1;
 
     clear_list(info);
+	if (response && response[0] != '\n') {
+        if (server_response(response))
+            return 0;
+    } else
+		free(response);
     if (select(inf_sock, &info->readfds, &info->writefds, NULL, NULL) >= 0)
         manage_client(info);
+    return 1;	
 }
 
 int main(int argc, char **argv)
 {
     int client_socket;
+    int run = 1;
     info_t *info = NULL;
 
     client_socket = connect_client(argv[1], atoi(argv[2]));
@@ -62,7 +70,7 @@ int main(int argc, char **argv)
     info = init_info(client_socket);
     if (!info)
         return 84;
-    while (1)
-        client_loop(info);
+    while (run == 1)
+        run = client_loop(info);
     return (0);
 }

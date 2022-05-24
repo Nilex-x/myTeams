@@ -25,7 +25,7 @@ char *get_cmd(char *cmd)
 	int i = 0;
 	char *res = NULL;
 
-	while (cmd[i] != '\0' && cmd[i] != ' ')
+	while (cmd[i] != '\0' && cmd[i] != ' ' && cmd[i] != '\n')
 		i++;
 	if (!i)
 		return NULL;
@@ -56,6 +56,9 @@ int client_cmd(char *command, char *args, const char** cmds, char **to_send)
 		 + strlen(args) + 2));
 		sprintf(*to_send, "%s%s", cmds[index], args);
 	}
+	printf("TO SEND: 1%s\n", *to_send);
+	replace_char(*to_send);
+	printf("TO SEND: 2%s\n", *to_send);
 	return index;
 }
 
@@ -75,11 +78,11 @@ int user_command(info_t *info)
 		return -1;
 	args = get_args(info->write_buffer, strlen(command));
 	index = client_cmd(command, args, commands, &to_send);
+	// replace <SP> by \a. exception for SEND and CREATE
 	if (index < 15) {
 		info->write_buffer = realloc(info->write_buffer, strlen(to_send) + 1);
 		info->write_buffer = strdup(to_send);
 		free(to_send);
 	}
-	printf("TO SEND: %s\n", info->write_buffer);
 	return 1;
 }

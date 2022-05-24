@@ -29,7 +29,6 @@ void get_server_command(info_t *info)
 	if (valread == -1 || valread == 0)
 		return;
 	buffer[valread] = '\0';
-	printf("MY SERVER COMMAND: %s\n", buffer);
 	add_to_write(&info->read_buffer, buffer, LENGTH_COMMAND);
     free(buffer);
 }
@@ -44,15 +43,11 @@ void get_user_command(info_t *info)
 		return;
 	info->write_buffer[valread] = '\0';
 	info->read_write = WRITE;
-
-	printf("MY USER COMMAND: %s\n", info->write_buffer);
 	user_command(info);
 }
 
 void write_command(info_t *info)
 {
-	if (info->write_buffer == NULL)
-		printf("la salope\n");
 	write(info->socket, info->write_buffer, strlen(info->write_buffer));
 	free(info->write_buffer);
 	info->read_write = READ;
