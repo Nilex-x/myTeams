@@ -275,11 +275,33 @@ void free_teams(team_t *teams);
 /**
  * @brief sort create command compared to context of user
  *
- * @param arg the array of command arguments
- * @param client the client who do command
- * @param data the server data struct
+ * @param arg Array of command arguments
+ * @param client Client who do command
+ * @param data Server data struct
  * @return int
  */
 int sort_create(client_t *client, char **args, data_server_t *data);
+
+/*                          login/logout                                 */
+
+/**
+ * @brief login client to link with an user
+ *
+ * @param client Client who do command
+ * @param arg Array of command arguments
+ * @param data Server data struct
+ * @return int
+ */
+int login(client_t *client, char **arg, data_server_t *data);
+
+/**
+ * @brief Logout and disconnect client
+ *
+ * @param client Client who do command
+ * @param arg,Array of command arguments
+ * @param data Server data struct
+ * @return int
+ */
+int logout(client_t *client, char **arg, data_server_t *data);
 
 #endif /* !MY_TEAMS_H_ */

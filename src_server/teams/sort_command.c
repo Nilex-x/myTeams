@@ -7,38 +7,7 @@
 
 #include "my_teams.h"
 
-int login(client_t *client, char **arg, data_server_t *data)
-{
-    if (client->user) {
-        client->data_send = add_send(client->data_send, "102 Already logged-in.\n");
-        return (0);
-    }
-    if (len_array(arg) != 2) {
-        client->data_send = add_send(client->data_send, "502 Missing arguments.\n");
-        return (0);
-    }
-    if (!get_user_info_by_name(arg[1], data)) {
-        client->user = init_user(arg[1], data, NULL);
-        client->data_send = add_send(client->data_send, \
-            strcatdup("301 \"", "\"", client->user->info->id));
-    } else {
-        client->user = init_user(arg[1], data, get_user_info_by_name(arg[1], data));
-        client->data_send = add_send(client->data_send, "302 User conneted.\n");
-    }
-    client->user->client = client;
-    return (0);
-}
 
-int logout(client_t *client, char **arg, data_server_t *data)
-{
-    if (client->user) {
-        client->data_send = add_send(client->data_send, "303 - User disconnected.\n");
-        server_event_user_logged_out(client->user->info->id);
-        client->user = NULL;
-    } else
-        client->data_send = add_send(client->data_send, "503 - Not logged-in.\n");
-    return (0);
-}
 
 int send_msg(client_t *c, char **arg, data_server_t *data)
 {
@@ -67,7 +36,7 @@ int send_msg(client_t *c, char **arg, data_server_t *data)
 
 int sort_command(client_t *c, data_server_t *data, char *cmd)
 {
-    char **tab = my_str_to_word_array(clear_str(cmd));
+    char **tab = str_to_word_array_separator(cmd, '\a');
     char **commands = my_str_to_word_array("LOGIN LOGOUT CREATE");
     int (*cmds[3])(client_t *, char **, data_server_t *) = { \
                                                 login, logout, sort_create};
