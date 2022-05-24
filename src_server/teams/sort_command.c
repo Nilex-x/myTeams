@@ -7,8 +7,6 @@
 
 #include "my_teams.h"
 
-
-
 int send_msg(client_t *c, char **arg, data_server_t *data)
 {
     printf("sending msg\n");
@@ -42,7 +40,7 @@ int sort_command(client_t *c, data_server_t *data, char *cmd)
                                                 login, logout, sort_create};
 
     for (int i = 0; commands[i]; i++) {
-        if (strcmp(commands[i], tab[0]) == 0) {
+        if (strcmp(commands[i], clear_str(tab[0])) == 0) {
             printf("Nice command: %s\n", commands[i]);
             cmds[i](c, tab, data);
             free_array(commands);

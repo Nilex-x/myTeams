@@ -56,9 +56,7 @@ int client_cmd(char *command, char *args, const char** cmds, char **to_send)
 		 + strlen(args) + 2));
 		sprintf(*to_send, "%s%s", cmds[index], args);
 	}
-	printf("TO SEND: 1%s\n", *to_send);
 	replace_char(*to_send);
-	printf("TO SEND: 2%s\n", *to_send);
 	return index;
 }
 
@@ -70,7 +68,7 @@ int user_command(info_t *info)
 	int index;
 	const char *commands[15] = {"HELP", "LOGIN", "LOGOUT"
 	, "USERS", "USER", "SEND", "MESSAGES", "SUBSCRIBE"
-	, "subscribed", "UNSUBSCRIBE", "USE", "CREATE"
+	, "SUBSCRIBED", "UNSUBSCRIBE", "USE", "CREATE"
 	, "LIST", "INFO", "QUIT"};
 
 	command = get_cmd(info->write_buffer);
