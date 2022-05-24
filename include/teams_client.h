@@ -45,4 +45,63 @@ void clear_list(info_t *info);
 
 int user_command(info_t *info);
 
+// str to array
+
+void replace_char(char *str);
+char **str_to_array(char *str, char c);
+void free_array(char **array);
+
+// server_response
+
+int server_response(char *response);
+
+// code
+void code_101();
+void code_102();
+void code_103();
+void code_104();
+
+void code_301();
+void code_302();
+void code_303();
+void code_304();
+
+void code_313();
+void code_315();
+void code_319();
+
+void code_311(char *response);
+void code_312(char *response);
+void code_314(char *response);
+void code_316(char *response);
+void code_317(char *response);
+
+void code_321();
+void code_322();
+void code_323();
+void code_324();
+
+void code_331(char *response);
+void code_332(char *response);
+void code_333(char *response);
+void code_334(char *response);
+
+void code_341(char *response);
+void code_342(char *response);
+void code_343(char *response);
+void code_344(char *response);
+
+void code_500();
+void code_501();
+void code_502();
+void code_503();
+void code_504();
+void code_511();
+void code_512();
+void code_513();
+void code_521();
+void code_522();
+void code_523();
+void code_524();
+
 #endif /* !TEAMS_CLIENT_H_ */
