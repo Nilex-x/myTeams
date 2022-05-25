@@ -9,24 +9,23 @@
 
 int add_teams(client_t *client, char **args, data_server_t *data)
 {
-    team_t *new_team = create_add_teams(args[1], args[2], data);
+    team_t *new_team = get_teams_by_name(args[1], data);
     char *line = NULL;
-    char *line_file = NULL;
-    int len_all = (strlen(new_team->name) + strlen(new_team->description) +
-                                                strlen(new_team->id));
+    char *new_line = NULL;
 
-    line = malloc(sizeof(char) * (len_all + 8));
-    line_file = malloc(sizeof(char) * (len_all + 8));
-    if (!line)
-        return (0);
+    if (!new_team) {
+        new_team = create_add_teams(args[1], args[2], data);
+        asprintf(&new_line, "CREATE TEAM %s %s %s\n", new_team->id, new_team->name,
+                                new_team->description);
+        append_to_list(&data->list->lines, new_line);
+        free(new_line);
+    }
     printf("create Teams name: %s - description: %s uuid: %s\n", new_team->name, new_team->description, new_team->id);
     client->user->team = new_team;
-    sprintf(line, "321 %s %s %s\n", new_team->id, new_team->name,
+    asprintf(&line, "321\a%s\a%s\a%s\n", new_team->id, new_team->name,
                                 new_team->description);
     client->data_send = add_send(client->data_send, line);
     free(line);
-    sprintf(line, "CREATE TEAM %s %s %s\n", new_team->id, new_team->name,
-                                new_team->description);
     return(0);
 }
 

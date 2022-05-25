@@ -113,9 +113,10 @@ int sort_command(client_t *client, data_server_t *data, char *cmd);
  * @param name name of user to find
  * @param info info of user if found
  * @param data data_server_t struct
+ * @param c client link to user
  * @return users_t *
  */
-users_t *init_user(char *name, data_server_t *data, userinfo_t *info);
+users_t *init_user(char *name, data_server_t *data, userinfo_t *info, client_t *c);
 
 /*                          users                                        */
 
