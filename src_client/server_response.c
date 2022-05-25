@@ -70,7 +70,7 @@ int server_response(char *response)
 		return_errors(response);
 	else if (!return_code(response))
 		return_data(response);
-	if (strncmp(response, "304", 3) == 0)
+	if (strncmp(response, "303", 3) == 0)
 		return 1;
 	free(response);
 	return 0;
