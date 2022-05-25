@@ -83,7 +83,7 @@ int sort_command(struct client_s *c, data_server_t *data, char *cmd)
     }
     free_array(tab);
     free_array(commands);
-    c->data_send = add_send(c->data_send, "500 command unkwon\n");
+    c->data_send = add_send(c->data_send, "500 command unknown\n");
     c->status = WRITE;
     return (0);
 }

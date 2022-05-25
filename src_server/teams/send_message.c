@@ -53,29 +53,28 @@ char *alloc_message(char *from_id, char *to_id, char *message, int is_read)
     return (line);
 }
 
-int send_message_connected_user(struct client_s *cli
-, struct userinfo_s *user, char *message, data_server_t *data)
+void send_message_connected_user(struct client_s *cli
+, struct userinfo_s *user, char *msg, data_server_t *data)
 {
     char *line = NULL;
     message_t *curr = NULL;
 
-    append_message_to_udata(cli->user->info, user, message, true);
-    line = alloc_message(cli->user->info->id, user->id, message, 1);
+    append_message_to_udata(cli->user->info, user, msg, true);
+    line = alloc_message(cli->user->info->id, user->id, msg, 1);
     append_to_list(&data->list->lines, line);
     free(line);
     cli->data_send = add_send(cli->data_send, "313 - Message sent.\n");
-    cli->status = WRITE;
     curr = user->messages;
     for (; curr->next; curr = curr->next);
-    line = malloc(82 + strlen(message));
-    for (users_t *u = data->users; u; u = u->next)
+    for (users_t *u = data->users; u; u = u->next) {
         if (u->info->id == user->id) {
-            sprintf(line, "201 %s %s \"%s\"\n", curr->from, curr->to, message);
+            asprintf(&line, "201\a%s\a%s\a%s\n", curr->from, curr->to, msg);
             u->client->data_send = add_send(u->client->data_send, line);
             u->client->status = WRITE;
         }
-    free(line);
-    return 0;
+        (line) ? free(line) : 0;
+    }
+    server_event_private_message_sended(cli->user->info->id, user->id, msg);
 }
 
 int send_message(struct client_s *c, struct userinfo_s *user
@@ -84,9 +83,10 @@ int send_message(struct client_s *c, struct userinfo_s *user
     char *line = NULL;
 
     if (strcmp(c->user->info->id, user->id) == 0) {
-        c->data_send = add_send(c->data_send,"521 - Wrong user uuid.\n");
-        c->status = WRITE;
-        return (0);
+        asprintf(&line, "521\a%s\n", user->id);
+        c->data_send = add_send(c->data_send,"521\n");
+        free(line);
+        return (c->status = WRITE);
     }
     if (strlen(message) > 512)
         c->data_send = add_send(c->data_send, "504 - Command too long.\n");
@@ -96,8 +96,8 @@ int send_message(struct client_s *c, struct userinfo_s *user
         append_to_list(&data->list->lines, line);
         free(line);
         c->data_send = add_send(c->data_send, "313 - Message sent.\n");
+        server_event_private_message_sended(c->user->info->id, user->id, message);
     } else
-        return send_message_connected_user(c, user, message, data);
-    c->status = WRITE;
-    return (0);
+        send_message_connected_user(c, user, message, data);
+    return (c->status = WRITE);
 }

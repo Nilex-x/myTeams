@@ -38,7 +38,7 @@ void load_unread_messages(struct client_s *c, data_server_t *data)
             to, curr->message);
             (cur_msg) ? (cur_msg->line)[8] = 'R' : 0;
             line = malloc(82 + strlen(curr->message));
-            sprintf(line, "201 %s %s \"%s\"\n", curr->from, to, curr->message);
+            sprintf(line, "201\a%s\a%s\a%s\n", curr->from, to, curr->message);
             c->data_send = add_send(c->data_send, line);
             free(line);
             curr->isRead = true;
