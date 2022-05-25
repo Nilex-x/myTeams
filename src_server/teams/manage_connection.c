@@ -70,8 +70,9 @@ int logout(client_t *c, char **arg, data_server_t *data)
         send_log_to_client(c, data, false, false);
         notif_connection(data, user, false);
         server_event_user_logged_out(c->user->info->id);
-        c->isQuit = true;
         c->user->client = NULL;
+        remove_user(c->user, data);
+        c->isQuit = true;
         c->user = NULL;
         free(response);
     } else

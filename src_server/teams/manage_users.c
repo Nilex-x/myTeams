@@ -12,7 +12,13 @@ void remove_user(users_t *torm, data_server_t *data)
     users_t *temp = data->users;
     users_t *prev = NULL;
 
-    while(temp) {
+    if (temp == torm) {
+        printf("first rm user\n");
+        data->users = temp->next;
+        free(torm);
+        return;
+    }
+    while (temp) {
         if (temp == torm) {
             prev->next = temp->next;
             free(torm);
