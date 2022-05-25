@@ -11,7 +11,7 @@ void replace_char(char *str)
 {
 	int count = 0;
 
-	for (int i = 0; i < strlen(str); i++) {
+	for (int i = 0; i < (int) strlen(str); i++) {
 		if (str[i] == '"')
 			count++;
 		if (str[i] == ' ' && !(count % 2))
@@ -26,11 +26,11 @@ char **str_to_array(char *str, char c)
 	int word_count = 0;
 	int world_len = 0;
 
-	for (int i = 0; i < strlen(str); i++)
+	for (int i = 0; i < (int) strlen(str); i++)
 		if (str[i] == c)
 			nb_sep++;
 	res = malloc(sizeof(char) * nb_sep + 2);
-	for (int i = 0; i < strlen(str); i++) {
+	for (int i = 0; i < (int) strlen(str); i++) {
 		world_len++;
 		if (str[i] == c) {
 			res[word_count] = strndup(str + i, world_len);

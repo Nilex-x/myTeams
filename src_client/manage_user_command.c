@@ -68,7 +68,7 @@ int user_command(info_t *info)
 	int index;
 	const char *commands[14] = {"HELP", "LOGIN", "LOGOUT"
 	, "USERS", "USER", "SEND", "MESSAGES", "SUBSCRIBE"
-	, "subscribed", "UNSUBSCRIBE", "USE", "CREATE"
+	, "SUBSCRIBED", "UNSUBSCRIBE", "USE", "CREATE"
 	, "LIST", "INFO"};
 
 	command = get_cmd(info->write_buffer);

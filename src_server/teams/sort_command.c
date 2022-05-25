@@ -7,55 +7,42 @@
 
 #include "my_teams.h"
 
-int login(struct client_s *client, char **arg, data_server_t *data)
+int send_msg(client_t *c, char **arg, data_server_t *data)
 {
-    if (client->user) {
-        client->data_send = strdup("102 Already logged-in.\n");
-        client->status = WRITE;
+    printf("sending msg\n");
+    if (!c->user) {
+        printf("not logged\n");
+        c->data_send = add_send(c->data_send, "503 - Not logged-in.\n");
+        c->status = WRITE;
         return (0);
     }
-    if (len_array(arg) != 2) {
-        client->data_send = strdup("502 Command missing arguments.\n");
-        client->status = WRITE;
+    if (len_array(arg) != 3) {
+        printf("missing args\n");
+        c->data_send = add_send(c->data_send, "502 - Missing arguments.\n");
+        c->status = WRITE;
         return (0);
     }
-    if (!get_user_info_by_name(arg[1], data)) {
-        client->user = init_user(arg[1], data, NULL);
-        client->data_send = strdup("301 User created.\n");
-        client->status = WRITE;
-    } else {
-        client->user = init_user(arg[1], data, get_user_info_by_name(arg[1], data));
-        client->data_send = strdup("302 User connected.\n");
-        client->status = WRITE;
+    if (!get_user_info_by_uuid(arg[1], data)) {
+        printf("user info not found\n");
+        c->data_send = add_send(c->data_send, "521 - Wrong user uuid.\n");
+        c->status = WRITE;
+        return (0);
     }
-    return (0);
+    printf("Allo je rentre !!\n");
+    return send_message(c, get_user_info_by_uuid(arg[1], data), arg[2], data);
 }
 
-int logout(struct client_s *client, char **arg, data_server_t *data)
+int sort_command(client_t *c, data_server_t *data, char *cmd)
 {
-    if (client->user) {
-        client->data_send = strdup("303 - User disconnected.\n");
-        client->status = WRITE;
-        server_event_user_logged_out(client->user->info->id);
-        client->user = NULL;
-    } else {
-        client->data_send = strdup("503 - Not logged-in.\n");
-        client->status = WRITE;
-    }
-    return (0);
-}
-
-int sort_command(struct client_s *client, data_server_t *data, char *cmd)
-{
-    char **tab = my_str_to_word_array(clear_str(cmd));
-    char **commands = my_str_to_word_array("LOGIN LOGOUT");
-    int (*cmds[2])(struct client_s *, char **, data_server_t *) = { \
-                                                            login, logout };
+    char **tab = str_to_word_array_separator(cmd, '\a');
+    char **commands = my_str_to_word_array("LOGIN LOGOUT CREATE");
+    int (*cmds[3])(client_t *, char **, data_server_t *) = { \
+                                                login, logout, sort_create};
 
     for (int i = 0; commands[i]; i++) {
-        if (strcmp(commands[i], tab[0]) == 0) {
+        if (strcmp(commands[i], clear_str(tab[0])) == 0) {
             printf("Nice command: %s\n", commands[i]);
-            cmds[i](client, tab, data);
+            cmds[i](c, tab, data);
             free_array(commands);
             free_array(tab);
             return (0);
@@ -63,7 +50,6 @@ int sort_command(struct client_s *client, data_server_t *data, char *cmd)
     }
     free_array(tab);
     free_array(commands);
-    client->data_send = strdup("500 command unkwon\n");
-    client->status = WRITE;
+    c->data_send = add_send(c->data_send, "500 command unkwon\n");
     return (0);
 }

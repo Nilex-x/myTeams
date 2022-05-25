@@ -15,26 +15,19 @@ void init_buff_client(client_t *node)
     init_buffer(node->buff_read, LENGTH_COMMAND);
 }
 
-void handle_command(server_t *info, client_t *client)
+void handle_command(server_t *info, client_t *cli)
 {
     char *value = NULL;
-    value = read_to_buffer(client->buff_read, '\n', LENGTH_COMMAND);
+    value = read_to_buffer(cli->buff_read, '\n', LENGTH_COMMAND);
     if (!value || value[0] == '\n') {
         free(value);
         return;
     }
-    if (client->socket == 0 && strstr(value, "quit")) {
+    if (cli->socket == 0 && strstr(value, "quit")) {
         free(value);
         close_server(info);
     }
-    if (strstr(value, "QUIT")) {
-        free(value);
-        client->isQuit = true;
-        client->data_send = strdup("304 Goodbye see you soon\n");
-        client->status = WRITE;
-        return;
-    }
     printf("value client [%s]\n", value);
-    sort_command(client, info->data, value);
+    sort_command(cli, info->data, value);
     free(value);
 }

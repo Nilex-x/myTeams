@@ -16,7 +16,12 @@ SRC_SERV	=		src_server/server/teams_serv.c \
 					src_server/teams/manage_init_data.c \
 					src_server/teams/manage_user_infos.c \
 					src_server/teams/manage_users.c \
-					src_server/teams/manage_messages.c
+					src_server/teams/manage_messages.c \
+					src_server/teams/manage_teams.c \
+					src_server/teams/manage_create_cmd.c \
+					src_server/teams/send_message.c \
+					src_server/teams/manage_data_send.c \
+					src_server/teams/manage_connection.c
 
 OBJ_SERV	=		$(SRC_SERV:.c=.o)
 
@@ -90,4 +95,4 @@ fclean:
 
 re: fclean all
 
-.PHONY: compil_server debug fclean clean re all
+.PHONY: debug fclean clean re all

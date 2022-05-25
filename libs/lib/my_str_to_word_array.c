@@ -60,7 +60,7 @@ char **my_str_to_word_array(char *str)
     char **array = malloc(sizeof(char *) * (count_arg(str) + 2));
 
     i += verif_space(str);
-    for (; i < strlen(str); i = i + word_length + 1, j++) {
+    for (; i < (int) strlen(str); i = i + word_length + 1, j++) {
         word_length = count_word_length(str, i);
         array[j] = malloc(sizeof(char) * (word_length + 1));
         array[j] = my_strncpy_n(array[j], str, i, word_length);

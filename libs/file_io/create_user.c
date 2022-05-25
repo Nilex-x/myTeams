@@ -106,7 +106,7 @@ userinfo_t *get_all_user_infos(file_io_t *file_io)
     for (line_t *c = file_io->lines; c; c = c->next) {
         if (c->type == USER) {
             user = malloc(sizeof(userinfo_t));
-            user->id = strndup(c->line + 5, 37);
+            user->id = strndup(c->line + 5, 36);
             user->name = get_quotes_content(c->line + 42);
             user->messages = get_messages_by_user(file_io, user->id);
             user->next = NULL;

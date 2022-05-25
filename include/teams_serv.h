@@ -23,11 +23,16 @@
     #define READ 1
     #define LENGTH_COMMAND 512
 
+typedef struct data_send_s {
+    char *data;
+    struct data_send_s *next;
+} data_send_t;
+
 typedef struct client_s {
     int socket;
     int status;
     bool isQuit;
-    char *data_send;
+    data_send_t *data_send;
     buffer_t *buff_read;
     struct users_s *user;
     struct client_s *next;
@@ -61,5 +66,10 @@ void close_server(server_t *info);
 void init_buff_client(client_t *node);
 void handle_command(server_t *info, client_t *client);
 void init_data(server_t *info);
+
+data_send_t *add_send(data_send_t *data_send, char *data);
+char *get_next_data_to_send(data_send_t **data_send);
+size_t get_size_data_to_send(data_send_t *data_send);
+void free_data_send(data_send_t *send);
 
 #endif /* !TEAMS_SERV_H_ */
