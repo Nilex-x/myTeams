@@ -10,12 +10,12 @@
 int check_command(char *cmd)
 {
 	int i = 0;
-	const char *commands[15] = {"/help", "/login", "/logout"
+	const char *commands[14] = {"/help", "/login", "/logout"
 	, "/users", "/user", "/send", "/messages", "/subscribe"
 	, "/subscribed", "/unsubscribe", "/use", "/create"
-	, "/list", "/info", "/quit"};
+	, "/list", "/info"};
 
-	while (i < 15 && (strcmp(commands[i], cmd) != 0))
+	while (i < 14 && (strcmp(commands[i], cmd) != 0))
 		i++;
 	return i;
 }
@@ -51,14 +51,12 @@ int client_cmd(char *command, char *args, const char** cmds, char **to_send)
 {
 	int index = check_command(command);
 
-	if (index < 15) {
+	if (index < 14) {
 		*to_send = malloc(sizeof(char) * (strlen(cmds[index])
 		 + strlen(args) + 2));
 		sprintf(*to_send, "%s%s", cmds[index], args);
 	}
-	printf("TO SEND: 1%s\n", *to_send);
 	replace_char(*to_send);
-	printf("TO SEND: 2%s\n", *to_send);
 	return index;
 }
 
@@ -68,18 +66,17 @@ int user_command(info_t *info)
 	char *command = NULL;
 	char *args = NULL;
 	int index;
-	const char *commands[15] = {"HELP", "LOGIN", "LOGOUT"
+	const char *commands[14] = {"HELP", "LOGIN", "LOGOUT"
 	, "USERS", "USER", "SEND", "MESSAGES", "SUBSCRIBE"
 	, "subscribed", "UNSUBSCRIBE", "USE", "CREATE"
-	, "LIST", "INFO", "QUIT"};
+	, "LIST", "INFO"};
 
 	command = get_cmd(info->write_buffer);
 	if (!command)
 		return -1;
 	args = get_args(info->write_buffer, strlen(command));
 	index = client_cmd(command, args, commands, &to_send);
-	// replace <SP> by \a. exception for SEND and CREATE
-	if (index < 15) {
+	if (index < 14) {
 		info->write_buffer = realloc(info->write_buffer, strlen(to_send) + 1);
 		info->write_buffer = strdup(to_send);
 		free(to_send);
