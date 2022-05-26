@@ -47,8 +47,10 @@ typedef struct userinfo_s
 typedef struct thread_s
 {
     char *id;
-    char *name;
-    char *description;
+    char *creator_id;
+    char *title;
+    char *body;
+    time_t timestamp;
     char **comment;
     struct thread_s *next;
 } thread_t;
@@ -237,5 +239,43 @@ int send_message(struct client_s *c, struct userinfo_s *user
  * @return void
  */
 void load_unread_messages(struct client_s *c, data_server_t *data);
+
+/*                                  infos                                  */
+
+/**
+ * @brief sends infos of the current user to the user
+ * 
+ * @param c client who asked for information
+ * @param data data_server_t struct
+ * @return 0 on succeed, 1 on fail
+ */
+int info_user(struct client_s *c, data_server_t *data);
+
+/**
+ * @brief sends infos of the team he is in to the user
+ * 
+ * @param c client who asked for information
+ * @param data data_server_t struct
+ * @return 0 on succeed, 1 on fail
+ */
+int info_team(struct client_s *c, data_server_t *data);
+
+/**
+ * @brief sends infos of the channel he is in to the user
+ * 
+ * @param c client who asked for information
+ * @param data data_server_t struct
+ * @return 0 on succeed, 1 on fail
+ */
+int info_channel(struct client_s *c, data_server_t *data);
+
+/**
+ * @brief sends infos of the thread he is in to the user
+ * 
+ * @param c client who asked for information
+ * @param data data_server_t struct
+ * @return 0 on succeed, 1 on fail
+ */
+int info_thread(struct client_s *c, data_server_t *data);
 
 #endif /* !MY_TEAMS_H_ */
