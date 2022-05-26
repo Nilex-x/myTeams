@@ -65,12 +65,28 @@ int send_msg(struct client_s *c, char **arg, data_server_t *data)
     return send_message(c, get_user_info_by_uuid(arg[1], data), arg[2], data);
 }
 
+int info(struct client_s *c, char **arg, data_server_t *data)
+{
+    int context = (c->user->team != NULL) + (c->user->channel != NULL) + 
+    (c->user->thread != NULL);
+    int (*f[4])(struct client_s *, data_server_t *) = {
+        &info_user, &info_team, &info_channel, &info_thread
+    };
+
+    if (!c->user) {
+        c->data_send = add_send(c->data_send, "503 - Not logged-in.\n");
+        c->status = WRITE;
+        return (0);
+    }
+    return f[context](c, data);
+}
+
 int sort_command(struct client_s *c, data_server_t *data, char *cmd)
 {
     char **tab = my_str_to_word_array(clear_str(cmd));
-    char **commands = my_str_to_word_array("LOGIN LOGOUT SEND");
-    int (*cmds[3])(struct client_s *, char **, data_server_t *) = { \
-                                                        login, logout, send_msg};
+    char **commands = my_str_to_word_array("LOGIN LOGOUT SEND INFO");
+    int (*cmds[4])(struct client_s *, char **, data_server_t *) = { \
+                                                login, logout, send_msg, info};
 
     for (int i = 0; commands[i]; i++) {
         if (strcmp(commands[i], tab[0]) == 0) {
