@@ -34,7 +34,7 @@ message_t *create_message(line_t *c, char *id)
     if (strncmp(c->line + 10, id, 36) == 0) {
         msg->from = strdup(id);
         msg->to = strndup(c->line + 47, 36);
-        msg->message = strdup(c->line + 84, strlen(c->line + 84) - 1);
+        msg->message = strndup(c->line + 84, strlen(c->line + 84));
         msg->isRead = (c->line[8] == 'R') ? true : false;
         msg->next = NULL;
         return msg;
@@ -57,7 +57,8 @@ message_t *get_messages_by_user(file_io_t *file_io, char *id)
     message_t *cmsg = NULL;
 
     for (line_t *c = file_io->lines; c; c = c->next) {
-        if (c->type == MESSAGE && (strncmp(c->line + 10, id, 36) == 0 || strncmp(c->line + 47, id, 36) == 0)) {
+        if (c->type == MESSAGE && (strncmp(c->line + 10, id, 36) == 0
+        || strncmp(c->line + 47, id, 36) == 0)) {
             msg = create_message(c, id);
             (msg) ? (cmsg) ? (cmsg->next = msg) : (messages = msg) : 0;
             (msg) ? cmsg = msg : 0;

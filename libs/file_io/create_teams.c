@@ -31,22 +31,21 @@ thread_t *get_threads(file_io_t *file_io, char *team_id, char *chan_id)
     thread_t *threads = NULL;
     thread_t *last = NULL;
     thread_t *tmp = NULL;
-    int len = strlen(team_id) + strlen(chan_id) + 16;
-    char *p = malloc(len);
 
-    sprintf(p, "CREATE\aTHREAD\a%s\a%s", team_id, chan_id);
     for (line_t *curr = file_io->lines; curr; curr = curr->next)
-        if (curr->type == CREATE && !strncmp(curr->line, p, len)) {
+        if (curr->type == CREATE && !strncmp(curr->line + 14, team_id, 36)
+        && !strncmp(curr->line + 51, chan_id, 36)) {
             tmp = malloc(sizeof(thread_t));
-            tmp->id = strdup(strtok(curr->line + len, "\a\n"));
+            tmp->id = strdup(strtok(curr->line + 88, "\a\n"));
             tmp->creator_id = strdup(strtok(NULL, "\a\n"));
+            tmp->timestamp = atoi(strtok(NULL, "\a\n"));
             tmp->title = strdup(strtok(NULL, "\a\n"));
             tmp->body = strdup(strtok(NULL, "\a\n"));
+            tmp->next = NULL;
             tmp->comment = get_comments(file_io, tmp->id);
             (threads) ? (last->next = tmp) : (threads = tmp);
             last = tmp;
         }
-    free(p);
     return threads;
 }
 
@@ -74,7 +73,7 @@ channel_t *get_channels(file_io_t *file_io, char *team_id)
     return channels;
 }
 
-subscribed_t *get_subscribed(file_io_t *file_io, char *team_id, data_server_t *d)
+subscribed_t *get_subscribed(file_io_t *f_io, char *team_id, data_server_t *d)
 {
     subscribed_t *sub = NULL;
     subscribed_t *last = NULL;
@@ -83,7 +82,7 @@ subscribed_t *get_subscribed(file_io_t *file_io, char *team_id, data_server_t *d
     char *p = malloc(sizeof(char) * len);
 
     sprintf(p, "SUBSCRIBE\a%s", team_id);
-    for (line_t *curr = file_io->lines; curr; curr = curr->next)
+    for (line_t *curr = f_io->lines; curr; curr = curr->next)
         if (curr->type == SUBSCRIBED && strncmp(curr->line, p, len - 1) == 0) {
             tmp = malloc(sizeof(subscribed_t));
             tmp->user = get_user_by_id(d, strtok(curr->line + len, "\a\n"));
@@ -110,6 +109,7 @@ team_t *get_teams(file_io_t *file_io, data_server_t *data)
             tmp->description = strdup(strtok(NULL, "\a\n"));
             tmp->channels = get_channels(file_io, tmp->id);
             tmp->subcribed = get_subscribed(file_io, tmp->id, data);
+            tmp->next = NULL;
             (teams) ? (last->next = tmp) : (teams = tmp);
             last = tmp;
         }
