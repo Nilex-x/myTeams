@@ -59,3 +59,4 @@ uml
 outfile
 vg*
 .vscode
+libs/file_io/test.c

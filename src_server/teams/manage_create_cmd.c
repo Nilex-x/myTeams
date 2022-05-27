@@ -30,9 +30,10 @@ int add_teams(client_t *c, char **args, data_server_t *data)
     char *line = NULL;
     char *new_line = NULL;
 
+    printf("name: [%s] desc: [%s]\n", args[1], args[2]);
     if (!new_team) {
         new_team = create_add_teams(args[1], args[2], data);
-        asprintf(&new_line, "CREATE TEAM %s %s %s\n", new_team->id,
+        asprintf(&new_line, "CREATE\aTEAM\a%s\a%s\a%s\n", new_team->id,
                             new_team->name, new_team->description);
         append_to_list(&data->list->lines, new_line);
         free(new_line);
@@ -56,21 +57,16 @@ int sort_create(client_t *c, char **args, data_server_t *data)
 {
     int len = len_array(args);
 
-    if (!c->user) {
+    if (!c->user)
         c->data_send = add_send(c->data_send, "503 Not logged-in\n");
-        return (0);
-    }
-    if (!c->user->team && len == 3)
+    if (c->user && !c->user->team && len == 3)
         return (add_teams(c, args, data));
-    if (!c->user->channel && len == 3) {
-        printf("create Channel name: %s - desc: %s\n", args[1], args[2]);
-        return (0);
-    }
-    if (!c->user->thread && len == 3) {
-        printf("create Thread name: %s - desc: %s\n", args[1], args[2]);
-        return (0);
-    }
-    if (c->user->thread && len == 2)
-        send_comment(c, args, data);
+    if (c->user && !c->user->channel && len == 3)
+        return (printf("create Channel name: %s - desc: %s\n", args[1], args[2]));
+    if (c->user && !c->user->thread && len == 3)
+        return (printf("create Thread name: %s - desc: %s\n", args[1], args[2]));
+    if (c->user && c->user->thread && len == 2)
+        return(send_comment(c, args, data));
+    c->data_send = add_send(c->data_send, "502 Command missing arguments.\n");
     return (0);
 }

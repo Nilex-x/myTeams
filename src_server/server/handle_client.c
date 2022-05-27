@@ -71,8 +71,14 @@ void remove_client(server_t *info, int client)
         return;
     }
     while (temp) {
-        if (temp->socket == client) {
+        if (temp->socket == client && temp->prev) {
             temp->prev->next = temp->next;
+            free(temp->buff_read);
+            free_data_send(temp->data_send);
+            free(temp);
+            return;
+        } else if (temp->socket == client && !temp->prev) {
+            info->list_client = temp->next;
             free(temp->buff_read);
             free_data_send(temp->data_send);
             free(temp);

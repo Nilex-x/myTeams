@@ -69,6 +69,7 @@ int handler_connection(server_t *info)
         clear_list(info);
         if (select(info->max_fd + 1, &info->rfds, &info->wfds, &info->efds, NULL) < 0) {
             perror("Select()");
+            exit(84);
         } else {
             find_socket(info);
         }

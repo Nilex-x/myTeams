@@ -50,6 +50,8 @@ void file_rewrite(file_io_t *file_io)
         return;
     while (curr) {
         fprintf(file, "%s\n", curr->line);
+        if (curr->next != NULL && curr->next->type > curr->type)
+            fprintf(file, "\n");
         curr = curr->next;
     }
     fclose(file);
