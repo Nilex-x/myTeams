@@ -62,11 +62,11 @@ int sort_create(client_t *c, char **args, data_server_t *data)
     if (c->user && !c->user->team && len == 3)
         return (add_teams(c, args, data));
     if (c->user && !c->user->channel && len == 3)
-        return (printf("create Channel name: %s - desc: %s\n", args[1], args[2]));
+        return (printf("create Channel %s desc: %s\n", args[1], args[2]));
     if (c->user && !c->user->thread && len == 3)
-        return (printf("create Thread name: %s - desc: %s\n", args[1], args[2]));
+        return (printf("create Thread %s desc: %s\n", args[1], args[2]));
     if (c->user && c->user->thread && len == 2)
-        return(send_comment(c, args, data));
+        return (send_comment(c, args, data));
     c->data_send = add_send(c->data_send, "502 Command missing arguments.\n");
     return (0);
 }

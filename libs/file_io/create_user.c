@@ -92,7 +92,6 @@ userinfo_t *create_user_by_name(file_io_t *file_io, char *name)
     return NULL;
 }
 
-
 userinfo_t *get_all_user_infos(file_io_t *file_io)
 {
     userinfo_t *users = NULL;

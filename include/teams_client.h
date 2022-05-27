@@ -16,8 +16,8 @@
     #include <unistd.h>
     #include <sys/select.h>
 
-	#include "lib.h"
-	#include "logging_client.h"
+    #include "lib.h"
+    #include "logging_client.h"
 
     #define WRITE 0
     #define READ 1

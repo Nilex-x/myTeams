@@ -118,7 +118,8 @@ int sort_command(client_t *client, data_server_t *data, char *cmd);
  * @param c client link to user
  * @return users_t *
  */
-users_t *init_user(char *name, data_server_t *data, userinfo_t *i, client_t *c);
+users_t *init_user(char *name, data_server_t *data,
+                                userinfo_t *i, client_t *c);
 
 /*                          users                                        */
 

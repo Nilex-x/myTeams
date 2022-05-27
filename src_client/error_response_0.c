@@ -27,4 +27,3 @@ void code_503(char *response)
 {
     printf("503 -> Too long command.\n");
 }
-

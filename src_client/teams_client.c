@@ -48,7 +48,7 @@ void client_loop(info_t *info)
     int max = info->socket + 1;
 
     clear_list(info);
-    if (select(max, &info->readfds, &info->writefds, &info->exceptfds, NULL) >= 0)
+    if (select(max, &info->readfds, &info->writefds, &info->exceptfds, NULL))
         manage_client(info);
 }
 

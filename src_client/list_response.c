@@ -29,13 +29,15 @@ void code_332(char *response)
 
     for (int i = 0; channels[i] != NULL; i++) {
         channel_info = str_to_array(channels[i], '\a');
-        client_team_print_channels(channel_info[0], channel_info[1], channel_info[2]);
+        client_team_print_channels(channel_info[0],
+                    channel_info[1], channel_info[2]);
         free_array(channel_info);
     }
     free_array(channels);
 }
 
 // LIST threads
+// client_channel_print_threads(thread_info[0], thread_info[1], thread_info[2]);
 void code_333(char *response)
 {
     char **threads = str_to_array(response, '\r');
@@ -43,7 +45,6 @@ void code_333(char *response)
 
     for (int i = 0; threads[i] != NULL; i++) {
         thread_info = str_to_array(threads[i], '\a');
-        // client_channel_print_threads(thread_info[0], thread_info[1], thread_info[2]);
         free_array(thread_info);
     }
     free_array(threads);

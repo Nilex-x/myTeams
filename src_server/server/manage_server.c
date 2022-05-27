@@ -67,9 +67,9 @@ int handler_connection(server_t *info)
     add_client(info, 0);
     while (1) {
         clear_list(info);
-        if (select(info->max_fd + 1, &info->rfds, &info->wfds, &info->efds, NULL) < 0) {
+        if (select(info->max_fd + 1, &info->rfds, &info->wfds,
+                                    &info->efds, NULL) < 0) {
             perror("Select()");
-            exit(84);
         } else {
             find_socket(info);
         }

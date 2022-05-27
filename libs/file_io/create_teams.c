@@ -85,7 +85,8 @@ subscribed_t *get_subscribed(file_io_t *f_io, char *team_id, data_server_t *d)
     for (line_t *curr = f_io->lines; curr; curr = curr->next)
         if (curr->type == SUBSCRIBED && strncmp(curr->line, p, len - 1) == 0) {
             tmp = malloc(sizeof(subscribed_t));
-            tmp->user = get_user_by_id(d, strtok(curr->line_cpy + len, "\a\n"));
+            tmp->user = get_user_by_id(d, strtok(curr->line_cpy + len,
+                                                                "\a\n"));
             tmp->next = NULL;
             (sub) ? (last->next = tmp) : (sub = tmp);
             last = tmp;
