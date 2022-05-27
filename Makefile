@@ -41,6 +41,8 @@ SRC_CLIENT	=		src_client/teams_client.c \
 					src_client/list_response.c \
 					src_client/user_response.c \
 					src_client/user_data_response.c \
+					src_client/notif_response_01.c \
+					src_client/notif_response_2.c \
 
 OBJ_CLIENT	=		$(SRC_CLIENT:.c=.o)
 

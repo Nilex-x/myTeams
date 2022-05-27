@@ -9,21 +9,37 @@
 
 int return_code(char *response)
 {
-	void (*code_command[15])(void) =
+	void (*code_command[14])(char *data) =
     {&code_101, &code_102, &code_103, &code_104,
-	&code_301, &code_302, &code_303, &code_304,
-	&code_313, &code_315, &code_319, &code_321,
-	&code_322, &code_323, &code_324};
-	char *codes[15] =
-	{"101", "102", "103", "104", "301", "302", "303", "304", "313",
+	&code_301, &code_302, &code_303,&code_313, 
+	&code_315, &code_319, &code_321, &code_322, 
+	&code_323, &code_324};
+	char *codes[14] =
+	{"101", "102", "103", "104", "301", "302", "303", "313",
 	 "315", "319", "321", "322", "323", "324"};
 
-	for (int i = 0; i < 15; i++) {
+	for (int i = 0; i < 14; i++) {
 		if (strncmp(codes[i], response, 3) == 0) {
-			code_command[i]();
+			code_command[i](response + 4);
 			return 1;
 		}
 	}
+	return 0;
+}
+
+int return_notif(char *response)
+{
+void (*data_command[7])(char *data) =
+    {&code_201, &code_202, &code_211, &code_212,
+	&code_221, &code_222, &code_223};
+	const char *codes[7] =
+	{"201", "202", "211", "212", "221", "222", "223"};
+
+	for (int i = 0; i < 7; i++)
+		if (strncmp(codes[i], response, 3) == 0) {
+			data_command[i](response + 4);
+			return 1;
+		}
 	return 0;
 }
 
@@ -68,6 +84,8 @@ int server_response(char *response)
 {
 	if (response[0] == '5')
 		return_errors(response);
+	else if (response[0] == '2')
+		return_notif(response);
 	else if (!return_code(response))
 		return_data(response);
 	if (strncmp(response, "303", 3) == 0)

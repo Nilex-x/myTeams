@@ -57,3 +57,4 @@ temp.c
 uml
 *.save
 outfile
+vg*

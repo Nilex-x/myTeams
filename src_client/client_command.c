@@ -29,7 +29,6 @@ void get_server_command(info_t *info)
 	if (valread == -1 || valread == 0)
 		return;
 	buffer[valread] = '\0';
-	printf("calue receive server: %s\n", buffer);
 	add_to_write(&info->read_buffer, buffer, LENGTH_COMMAND);
     free(buffer);
 }

@@ -55,8 +55,9 @@ int client_cmd(char *command, char *args, const char** cmds, char **to_send)
 		*to_send = malloc(sizeof(char) * (strlen(cmds[index])
 		 + strlen(args) + 2));
 		sprintf(*to_send, "%s%s", cmds[index], args);
+		replace_char(*to_send);
+		remove_dquotes(*to_send);
 	}
-	replace_char(*to_send);
 	return index;
 }
 
@@ -80,6 +81,7 @@ int user_command(info_t *info)
 		info->write_buffer = realloc(info->write_buffer, strlen(to_send) + 1);
 		info->write_buffer = strdup(to_send);
 		free(to_send);
+		return 1;
 	}
-	return 1;
+	return 0;
 }
