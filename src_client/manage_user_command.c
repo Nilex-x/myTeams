@@ -58,10 +58,7 @@ int client_cmd(char *command, char *args, const char **cmds, char **to_send)
         replace_char(*to_send);
         quotes = remove_dquotes(*to_send);
     }
-    printf("quotes:%d\n", quotes);
-    printf("index:%d\n", index);
     for (int i = 0; i < 6; i++) {
-        printf("cmd:%d\n", quotes_cmds[i]);
         if (index == quotes_cmds[i] && !quotes)
             return -1;
     }

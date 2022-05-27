@@ -14,13 +14,11 @@ int unsubscribe_user(team_t *team, users_t *torm)
 
     server_event_user_subscribed(team->id, torm->info->id);
     if (temp->user == torm->info) {
-        printf("first unsubs\n");
         team->subcribed = team->subcribed->next;
         free(temp);
         return (0);
     }
     while (temp->next) {
-        printf("loop unsubs\n");
         if (temp->user == torm->info) {
             prev->next = temp->next;
             free(temp);
@@ -36,9 +34,7 @@ userinfo_t *get_subscribe_by_id(team_t *team, char *uuid)
 {
     subscribed_t *temp = team->subcribed;
 
-    printf("[%s]\n", uuid);
     while (temp) {
-        printf("name: [%s], id: [%s]\n", temp->user->name, temp->user->id);
         if (strcmp(temp->user->id, uuid) == 0)
             return temp->user;
         temp = temp->next;
@@ -63,7 +59,6 @@ int unsubscribe(client_t *c, char **args, data_server_t *data)
     if (team && get_subscribe_by_id(team, c->user->info->id)) {
         unsubscribe_user(team, c->user);
         asprintf(&response, "318\a%s\a%s\n", c->user->info->id, team->id);
-        printf("response: [%s]\n", response);
     }
     c->data_send = add_send(c->data_send, response);
     free(response);

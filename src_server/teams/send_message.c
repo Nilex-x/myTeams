@@ -59,7 +59,6 @@ int send_message_connected_user(struct client_s *cli
     char *line = NULL;
     message_t *curr = NULL;
 
-    printf("Sending message to connected user\n");
     append_message_to_udata(cli->user->info, user, message, true);
     line = alloc_message(cli->user->info->id, user->id, message, 1);
     append_to_list(&data->list->lines, line);
