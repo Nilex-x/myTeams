@@ -36,7 +36,7 @@ thread_t *get_threads(file_io_t *file_io, char *team_id, char *chan_id)
         if (curr->type == CREATE && !strncmp(curr->line + 14, team_id, 36)
         && !strncmp(curr->line + 51, chan_id, 36)) {
             tmp = malloc(sizeof(thread_t));
-            tmp->id = strdup(strtok(curr->line + 88, "\a\n"));
+            tmp->id = strdup(strtok(curr->line_cpy + 88, "\a\n"));
             tmp->creator_id = strdup(strtok(NULL, "\a\n"));
             tmp->timestamp = atoi(strtok(NULL, "\a\n"));
             tmp->title = strdup(strtok(NULL, "\a\n"));
@@ -61,7 +61,7 @@ channel_t *get_channels(file_io_t *file_io, char *team_id)
     for (line_t *curr = file_io->lines; curr; curr = curr->next)
         if (curr->type == CREATE && strncmp(curr->line, p, len - 1) == 0) {
             tmp = malloc(sizeof(channel_t));
-            tmp->id = strdup(strtok(curr->line + len, "\a\n"));
+            tmp->id = strdup(strtok(curr->line_cpy + len, "\a\n"));
             tmp->name = strdup(strtok(NULL, "\a\n"));
             tmp->description = strdup(strtok(NULL, "\a\n"));
             tmp->threads = get_threads(file_io, team_id, tmp->id);
@@ -85,7 +85,7 @@ subscribed_t *get_subscribed(file_io_t *f_io, char *team_id, data_server_t *d)
     for (line_t *curr = f_io->lines; curr; curr = curr->next)
         if (curr->type == SUBSCRIBED && strncmp(curr->line, p, len - 1) == 0) {
             tmp = malloc(sizeof(subscribed_t));
-            tmp->user = get_user_by_id(d, strtok(curr->line + len, "\a\n"));
+            tmp->user = get_user_by_id(d, strtok(curr->line_cpy + len, "\a\n"));
             tmp->next = NULL;
             (sub) ? (last->next = tmp) : (sub = tmp);
             last = tmp;
@@ -104,7 +104,7 @@ team_t *get_teams(file_io_t *file_io, data_server_t *data)
     while (curr) {
         if (curr->type == CREATE && strncmp(curr->line + 7, "TEAM", 4) == 0) {
             tmp = malloc(sizeof(team_t));
-            tmp->id = strdup(strtok(curr->line + 12, "\a\n"));
+            tmp->id = strdup(strtok(curr->line_cpy + 12, "\a\n"));
             tmp->name = strdup(strtok(NULL, "\a\n"));
             tmp->description = strdup(strtok(NULL, "\a\n"));
             tmp->channels = get_channels(file_io, tmp->id);
