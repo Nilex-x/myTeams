@@ -33,8 +33,8 @@ int send_log_to_client(client_t *c, data_server_t *data, bool creat, bool log)
         asprintf(&res, "%d\a%s\a%s\n", creat ? 301 : 302, c->user->info->id,
                                         c->user->info->name);
     } else {
-        asprintf(&res, "303\a%s\a%s\n", c->user->info->name,
-                                        c->user->info->id);
+        asprintf(&res, "303\a%s\a%s\n", c->user->info->id,
+                                        c->user->info->name);
     }
     c->data_send = add_send(c->data_send, res);
     free(res);
