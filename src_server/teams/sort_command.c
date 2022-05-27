@@ -31,16 +31,14 @@ int send_msg(client_t *c, char **arg, data_server_t *data)
 int sort_command(client_t *c, data_server_t *data, char *cmd)
 {
     bool find = false;
-    char **tab = str_to_word_array_separator(cmd, '\a');
-    char **commands = my_str_to_word_array("LOGIN LOGOUT CREATE SEND " \
-                                        "SUBSCRIBE UNSUBSCRIBE");
-    int (*cmds[6])(client_t *, char **, data_server_t *) = { \
-                                                login, logout, sort_create,
-                                                send_msg, subscribe,
-                                                unsubscribe};
+    char **tab = str_to_word_array_separator(clear_str(cmd), '\a');
+    char **commands = my_str_to_word_array("LOGIN LOGOUT CREATE SEND "
+                                            "SUBSCRIBE UNSUBSCRIBE");
+    int (*cmds[6])(client_t *, char **, data_server_t *) = { login, logout,
+                            sort_create, send_msg, subscribe, unsubscribe};
 
     for (int i = 0; commands[i] && !find; i++) {
-        if (strcmp(commands[i], clear_str(tab[0])) == 0) {
+        if (strcmp(commands[i], tab[0]) == 0) {
             printf("Nice command: %s\n", commands[i]);
             cmds[i](c, tab, data);
             find = true;
