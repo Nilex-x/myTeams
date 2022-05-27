@@ -66,7 +66,6 @@ void add_userinfo(userinfo_t *toadd, data_server_t *data)
     return;
 }
 
-
 void free_user_infos(userinfo_t *infos)
 {
     userinfo_t *temp = NULL;

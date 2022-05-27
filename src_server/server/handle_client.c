@@ -20,6 +20,7 @@ void init_client(server_t *info)
     list_client->socket = info->fd_server;
     list_client->user = NULL;
     list_client->isQuit = false;
+    list_client->data_send = NULL;
     init_buff_client(list_client);
     info->list_client = list_client;
 }
@@ -41,6 +42,7 @@ client_t *add_client(server_t *info, int client)
     node->status = READ;
     node->user = NULL;
     node->isQuit = false;
+    node->data_send = NULL;
     init_buff_client(node);
     return (node);
 }
@@ -61,10 +63,24 @@ void remove_client(server_t *info, int client)
 {
     client_t *temp = info->list_client;
 
+    if (temp->socket == client) {
+        info->list_client = temp->next;
+        free(temp->buff_read);
+        free_data_send(temp->data_send);
+        free(temp);
+        return;
+    }
     while (temp) {
-        if (temp->socket == client) {
+        if (temp->socket == client && temp->prev) {
             temp->prev->next = temp->next;
             free(temp->buff_read);
+            free_data_send(temp->data_send);
+            free(temp);
+            return;
+        } else if (temp->socket == client && !temp->prev) {
+            info->list_client = temp->next;
+            free(temp->buff_read);
+            free_data_send(temp->data_send);
             free(temp);
             return;
         }
@@ -79,10 +95,9 @@ void accept_connect(server_t *info)
     client_t *new_client = NULL;
     int incomming_fd = accept(info->fd_server, (struct sockaddr *) &client, \
                                 &len);
-
     FD_SET(incomming_fd, &info->wfds);
     new_client = add_client(info, incomming_fd);
-    new_client->data_send = strdup("220\n");
+    new_client->data_send = add_send(new_client->data_send, "220\n");
     new_client->status = WRITE;
     if (incomming_fd > info->max_fd)
         info->max_fd = incomming_fd;

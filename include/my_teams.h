@@ -47,8 +47,10 @@ typedef struct userinfo_s
 typedef struct thread_s
 {
     char *id;
-    char *name;
-    char *description;
+    char *creator_id;
+    char *title;
+    char *body;
+    time_t timestamp;
     char **comment;
     struct thread_s *next;
 } thread_t;
@@ -78,6 +80,7 @@ typedef struct users_s
     team_t *team;
     channel_t *channel;
     thread_t *thread;
+    struct client_s *client;
     struct data_server_s *data;
     struct users_s *next;
 } users_t;
@@ -90,9 +93,10 @@ typedef struct data_server_s
     team_t *teams;
 } data_server_t;
 
-struct client_s;
+typedef struct client_s client_t;
 
 /*                  command handle function                              */
+
 /**
  * @brief Sort command given on paramete
  *
@@ -101,20 +105,21 @@ struct client_s;
  * @param cmd the command string
  * @return int
  */
-int sort_command(struct client_s *client, data_server_t *data, char *cmd);
-
+int sort_command(client_t *client, data_server_t *data, char *cmd);
 
 /*                       init function                                   */
+
 /**
  * @brief Create user with userinfo given on parameter
  *
  * @param name name of user to find
  * @param info info of user if found
  * @param data data_server_t struct
+ * @param c client link to user
  * @return users_t *
  */
-users_t *init_user(char *name, data_server_t *data, userinfo_t *info);
-
+users_t *init_user(char *name, data_server_t *data,
+                                userinfo_t *i, client_t *c);
 
 /*                          users                                        */
 
@@ -134,6 +139,7 @@ void add_user(users_t *toadd, data_server_t *data);
  * @return users_t *
  */
 users_t *get_user_by_uuid(char *uuid, data_server_t *data);
+
 /**
  * @brief Get the user by name strign
  *
@@ -142,6 +148,7 @@ users_t *get_user_by_uuid(char *uuid, data_server_t *data);
  * @return users_t*
  */
 users_t *get_user_by_name(char *name, data_server_t *data);
+
 /**
  * @brief Remove user in list from data_server_t *data
  *
@@ -149,13 +156,13 @@ users_t *get_user_by_name(char *name, data_server_t *data);
  * @param data data_server_t struct
  */
 void remove_user(users_t *torm, data_server_t *data);
+
 /**
  * @brief Free users list
  *
  * @param users users list to free
  */
 void free_users(users_t *users);
-
 
 /*                        userinfos                                      */
 
@@ -166,7 +173,7 @@ void free_users(users_t *users);
  * @param data data_server_t struct
  */
 void add_userinfo(userinfo_t *toadd, data_server_t *data);
-/* get user by uuid */
+
 /**
  * @brief Get the user info by uuid string
  *
@@ -175,7 +182,7 @@ void add_userinfo(userinfo_t *toadd, data_server_t *data);
  * @return userinfo_t*
  */
 userinfo_t *get_user_info_by_uuid(char *uuid, data_server_t *data);
-/* get user by name */
+
 /**
  * @brief Get the user info by name string
  *
@@ -184,7 +191,7 @@ userinfo_t *get_user_info_by_uuid(char *uuid, data_server_t *data);
  * @return userinfo_t*
  */
 userinfo_t *get_user_info_by_name(char *name, data_server_t *data);
-/* remove userinfo in list from data_server_t *data */
+
 /**
  * @brief
  *
@@ -192,7 +199,7 @@ userinfo_t *get_user_info_by_name(char *name, data_server_t *data);
  * @param data data_server_t struct
  */
 void remove_userinfo(userinfo_t *torm, data_server_t *data);
-/* free userinfo list */
+
 /**
  * @brief
  *
@@ -210,12 +217,123 @@ void free_user_infos(userinfo_t *infos);
  * @param message message string of user
  */
 void add_message(userinfo_t *info, char *from, char *message);
+
 /**
  * @brief  free message list
  *
  * @param msgs
  */
 void free_message(message_t *msgs);
+/**
+ * @brief send message to user even if disconnected
+ *
+ * @param c client sending the message
+ * @param user user receiving the message
+ * @param message message to send
+ * @param data data_server_t struct
+ * @return 0 if message sent, 0 if not
+ */
+int send_message(struct client_s *c, struct userinfo_s *user
+, char *message, data_server_t *data);
 
+/*                          team                                         */
+
+/**
+ * @brief Get the teams by id string
+ *
+ * @param uuid id to find
+ * @param data the data struct of server
+ * @return team_t*
+ */
+team_t *get_teams_by_id(char *uuid, data_server_t *data);
+
+/**
+ * @brief Get the teams by name string
+ *
+ * @param name
+ * @param data
+ * @return team_t*
+ */
+team_t *get_teams_by_name(char *name, data_server_t *data);
+
+/**
+ * @brief Create a add teams struct with name and dscription given in parameter
+ *
+ * @param name name of new team
+ * @param desc description of new team
+ * @param data the data struct of server
+ * @return team_t*
+ */
+team_t *create_add_teams(char *name, char *desc, data_server_t *data);
+
+/**
+ * @brief free team list
+ *
+ * @param teams the list of team to free
+ */
+void free_teams(team_t *teams);
+
+/**
+ * @brief Subscribe to a team
+ *
+ * @param c Client who do command
+ * @param args Array of command arguments
+ * @param data Server data struct
+ * @return int
+ */
+int subscribe(client_t *c, char **args, data_server_t *data);
+
+/**
+ * @brief Unsubscribe to a team
+ *
+ * @param c Client who do command
+ * @param args Array of command arguments
+ * @param data Server data struct
+ * @return int
+ */
+int unsubscribe(client_t *c, char **args, data_server_t *data);
+
+/**
+ * @brief Get the subscribe by id string
+ *
+ * @param team team who find a user
+ * @param uuid user uuid to find
+ * @return userinfo_t*
+ */
+userinfo_t *get_subscribe_by_id(team_t *team, char *uuid);
+
+/*                         create                                        */
+
+/**
+ * @brief sort create command compared to context of user
+ *
+ * @param arg Array of command arguments
+ * @param client Client who do command
+ * @param data Server data struct
+ * @return int
+ */
+int sort_create(client_t *client, char **args, data_server_t *data);
+
+/*                          login/logout                                 */
+
+/**
+ * @brief login client to link with an user
+ *
+ * @param client Client who do command
+ * @param arg Array of command arguments
+ * @param data Server data struct
+ * @return int
+ */
+int login(client_t *client, char **arg, data_server_t *data);
+
+/**
+ * @brief Logout and disconnect client
+ *
+ * @param client Client who do command
+ * @param arg,Array of command arguments
+ * @param data Server data struct
+ * @return int
+ */
+int logout(client_t *client, char **arg, data_server_t *data);
 
 #endif /* !MY_TEAMS_H_ */

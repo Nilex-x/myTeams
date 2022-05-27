@@ -16,11 +16,35 @@ SRC_SERV	=		src_server/server/teams_serv.c \
 					src_server/teams/manage_init_data.c \
 					src_server/teams/manage_user_infos.c \
 					src_server/teams/manage_users.c \
-					src_server/teams/manage_messages.c
+					src_server/teams/manage_messages.c \
+					src_server/teams/manage_teams.c \
+					src_server/teams/manage_create_cmd.c \
+					src_server/teams/send_message.c \
+					src_server/teams/manage_data_send.c \
+					src_server/teams/manage_connection.c \
+					src_server/teams/manage_subscribe.c \
+					src_server/teams/manage_unsubscribe.c
 
 OBJ_SERV	=		$(SRC_SERV:.c=.o)
 
-SRC_CLIENT	=		src_client/teams_client.c
+SRC_CLIENT	=		src_client/teams_client.c \
+					src_client/client_command.c \
+					src_client/manage_user_command.c \
+					src_client/str_to_array.c \
+					\
+					src_client/server_response.c \
+					src_client/informative_response.c \
+					src_client/connection_response.c \
+					src_client/error_response_0.c \
+					src_client/error_response_1.c \
+					src_client/error_response_2.c \
+					src_client/info_response.c \
+					src_client/create_response.c \
+					src_client/list_response.c \
+					src_client/user_response.c \
+					src_client/user_data_response.c \
+					src_client/notif_response_01.c \
+					src_client/notif_response_2.c \
 
 OBJ_CLIENT	=		$(SRC_CLIENT:.c=.o)
 
@@ -75,4 +99,4 @@ fclean:
 
 re: fclean all
 
-.PHONY: compil_server debug fclean clean re all
+.PHONY: debug fclean clean re all

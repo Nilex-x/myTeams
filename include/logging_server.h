@@ -147,6 +147,4 @@ int server_event_private_message_sended(
     char const *receiver_uuid,
     char const *message_body);
 
-
-
 #endif /* LIB_MYTEAMS_LOGGING_SERVER_H */

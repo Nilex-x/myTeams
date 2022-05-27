@@ -14,6 +14,7 @@ line_t *create_line(char *line)
     if (!new_line)
         return NULL;
     new_line->line = strdup(line);
+    new_line->line_cpy = strdup(line);
     if (line[0] == 'U')
         new_line->type = USER;
     else if (line[0] == 'M')
@@ -50,6 +51,8 @@ void file_rewrite(file_io_t *file_io)
         return;
     while (curr) {
         fprintf(file, "%s\n", curr->line);
+        if (curr->next != NULL && curr->next->type > curr->type)
+            fprintf(file, "\n");
         curr = curr->next;
     }
     fclose(file);
@@ -64,6 +67,7 @@ void file_io_destroy(file_io_t *file_io)
         tmp = curr;
         curr = curr->next;
         free(tmp->line);
+        free(tmp->line_cpy);
         free(tmp);
     }
     free(file_io->file_name);

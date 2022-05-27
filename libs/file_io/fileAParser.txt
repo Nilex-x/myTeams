@@ -1,12 +1,12 @@
-USER azertyuiop "Nicolas"
-USER ihgvbzregz "Patrick"
+USER <BEL> azertyuiop <BEL> Nicolas
+USER <BEL> ihgvbzregz <BEL> Patrick
 
-MESSAGE R ihgvbzregz azertyuiop "Coucou"
-MESSAGE NR azertyuiop ihgvbzregz "Ouais Salut ouais !"
+MESSAGE <BEL> R <BEL> ihgvbzregz <BEL> azertyuiop <BEL> Coucou
+MESSAGE <BEL> N <BEL> azertyuiop <BEL> ihgvbzregz <BEL> Ouais Salut ouais !
 
-CREATE TEAM teamID teamName teamDesc
-CREATE CHANNEL teamID channelId channelName channelDescr
-CREATE THREAD teamID channelId threadID threadName threadMessage
-CREATE COMMENT threadID ComContent
+CREATE <BEL> TEAM <BEL> teamID <BEL> teamName <BEL> teamDesc
+CREATE <BEL> CHANNEL <BEL> teamID <BEL> channelId <BEL> channelName <BEL> channelDescr
+CREATE <BEL> THREAD <BEL> teamID <BEL> channelId <BEL> threadID <BEL> authorID <BEL> timestamp <BEL> threadTitle <BEL> threadBody
+CREATE <BEL> COMMENT <BEL> threadID <BEL> ComContent
 
-SUBSCRIBED teamID userID
+SUBSCRIBED <BEL> teamID <BEL> userID

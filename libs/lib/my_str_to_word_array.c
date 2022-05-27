@@ -12,7 +12,8 @@ int count_arg(char *str)
     int separator = 0;
 
     for (int i = 0; str[i]; i++) {
-        if ((str[i] == ' ' || str[i] == '\t') && (str[i + 1] != ' ' && str[i + 1] != '\t'))
+        if ((str[i] == ' ' || str[i] == '\t') &&
+            (str[i + 1] != ' ' && str[i + 1] != '\t'))
             separator++;
     }
     return (separator);
@@ -60,7 +61,7 @@ char **my_str_to_word_array(char *str)
     char **array = malloc(sizeof(char *) * (count_arg(str) + 2));
 
     i += verif_space(str);
-    for (; i < strlen(str); i = i + word_length + 1, j++) {
+    for (; i < (int) strlen(str); i = i + word_length + 1, j++) {
         word_length = count_word_length(str, i);
         array[j] = malloc(sizeof(char) * (word_length + 1));
         array[j] = my_strncpy_n(array[j], str, i, word_length);
