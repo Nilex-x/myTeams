@@ -7,22 +7,38 @@
 
 #include "teams_client.h"
 
-void code_521()
+// wrong user uuid
+void code_521(char *response)
 {
-    printf("521 -> Wrong user uuid.\n");
+    char **data = str_to_array(response, '\a');
+
+    client_error_unknown_user(data[0]);
+    free_array(data);
 }
 
-void code_522()
+// wrong team uuid
+void code_522(char *response)
 {
-    printf("522 -> Wrong team uuid.\n");
+    char **data = str_to_array(response, '\a');
+
+    client_error_unknown_team(data[0]);
+    free_array(data);
 }
 
-void code_523()
+// wrong channel uuid
+void code_523(char *response)
 {
-    printf("523 -> Wrong channel uuid.\n");
+    char **data = str_to_array(response, '\a');
+
+    client_error_unknown_channel(data[0]);
+    free_array(data);
 }
 
-void code_524()
+// wrong thread uuid
+void code_524(char *response)
 {
-    printf("524 -> Wrong thread uuid.\n");
+    char **data = str_to_array(response, '\a');
+
+    client_error_unknown_thread(data[0]);
+    free_array(data);
 }
