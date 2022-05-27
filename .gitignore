@@ -58,3 +58,4 @@ uml
 *.save
 outfile
 vg*
+.vscode

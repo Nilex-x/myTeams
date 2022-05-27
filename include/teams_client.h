@@ -7,6 +7,7 @@
 
 #ifndef TEAMS_CLIENT_H_
     #define TEAMS_CLIENT_H_
+    #define _GNU_SOURCE
 
     #include <arpa/inet.h>
     #include <stdio.h>
