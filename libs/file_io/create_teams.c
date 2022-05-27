@@ -81,7 +81,7 @@ subscribed_t *get_subscribed(file_io_t *f_io, char *team_id, data_server_t *d)
     int len = (strlen(team_id) + 12);
     char *p = malloc(sizeof(char) * len);
 
-    sprintf(p, "SUBSCRIBE\a%s", team_id);
+    sprintf(p, "SUBSCRIBED\a%s", team_id);
     for (line_t *curr = f_io->lines; curr; curr = curr->next)
         if (curr->type == SUBSCRIBED && strncmp(curr->line, p, len - 1) == 0) {
             tmp = malloc(sizeof(subscribed_t));

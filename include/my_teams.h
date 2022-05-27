@@ -292,6 +292,15 @@ int subscribe(client_t *c, char **args, data_server_t *data);
  */
 int unsubscribe(client_t *c, char **args, data_server_t *data);
 
+/**
+ * @brief Get the subscribe by id string
+ *
+ * @param team team who find a user
+ * @param uuid user uuid to find
+ * @return userinfo_t*
+ */
+userinfo_t *get_subscribe_by_id(team_t *team, char *uuid);
+
 /*                         create                                        */
 
 /**
