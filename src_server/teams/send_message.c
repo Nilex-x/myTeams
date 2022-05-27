@@ -71,7 +71,7 @@ int send_message_connected_user(struct client_s *cli
     line = malloc(81 + strlen(message));
     for (users_t *u = data->users; u; u = u->next)
         if (u->info->id == user->id) {
-            sprintf(line, "201 %s %s \"%s\"", curr->from, curr->to, message);
+            sprintf(line, "201 %s %s \"%s\"\n", curr->from, curr->to, message);
             u->client->data_send = add_send(u->client->data_send, line);
         }
     free(line);
