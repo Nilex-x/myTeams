@@ -25,6 +25,7 @@
 
     typedef struct line_s {
         char *line;
+        char *line_cpy;
         type_line type;
         struct line_s *next;
     } line_t;
