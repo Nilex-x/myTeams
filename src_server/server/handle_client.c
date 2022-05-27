@@ -84,7 +84,6 @@ void remove_client(server_t *info, int client)
 
 void accept_connect(server_t *info)
 {
-    printf("accept_connect\n");
     struct sockaddr_in client;
     socklen_t len = sizeof(struct sockaddr_in);
     client_t *new_client = NULL;

@@ -7,33 +7,49 @@
 
 #include "my_teams.h"
 
-void append_message_to_udata(userinfo_t *f, userinfo_t *t, char *msg, bool r)
+message_t *dup_msg(message_t *msg)
+{
+    message_t *new = malloc(sizeof(message_t));
+
+    if (!new)
+        return NULL;
+    new->from = strdup(msg->from);
+    new->to = strdup(msg->to);
+    new->message = strdup(msg->message);
+    new->isRead = msg->isRead;
+    new->next = NULL;
+    return new;
+}
+
+void append_message_to_udata(userinfo_t *from, userinfo_t *to, char *msg, bool isRead)
 {
     message_t *mesg = malloc(sizeof(message_t));
-    message_t *f_msg = f->messages;
-    message_t *t_msg = t->messages;
+    message_t *mesg_sec = NULL;
+    message_t *f_msg = from->messages;
+    message_t *t_msg = to->messages;
 
-    mesg->from = strdup(f->id);
-    mesg->to = strdup(t->id);
+    mesg->from = strdup(from->id);
+    mesg->to = strdup(to->id);
     mesg->message = strdup(msg);
-    mesg->isRead = r;
+    mesg->isRead = isRead;
     mesg->next = NULL;
+    mesg_sec = dup_msg(mesg);
     while (f_msg && f_msg->next)
         f_msg = f_msg->next;
     while (t_msg && t_msg->next)
         t_msg = t_msg->next;
-    (f_msg) ? (f_msg->next = mesg) : (f->messages = mesg);
-    (t_msg) ? (t_msg->next = mesg) : (t->messages = mesg);
+    (f_msg) ? (f_msg->next = mesg) : (from->messages = mesg);
+    (t_msg) ? (t_msg->next = mesg_sec) : (to->messages = mesg_sec);
 }
 
 char *alloc_message(char *from_id, char *to_id, char *message, int is_read)
 {
-    char *line = malloc(strlen(message) + 85);
+    char *line = NULL;
 
     if (is_read)
-        sprintf(line, "MESSAGE R %s %s \"%s\"", from_id, to_id, message);
+        asprintf(line, "MESSAGE R %s %s \"%s\"", from_id, to_id, message);
     else
-        sprintf(line, "MESSAGE N %s %s \"%s\"", from_id, to_id, message);
+        asprintf(line, "MESSAGE N %s %s \"%s\"", from_id, to_id, message);
     return (line);
 }
 
@@ -43,6 +59,7 @@ int send_message_connected_user(struct client_s *cli
     char *line = NULL;
     message_t *curr = NULL;
 
+    printf("Sending message to connected user\n");
     append_message_to_udata(cli->user->info, user, message, true);
     line = alloc_message(cli->user->info->id, user->id, message, 1);
     append_to_list(&data->list->lines, line);

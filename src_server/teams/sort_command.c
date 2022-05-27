@@ -9,7 +9,6 @@
 
 int send_msg(client_t *c, char **arg, data_server_t *data)
 {
-    printf("sending msg\n");
     if (!c->user) {
         printf("not logged\n");
         c->data_send = add_send(c->data_send, "503 - Not logged-in.\n");
@@ -33,11 +32,12 @@ int sort_command(client_t *c, data_server_t *data, char *cmd)
 {
     bool find = false;
     char **tab = str_to_word_array_separator(cmd, '\a');
-    char **commands = my_str_to_word_array("LOGIN LOGOUT CREATE " \
+    char **commands = my_str_to_word_array("LOGIN LOGOUT CREATE SEND " \
                                         "SUBSCRIBE UNSUBSCRIBE");
-    int (*cmds[5])(client_t *, char **, data_server_t *) = { \
+    int (*cmds[6])(client_t *, char **, data_server_t *) = { \
                                                 login, logout, sort_create,
-                                                subscribe, unsubscribe};
+                                                send_msg, subscribe,
+                                                unsubscribe};
 
     for (int i = 0; commands[i] && !find; i++) {
         if (strcmp(commands[i], clear_str(tab[0])) == 0) {
