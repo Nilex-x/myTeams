@@ -47,8 +47,10 @@ typedef struct userinfo_s
 typedef struct thread_s
 {
     char *id;
-    char *name;
-    char *description;
+    char *creator_id;
+    char *title;
+    char *body;
+    time_t timestamp;
     char **comment;
     struct thread_s *next;
 } thread_t;
