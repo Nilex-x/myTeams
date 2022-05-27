@@ -34,14 +34,14 @@ message_t *create_message(line_t *c, char *id)
     if (strncmp(c->line + 10, id, 36) == 0) {
         msg->from = strdup(id);
         msg->to = strndup(c->line + 47, 36);
-        msg->message = get_quotes_content(c->line + 84);
+        msg->message = strdup(c->line + 84, strlen(c->line + 84) - 1);
         msg->isRead = (c->line[8] == 'R') ? true : false;
         msg->next = NULL;
         return msg;
     } else if (strncmp(c->line + 47, id, 36) == 0) {
         msg->from = strndup(c->line + 10, 36);
         msg->to = strdup(id);
-        msg->message = get_quotes_content(c->line + 84);
+        msg->message = strdup(c->line + 84);
         msg->isRead = (c->line[8] == 'R') ? true : false;
         msg->next = NULL;
         return msg;
@@ -79,7 +79,7 @@ userinfo_t *create_user_by_name(file_io_t *file_io, char *name)
         user->id = malloc(sizeof(char) * 37);
         uuid_unparse(uid, user->id);
         line = malloc(sizeof(char) * (strlen(name) + 45));
-        sprintf(line, "USER %s \"%s\"", user->id, name);
+        sprintf(line, "USER\a%s\a%s", user->id, name);
         append_to_list(&file_io->lines, line);
         user->messages = NULL;
         user->name = strdup(name);
@@ -102,7 +102,7 @@ userinfo_t *get_all_user_infos(file_io_t *file_io)
         if (c->type == USER) {
             user = malloc(sizeof(userinfo_t));
             user->id = strndup(c->line + 5, 36);
-            user->name = get_quotes_content(c->line + 42);
+            user->name = strdup(c->line + 42);
             user->messages = get_messages_by_user(file_io, user->id);
             user->next = NULL;
             (user) ? (users) ? (cuser->next = user) : (users = user) : 0;

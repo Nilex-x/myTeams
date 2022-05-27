@@ -44,12 +44,12 @@ void append_message_to_udata(userinfo_t *from, userinfo_t *to, char *msg, bool i
 
 char *alloc_message(char *from_id, char *to_id, char *message, int is_read)
 {
-    char *line = malloc(strlen(message) + 87);
+    char *line = NULL;
 
     if (is_read)
-        sprintf(line, "MESSAGE R %s %s \"%s\"", from_id, to_id, message);
+        asprintf(&line, "MESSAGE\aR\a%s\a%s\a%s", from_id, to_id, message);
     else
-        sprintf(line, "MESSAGE N %s %s \"%s\"", from_id, to_id, message);
+        asprintf(&line, "MESSAGE\aN\a%s\a%s\a%s", from_id, to_id, message);
     return (line);
 }
 
