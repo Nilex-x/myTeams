@@ -68,10 +68,9 @@ int send_message_connected_user(struct client_s *cli
     cli->status = WRITE;
     curr = user->messages;
     for (; curr->next; curr = curr->next);
-    line = malloc(81 + strlen(message));
     for (users_t *u = data->users; u; u = u->next)
         if (u->info->id == user->id) {
-            sprintf(line, "201 %s %s \"%s\"\n", curr->from, curr->to, message);
+            asprintf(&line, "211\a%s\a%s\n", curr->from, message);
             u->client->data_send = add_send(u->client->data_send, line);
         }
     free(line);

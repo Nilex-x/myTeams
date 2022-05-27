@@ -29,6 +29,7 @@ int send_log_to_client(client_t *c, data_server_t *data, bool creat, bool log)
 {
     char *res = NULL;
 
+    (void) data;
     if (log) {
         asprintf(&res, "%d\a%s\a%s\n", creat ? 301 : 302, c->user->info->id,
                                         c->user->info->name);
@@ -63,6 +64,7 @@ int logout(client_t *c, char **arg, data_server_t *data)
     char *response = NULL;
     users_t *user = c->user;
 
+    (void) arg;
     if (user) {
         send_log_to_client(c, data, false, false);
         notif_connection(data, user, false);

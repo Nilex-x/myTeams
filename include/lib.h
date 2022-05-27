@@ -39,5 +39,6 @@ void add_to_write(buffer_t *buff, char *value, int length_max);
 void init_buffer(buffer_t *buff, int length_command);
 int len_array(char **array);
 char *generate_uuid(void);
+char *copy_to_char(char *str, char end);
 
 #endif /* !LIB_H_ */

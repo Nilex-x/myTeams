@@ -45,6 +45,7 @@ typedef struct server_s
     int fd_server;
     int max_fd;
     fd_set wfds;
+    fd_set efds;
     fd_set rfds;
     client_t *list_client;
     struct data_server_s *data;
