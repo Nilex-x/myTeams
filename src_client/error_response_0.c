@@ -9,25 +9,25 @@
 
 void code_500()
 {
-	printf("500 -> Unknown command.\n");
+    printf("500 -> Unknown command.\n");
 }
 
 void code_501()
 {
-	printf("501 -> Missing double quotes.\n");
+    printf("501 -> Missing double quotes.\n");
 }
 
 void code_502()
 {
-	printf("502 -> Command missing arguments.\n");
+    printf("502 -> Command missing arguments.\n");
 }
 
 void code_503()
 {
-	printf("503 -> Not logged-in.\n");
+    printf("503 -> Not logged-in.\n");
 }
 
 void code_504()
 {
-	printf("504 -> Too long command.\n");
+    printf("504 -> Too long command.\n");
 }

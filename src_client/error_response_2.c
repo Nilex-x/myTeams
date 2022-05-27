@@ -9,20 +9,20 @@
 
 void code_521()
 {
-	printf("521 -> Wrong user uuid.\n");
+    printf("521 -> Wrong user uuid.\n");
 }
 
 void code_522()
 {
-	printf("522 -> Wrong team uuid.\n");
+    printf("522 -> Wrong team uuid.\n");
 }
 
 void code_523()
 {
-	printf("523 -> Wrong channel uuid.\n");
+    printf("523 -> Wrong channel uuid.\n");
 }
 
 void code_524()
 {
-	printf("524 -> Wrong thread uuid.\n");
+    printf("524 -> Wrong thread uuid.\n");
 }

@@ -44,7 +44,6 @@ team_t *create_add_teams(char *name, char *desc, data_server_t *data)
     new_team->subcribed = NULL;
     new_team->next = NULL;
     new_team->id = generate_uuid();
-    printf("id team: %s\n", new_team->id);
     if (!temp) {
         data->teams = new_team;
         return (new_team);

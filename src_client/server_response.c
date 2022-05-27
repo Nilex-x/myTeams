@@ -45,39 +45,39 @@ void (*data_command[7])(char *data) =
 
 int return_data(char *response)
 {
-	void (*data_command[13])(char *data) =
+    void (*data_command[13])(char *data) =
     {&code_311, &code_312, &code_314, &code_316,
-	&code_317, &code_331, &code_332, &code_333,
-	&code_334, &code_341, &code_342, &code_343,
-	&code_344};
-	const char *codes[13] =
-	{"311", "312", "314", "316", "317", "331", "332", "333", "334"
-	, "341", "342", "343", "344"};
+    &code_317, &code_331, &code_332, &code_333,
+    &code_334, &code_341, &code_342, &code_343,
+    &code_344};
+    const char *codes[13] =
+    {"311", "312", "314", "316", "317", "331", "332", "333", "334"
+    , "341", "342", "343", "344"};
 
-	for (int i = 0; i < 13; i++)
-		if (strncmp(codes[i], response, 3) == 0) {
-			data_command[i](response + 4);
-			return 1;
-		}
-	return 0;
+    for (int i = 0; i < 13; i++)
+        if (strncmp(codes[i], response, 3) == 0) {
+            data_command[i](response + 4);
+            return 1;
+        }
+    return 0;
 }
 
 int return_errors(char *response)
 {
-	void (*error_command[12])(void) =
+    void (*error_command[12])(void) =
     {&code_500, &code_501, &code_502, &code_503,
-	&code_504, &code_511, &code_512, &code_513,
-	&code_521, &code_522, &code_523, &code_524};
-	const char *codes[12] =
-	{"500", "501", "502", "503", "504", "511", "512"
-	, "513", "521", "522", "523", "524"};
+    &code_504, &code_511, &code_512, &code_513,
+    &code_521, &code_522, &code_523, &code_524};
+    const char *codes[12] =
+    {"500", "501", "502", "503", "504", "511", "512"
+    , "513", "521", "522", "523", "524"};
 
-	for (int i = 0; i < 12; i++)
-		if (strncmp(codes[i], response, 3) == 0) {
-			error_command[i]();
-			return 1;
-		}
-	return 0;
+    for (int i = 0; i < 12; i++)
+        if (strncmp(codes[i], response, 3) == 0) {
+            error_command[i]();
+            return 1;
+        }
+    return 0;
 }
 
 int server_response(char *response)

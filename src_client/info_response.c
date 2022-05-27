@@ -9,20 +9,20 @@
 
 void code_341(char *response)
 {
-	printf("341 -> info teams.\n");
+    printf("341 -> info teams.\n");
 }
 
 void code_342(char *response)
 {
-	printf("342 -> info channel.\n");
+    printf("342 -> info channel.\n");
 }
 
 void code_343(char *response)
 {
-	printf("343 -> info threads.\n");
+    printf("343 -> info threads.\n");
 }
 
 void code_344(char *response)
 {
-	printf("344 -> info replies.\n");
+    printf("344 -> info replies.\n");
 }
