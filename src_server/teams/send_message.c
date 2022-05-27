@@ -7,31 +7,23 @@
 
 #include "my_teams.h"
 
-void append_message_to_udata(userinfo_t *from, userinfo_t *to, char *msg, bool isRead)
+void append_message_to_udata(userinfo_t *f, userinfo_t *t, char *msg, bool r)
 {
     message_t *mesg = malloc(sizeof(message_t));
-    message_t *f_msg = from->messages;
-    message_t *t_msg = to->messages;
+    message_t *f_msg = f->messages;
+    message_t *t_msg = t->messages;
 
-    printf("\t1\n");
-    mesg->from = strdup(from->id);
-    printf("\t2\n");
-    mesg->to = strdup(to->id);
-    printf("\t3\n");
+    mesg->from = strdup(f->id);
+    mesg->to = strdup(t->id);
     mesg->message = strdup(msg);
-    printf("\t4\n");
-    mesg->isRead = isRead;
-    printf("\t5\n");
+    mesg->isRead = r;
     mesg->next = NULL;
-    printf("\t6\n");
     while (f_msg && f_msg->next)
         f_msg = f_msg->next;
     while (t_msg && t_msg->next)
         t_msg = t_msg->next;
-    printf("\t7\n");
-    (f_msg) ? (f_msg->next = mesg) : (from->messages = mesg);
-    printf("\t8\n");
-    (t_msg) ? (t_msg->next = mesg) : (to->messages = mesg);
+    (f_msg) ? (f_msg->next = mesg) : (f->messages = mesg);
+    (t_msg) ? (t_msg->next = mesg) : (t->messages = mesg);
 }
 
 char *alloc_message(char *from_id, char *to_id, char *message, int is_read)

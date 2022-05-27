@@ -10,7 +10,7 @@
 void init_buffer(buffer_t *buff, int length_command)
 {
     for (int i = 0; i < length_command; i++)
-       buff->buffer[i] = '\0';
+        buff->buffer[i] = '\0';
     buff->rdonly = buff->buffer;
     buff->wronly = buff->buffer;
 }
@@ -30,9 +30,9 @@ int find_end_of_line(buffer_t *buff, char end_of_line, int length_max)
     return (-1);
 }
 
-char *read_to_buffer(buffer_t *buff, char end_of_line, int length_max)
+char *read_to_buffer(buffer_t *buff, char end_of_line, int max)
 {
-    int len = find_end_of_line(buff, '\n', length_max);
+    int len = find_end_of_line(buff, '\n', max);
     char *value = NULL;
     int i = 0;
 
@@ -41,8 +41,8 @@ char *read_to_buffer(buffer_t *buff, char end_of_line, int length_max)
     value = malloc(sizeof(char) * (len + 2));
     if (!value)
         return (NULL);
-    for (; buff->rdonly[0] != end_of_line && i < length_max; buff->rdonly++, i++) {
-        if ((buff->rdonly - buff->buffer) == length_max)
+    for (; buff->rdonly[0] != end_of_line && i < max; buff->rdonly++, i++) {
+        if ((buff->rdonly - buff->buffer) == max)
             buff->rdonly = buff->buffer;
         value[i] = buff->rdonly[0];
         buff->rdonly[0] = '\0';

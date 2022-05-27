@@ -25,12 +25,12 @@ int notif_connection(data_server_t *data, users_t *user, bool isLog)
     return (0);
 }
 
-int send_log_to_client(client_t *c, data_server_t *data, bool created, bool log)
+int send_log_to_client(client_t *c, data_server_t *data, bool creat, bool log)
 {
     char *res = NULL;
 
     if (log) {
-        asprintf(&res, "%d\a%s\a%s\n", created ? 301 : 302, c->user->info->id,
+        asprintf(&res, "%d\a%s\a%s\n", creat ? 301 : 302, c->user->info->id,
                                         c->user->info->name);
     } else {
         asprintf(&res, "303\a%s\a%s\n", c->user->info->name,

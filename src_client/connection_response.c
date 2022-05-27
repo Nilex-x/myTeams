@@ -9,20 +9,20 @@
 
 void code_301()
 {
-	printf("301 -> User created.\n");
+    printf("301 -> User created.\n");
 }
 
 void code_302()
 {
-	printf("302 -> Connected.\n");
+    printf("302 -> Connected.\n");
 }
 
 void code_303()
 {
-	printf("303 -> Disconnected.\n");
+    printf("303 -> Disconnected.\n");
 }
 
 void code_304()
 {
-	printf("304 -> Goodbye, see you soon.\n");
+    printf("304 -> Goodbye, see you soon.\n");
 }

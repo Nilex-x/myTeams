@@ -73,15 +73,15 @@ channel_t *get_channels(file_io_t *file_io, char *team_id)
     return channels;
 }
 
-subscribed_t *get_subscribed(file_io_t *file_io, char *team_id, data_server_t *d)
+subscribed_t *get_subscribed(file_io_t *file_io, char *id, data_server_t *d)
 {
     subscribed_t *sub = NULL;
     subscribed_t *last = NULL;
     subscribed_t *tmp = NULL;
-    int len = (strlen(team_id) + 12);
+    int len = (strlen(id) + 12);
     char *p = malloc(sizeof(char) * len);
 
-    sprintf(p, "SUBSCRIBE %s", team_id);
+    sprintf(p, "SUBSCRIBE %s", id);
     for (line_t *curr = file_io->lines; curr; curr = curr->next)
         if (curr->type == SUBSCRIBED && strncmp(curr->line, p, len - 1) == 0) {
             tmp = malloc(sizeof(subscribed_t));

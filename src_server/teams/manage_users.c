@@ -64,7 +64,7 @@ void add_user(users_t *toadd, data_server_t *data)
         data->users = toadd;
         return;
     }
-    while(temp->next)
+    while (temp->next)
         temp = temp->next;
     temp->next = toadd;
     return;

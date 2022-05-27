@@ -9,20 +9,20 @@
 
 void code_101()
 {
-	printf("101 -> DISPLAY HELP\n");
+    printf("101 -> DISPLAY HELP\n");
 }
 
 void code_102()
 {
-	printf("102 -> Already logged-in.\n");
+    printf("102 -> Already logged-in.\n");
 }
 
 void code_103()
 {
-	printf("103 -> Already subscribed.\n");
+    printf("103 -> Already subscribed.\n");
 }
 
 void code_104()
 {
-	printf("104 -> Not subscribed.\n");
+    printf("104 -> Not subscribed.\n");
 }

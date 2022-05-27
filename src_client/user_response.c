@@ -7,18 +7,17 @@
 
 #include "teams_client.h"
 
-
 void code_313()
 {
-	printf("313 -> Message sent.\n");
+    printf("313 -> Message sent.\n");
 }
 
 void code_315()
 {
-	printf("315 -> Successfully subscribed.\n");
+    printf("315 -> Successfully subscribed.\n");
 }
 
 void code_319()
 {
-	printf("319 -> New context specified.\n");
+    printf("319 -> New context specified.\n");
 }

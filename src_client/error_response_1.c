@@ -9,15 +9,15 @@
 
 void code_511()
 {
-	printf("511 -> Already logged-ins.\n");
+    printf("511 -> Already logged-ins.\n");
 }
 
 void code_512()
 {
-	printf("512 -> Already subscribed.\n");
+    printf("512 -> Already subscribed.\n");
 }
 
 void code_513()
 {
-	printf("513 -> Not subscribed.\n");
+    printf("513 -> Not subscribed.\n");
 }

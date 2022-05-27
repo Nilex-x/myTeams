@@ -116,7 +116,7 @@ int sort_command(client_t *client, data_server_t *data, char *cmd);
  * @param c client link to user
  * @return users_t *
  */
-users_t *init_user(char *name, data_server_t *data, userinfo_t *info, client_t *c);
+users_t *init_user(char *name, data_server_t *data, userinfo_t *i, client_t *c);
 
 /*                          users                                        */
 
@@ -160,7 +160,6 @@ void remove_user(users_t *torm, data_server_t *data);
  * @param users users list to free
  */
 void free_users(users_t *users);
-
 
 /*                        userinfos                                      */
 
@@ -270,6 +269,26 @@ team_t *create_add_teams(char *name, char *desc, data_server_t *data);
  * @param teams the list of team to free
  */
 void free_teams(team_t *teams);
+
+/**
+ * @brief Subscribe to a team
+ *
+ * @param c Client who do command
+ * @param args Array of command arguments
+ * @param data Server data struct
+ * @return int
+ */
+int subscribe(client_t *c, char **args, data_server_t *data);
+
+/**
+ * @brief Unsubscribe to a team
+ *
+ * @param c Client who do command
+ * @param args Array of command arguments
+ * @param data Server data struct
+ * @return int
+ */
+int unsubscribe(client_t *c, char **args, data_server_t *data);
 
 /*                         create                                        */
 

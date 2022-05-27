@@ -7,7 +7,6 @@
 
 #include "teams_client.h"
 
-
 static info_t *init_info(int socket)
 {
     info_t *info = malloc(sizeof(info_t));
@@ -48,14 +47,14 @@ int client_loop(info_t *info)
     int inf_sock = info->socket + 1;
 
     clear_list(info);
-	if (response && response[0] != '\n') {
+    if (response && response[0] != '\n') {
         if (server_response(response))
             return 0;
     } else
-		free(response);
+        free(response);
     if (select(inf_sock, &info->readfds, &info->writefds, NULL, NULL) >= 0)
         manage_client(info);
-    return 1;	
+    return 1;
 }
 
 int main(int argc, char **argv)
