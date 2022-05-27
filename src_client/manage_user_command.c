@@ -52,9 +52,7 @@ int client_cmd(char *command, char *args, const char **cmds, char **to_send)
     int index = check_command(command);
 
     if (index < 14) {
-        *to_send = malloc(sizeof(char) * (strlen(cmds[index])
-         + strlen(args) + 2));
-        sprintf(*to_send, "%s%s", cmds[index], args);
+        asprintf(to_send, "%s%s", cmds[index], args);
         replace_char(*to_send);
         remove_dquotes(*to_send);
     }
@@ -78,7 +76,6 @@ int user_command(info_t *info)
     args = get_args(info->write_buffer, strlen(command));
     index = client_cmd(command, args, commands, &to_send);
     if (index < 14) {
-        info->write_buffer = realloc(info->write_buffer, strlen(to_send) + 1);
         info->write_buffer = strdup(to_send);
         free(to_send);
         return 1;

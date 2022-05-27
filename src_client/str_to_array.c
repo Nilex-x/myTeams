@@ -20,6 +20,7 @@ void remove_dquotes(char *str)
             i++;
         }
     }
+    str[i] = '\0';
 }
 
 void replace_char(char *str)
