@@ -11,8 +11,8 @@ int return_code(char *response)
 {
     void (*code_command[15])(char *data) =
     {&code_101, &code_102, &code_103, &code_104,
-    &code_301, &code_302, &code_303,&code_313,
-    &code_315, &code_319, &code_321, &code_322,
+    &code_301, &code_302, &code_303 ,&code_313,
+    &code_315, &code_318, &code_319, &code_321, &code_322,
     &code_323, &code_324};
     char *codes[15] =
     {"101", "102", "103", "104", "301", "302", "303", "313",

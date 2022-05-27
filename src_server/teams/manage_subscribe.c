@@ -32,7 +32,7 @@ static int add_to_list(team_t *team, userinfo_t *info, data_server_t *data)
 {
     char *line = NULL;
 
-    asprintf(&line, "SUBSCRIBED\a%s\a%s\n", team->id, info->id);
+    asprintf(&line, "SUBSCRIBED\a%s\a%s", team->id, info->id);
     append_to_list(&data->list->lines, line);
     free(line);
     return (0);

@@ -32,7 +32,7 @@ int add_teams(client_t *c, char **args, data_server_t *data)
 
     if (!new_team) {
         new_team = create_add_teams(args[1], args[2], data);
-        asprintf(&new_line, "CREATE\aTEAM\a%s\a%s\a%s\n", new_team->id,
+        asprintf(&new_line, "CREATE\aTEAM\a%s\a%s\a%s", new_team->id,
                             new_team->name, new_team->description);
         append_to_list(&data->list->lines, new_line);
         free(new_line);
