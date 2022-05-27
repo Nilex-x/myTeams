@@ -49,12 +49,21 @@ char *get_args(char *cmd, int cmd_len)
 
 int client_cmd(char *command, char *args, const char **cmds, char **to_send)
 {
+    int quotes_cmds[6] = {1, 4, 5, 6, 7, 9};
     int index = check_command(command);
+    int quotes;
 
     if (index < 14) {
         asprintf(to_send, "%s%s", cmds[index], args);
         replace_char(*to_send);
-        remove_dquotes(*to_send);
+        quotes = remove_dquotes(*to_send);
+    }
+    printf("quotes:%d\n", quotes);
+    printf("index:%d\n", index);
+    for (int i = 0; i < 6; i++) {
+        printf("cmd:%d\n", quotes_cmds[i]);
+        if (index == quotes_cmds[i] && !quotes)
+            return -1;
     }
     return index;
 }
@@ -75,7 +84,10 @@ int user_command(info_t *info)
         return -1;
     args = get_args(info->write_buffer, strlen(command));
     index = client_cmd(command, args, commands, &to_send);
+    if (index == -1)
+        return -2;
     if (index < 14) {
+        free(info->write_buffer);
         info->write_buffer = strdup(to_send);
         free(to_send);
         return 1;

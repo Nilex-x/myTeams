@@ -7,27 +7,24 @@
 
 #include "teams_client.h"
 
-void code_500()
+void code_500(char *response)
 {
     printf("500 -> Unknown command.\n");
 }
 
-void code_501()
+void code_501(char *response)
 {
-    printf("501 -> Missing double quotes.\n");
+    printf("501 -> Missing argument.\n");
 }
 
-void code_502()
+// not logged in
+void code_502(char *response)
 {
-    printf("502 -> Command missing arguments.\n");
+    client_error_unauthorized();
 }
 
-void code_503()
+void code_503(char *response)
 {
-    printf("503 -> Not logged-in.\n");
+    printf("503 -> Too long command.\n");
 }
 
-void code_504()
-{
-    printf("504 -> Too long command.\n");
-}

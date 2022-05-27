@@ -30,6 +30,7 @@ typedef struct info_s {
     char *write_buffer;
     fd_set readfds;
     fd_set writefds;
+    fd_set exceptfds;
     int quit;
 } info_t;
 
@@ -47,7 +48,7 @@ int user_command(info_t *info);
 
 // str to array
 
-void remove_dquotes(char *str);
+int remove_dquotes(char *str);
 void replace_char(char *str);
 char **str_to_array(char *str, char c);
 void free_array(char **array);
@@ -69,6 +70,7 @@ void code_303(char *response);
 
 void code_313(char *response);
 void code_315(char *response);
+void code_318(char *response);
 void code_319(char *response);
 
 void code_311(char *response);
@@ -100,17 +102,16 @@ void code_221(char *response);
 void code_222(char *response);
 void code_223(char *response);
 
-void code_500();
-void code_501();
-void code_502();
-void code_503();
-void code_504();
-void code_511();
-void code_512();
-void code_513();
-void code_521();
-void code_522();
-void code_523();
-void code_524();
+void code_500(char *response);
+void code_501(char *response);
+void code_502(char *response);
+void code_503(char *response);
+void code_511(char *response);
+void code_512(char *response);
+void code_513(char *response);
+void code_521(char *response);
+void code_522(char *response);
+void code_523(char *response);
+void code_524(char *response);
 
 #endif /* !TEAMS_CLIENT_H_ */

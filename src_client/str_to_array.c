@@ -7,7 +7,7 @@
 
 #include "teams_client.h"
 
-void remove_dquotes(char *str)
+int remove_dquotes(char *str)
 {
     int nb_quotes = 0;
     int i = 0;
@@ -21,6 +21,7 @@ void remove_dquotes(char *str)
         }
     }
     str[i] = '\0';
+    return nb_quotes;
 }
 
 void replace_char(char *str)
