@@ -22,15 +22,25 @@ void get_server_command(info_t *info)
 {
     int valread;
     char *buffer = malloc(LENGTH_COMMAND);
+    char *response = NULL;
 
     if (!buffer)
         return;
     valread = read(info->socket, buffer, LENGTH_COMMAND);
-    if (valread == -1 || valread == 0)
+    if (valread == -1)
+        info->quit = 1;
+    if (valread == 0 || valread == -1)
         return;
     buffer[valread] = '\0';
     add_to_write(&info->read_buffer, buffer, LENGTH_COMMAND);
+    printf("1:[%s]\n", buffer);
     free(buffer);
+    response = read_to_buffer(&info->read_buffer, '\n', LENGTH_COMMAND);
+    printf("2:%s\n", response);
+    if (response && response[0] != '\n') {
+        server_response(response, info);
+    } else
+        free(response);
 }
 
 void get_user_command(info_t *info)

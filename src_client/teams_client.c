@@ -19,6 +19,7 @@ static info_t *init_info(int socket)
     init_buffer(&info->read_buffer, LENGTH_COMMAND);
     FD_SET(info->socket, &info->readfds);
     FD_ZERO(&info->writefds);
+    info->quit = 0;
     return info;
 }
 
@@ -43,15 +44,9 @@ int connect_client(char *ip, int port)
 
 int client_loop(info_t *info)
 {
-    char *response = read_to_buffer(&info->read_buffer, '\n', LENGTH_COMMAND);
     int inf_sock = info->socket + 1;
 
     clear_list(info);
-    if (response && response[0] != '\n') {
-        if (server_response(response))
-            return 0;
-    } else
-        free(response);
     if (select(inf_sock, &info->readfds, &info->writefds, NULL, NULL) >= 0)
         manage_client(info);
     return 1;
@@ -69,7 +64,7 @@ int main(int argc, char **argv)
     info = init_info(client_socket);
     if (!info)
         return 84;
-    while (run == 1)
+    while (!info->quit)
         run = client_loop(info);
     return (0);
 }

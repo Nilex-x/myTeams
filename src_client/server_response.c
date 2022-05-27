@@ -80,7 +80,7 @@ int return_errors(char *response)
     return 0;
 }
 
-int server_response(char *response)
+void server_response(char *response, info_t *info)
 {
 	if (response[0] == '5')
 		return_errors(response);
@@ -89,7 +89,6 @@ int server_response(char *response)
 	else if (!return_code(response))
 		return_data(response);
 	if (strncmp(response, "303", 3) == 0)
-		return 1;
+		info->quit = 1;
 	free(response);
-	return 0;
 }

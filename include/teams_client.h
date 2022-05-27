@@ -29,6 +29,7 @@ typedef struct info_s {
     char *write_buffer;
     fd_set readfds;
     fd_set writefds;
+    int quit;
 } info_t;
 
 // client_command: manage user and server input
@@ -52,7 +53,7 @@ void free_array(char **array);
 
 // server_response
 
-int server_response(char *response);
+void server_response(char *response, info_t *info);
 
 // code
 void code_101(char *response);
