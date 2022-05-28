@@ -56,6 +56,7 @@ int login(client_t *c, char **arg, data_server_t *data)
     c->user = init_user(arg[1], data, info, c);
     send_log_to_client(c, data, !info ? true : false, true);
     notif_connection(data, c->user, true);
+    load_unread_messages(c, data);
     return (0);
 }
 
