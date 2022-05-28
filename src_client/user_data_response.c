@@ -21,10 +21,13 @@ void code_311(char *response)
     free_array(sep_usr);
 }
 
-// User
+// User "user uuid"
 void code_312(char *response)
 {
     printf("312 -> Show user informations.\n");
+    char **data = str_to_array(response, '\r');
+
+    client_print_user(data[0], data[1], atoi(data[2]));
 }
 
 void code_314(char *response)

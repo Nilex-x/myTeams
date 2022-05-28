@@ -52,6 +52,7 @@ void get_user_command(info_t *info)
     valread = getline(&info->write_buffer, &buffsize, stdin);
     if (valread == -1 || valread == 0) {
         info->quit = 1;
+        free(info->write_buffer);
         return;
     }
     info->read_write = WRITE;
@@ -63,11 +64,11 @@ void get_user_command(info_t *info)
 
 void write_command(info_t *info)
 {
-    if (info->write_buffer) {
+    if (info->write_buffer)
         write(info->socket, info->write_buffer, strlen(info->write_buffer));
-        free(info->write_buffer);
-    } else
+    else
         printf("missing double_quotes\n");
+    free(info->write_buffer);
     info->read_write = READ;
 }
 
