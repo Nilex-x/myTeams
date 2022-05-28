@@ -30,6 +30,8 @@ char *get_cmd(char *cmd)
     if (!i)
         return NULL;
     res = malloc(sizeof(char) * i + 1);
+    if (!res)
+        return NULL;
     strncpy(res, cmd, i);
     res[i] = '\0';
     return res;
@@ -59,9 +61,14 @@ int client_cmd(char *command, char *args, const char **cmds, char **to_send)
         quotes = remove_dquotes(*to_send);
     }
     for (int i = 0; i < 6; i++) {
-        if (index == quotes_cmds[i] && !quotes)
+        if (index == quotes_cmds[i] && !quotes) {
+            free(command);
+            free(args);
             return -1;
+        }
     }
+    free(command);
+    free(args);
     return index;
 }
 
@@ -81,10 +88,11 @@ int user_command(info_t *info)
         return -1;
     args = get_args(info->write_buffer, strlen(command));
     index = client_cmd(command, args, commands, &to_send);
-    if (index == -1)
+    if (index == -1) {
+        free(to_send);
         return -2;
+    }
     if (index < 14) {
-        free(info->write_buffer);
         info->write_buffer = strdup(to_send);
         free(to_send);
         return 1;

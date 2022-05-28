@@ -37,11 +37,11 @@ void get_server_command(info_t *info)
     add_to_write(&info->read_buffer, buffer, LENGTH_COMMAND);
     free(buffer);
     response = read_to_buffer(&info->read_buffer, '\n', LENGTH_COMMAND);
-    // printf("[%s]\n", response);
-    if (response && response[0] != '\n')
-        server_response(response, info);
-    else
-        free(response);
+    while (response && response[0] != '\n') {
+        (response && response[0] != '\n') ? server_response(response, info) :
+                                                free(response);
+        response = read_to_buffer(&info->read_buffer, '\n', LENGTH_COMMAND);
+    }
 }
 
 void get_user_command(info_t *info)
@@ -50,25 +50,30 @@ void get_user_command(info_t *info)
     size_t buffsize = 0;
 
     info->write_buffer = malloc(1);
+    printf("MALLOC\n");
     valread = getline(&info->write_buffer, &buffsize, stdin);
     if (valread == -1 || valread == 0) {
         info->quit = 1;
+        free(info->write_buffer);
+        printf("FREE\n");
         return;
     }
     info->read_write = WRITE;
     if (user_command(info) == -2) {
         free(info->write_buffer);
+        printf("FREE\n");
         info->write_buffer = NULL;
     }
 }
 
 void write_command(info_t *info)
 {
-    if (info->write_buffer) {
+    if (info->write_buffer)
         write(info->socket, info->write_buffer, strlen(info->write_buffer));
-        free(info->write_buffer);
-    } else
+    else
         printf("missing double_quotes\n");
+    free(info->write_buffer);
+    printf("FREE\n");
     info->read_write = READ;
 }
 
