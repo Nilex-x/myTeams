@@ -14,12 +14,14 @@ line_t *create_line(char *line)
     if (!new_line)
         return NULL;
     new_line->line = strdup(line);
+    new_line->line_cpy = strdup(line);
     if (line[0] == 'U')
         new_line->type = USER;
     else if (line[0] == 'M')
         new_line->type = MESSAGE;
     else
         new_line->type = (line[0] == 'C') ? CREATE : SUBSCRIBED;
+    printf("%d excepted: %d\n", new_line->type, SUBSCRIBED);
     new_line->next = NULL;
     return new_line;
 }
@@ -35,6 +37,7 @@ void append_to_list(line_t **list, char *line)
         *list = new_line;
         return;
     }
+    printf("loop struct\n");
     while (curr->next && curr->next->type <= new_line->type)
         curr = curr->next;
     new_line->next = curr->next;
@@ -66,6 +69,7 @@ void file_io_destroy(file_io_t *file_io)
         tmp = curr;
         curr = curr->next;
         free(tmp->line);
+        free(tmp->line_cpy);
         free(tmp);
     }
     free(file_io->file_name);

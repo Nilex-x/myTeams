@@ -9,11 +9,14 @@
 
 data_send_t *add_send(data_send_t *data_send, char *data)
 {
-    data_send_t *new = malloc(sizeof(data_send_t));
+    data_send_t *new = NULL;
     data_send_t *curr = data_send;
 
+    if (!data)
+        return curr;
+    new = malloc(sizeof(data_send_t));
     if (!new)
-        return (NULL);
+        return curr;
     new->data = strdup(data);
     new->next = NULL;
     if (!data_send)

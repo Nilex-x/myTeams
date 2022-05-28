@@ -27,13 +27,7 @@ void handle_command(server_t *info, client_t *cli)
         free(value);
         close_server(info);
     }
-    if (strstr(value, "QUIT")) {
-        free(value);
-        cli->isQuit = true;
-        cli->data_send = add_send(cli->data_send, "304 Goodbye\n");
-        cli->status = WRITE;
-        return;
-    }
+    printf("value client [%s]\n", value);
     sort_command(cli, info->data, value);
     free(value);
 }

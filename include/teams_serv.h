@@ -45,6 +45,7 @@ typedef struct server_s
     int fd_server;
     int max_fd;
     fd_set wfds;
+    fd_set efds;
     fd_set rfds;
     client_t *list_client;
     struct data_server_s *data;
@@ -65,10 +66,10 @@ void write_client(server_t *info, int s_client);
 void close_server(server_t *info);
 void init_buff_client(client_t *node);
 void handle_command(server_t *info, client_t *client);
-void init_data(server_t *info);
 
 data_send_t *add_send(data_send_t *data_send, char *data);
 char *get_next_data_to_send(data_send_t **data_send);
 size_t get_size_data_to_send(data_send_t *data_send);
+void free_data_send(data_send_t *send);
 
 #endif /* !TEAMS_SERV_H_ */

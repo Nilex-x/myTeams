@@ -63,14 +63,24 @@ void remove_client(server_t *info, int client)
 {
     client_t *temp = info->list_client;
 
+    if (temp->socket == client) {
+        info->list_client = temp->next;
+        free(temp->buff_read);
+        free_data_send(temp->data_send);
+        free(temp);
+        return;
+    }
     while (temp) {
-        if (temp->socket == client) {
-            (temp->prev) ? (temp->prev->next = temp->next) : 
-            (info->list_client = temp->next);
-            (temp->next) ? (temp->prev) ? (temp->next->prev = temp->prev) : 
-            (temp->next->prev = NULL) : (temp->prev) ? 
-            (temp->prev->next = NULL) : (info->list_client = NULL);
+        if (temp->socket == client && temp->prev) {
+            temp->prev->next = temp->next;
             free(temp->buff_read);
+            free_data_send(temp->data_send);
+            free(temp);
+            return;
+        } else if (temp->socket == client && !temp->prev) {
+            info->list_client = temp->next;
+            free(temp->buff_read);
+            free_data_send(temp->data_send);
             free(temp);
             return;
         }
@@ -87,7 +97,7 @@ void accept_connect(server_t *info)
                                 &len);
     FD_SET(incomming_fd, &info->wfds);
     new_client = add_client(info, incomming_fd);
-    new_client->data_send = add_send(new_client->data_send,"220\n");
+    new_client->data_send = add_send(new_client->data_send, "220\n");
     new_client->status = WRITE;
     if (incomming_fd > info->max_fd)
         info->max_fd = incomming_fd;

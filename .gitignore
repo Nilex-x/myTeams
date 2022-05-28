@@ -57,4 +57,6 @@ temp.c
 uml
 *.save
 outfile
+vg*
+.vscode
 libs/file_io/test.c

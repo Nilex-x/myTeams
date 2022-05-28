@@ -21,25 +21,25 @@ message_t *dup_msg(message_t *msg)
     return new;
 }
 
-void append_message_to_udata(userinfo_t *from, userinfo_t *to, char *msg, bool isRead)
+void append_message_to_udata(userinfo_t *f, userinfo_t *t, char *msg, bool r)
 {
     message_t *mesg = malloc(sizeof(message_t));
     message_t *mesg_sec = NULL;
-    message_t *f_msg = from->messages;
-    message_t *t_msg = to->messages;
+    message_t *f_msg = f->messages;
+    message_t *t_msg = t->messages;
 
-    mesg->from = strdup(from->id);
-    mesg->to = strdup(to->id);
+    mesg->from = strdup(f->id);
+    mesg->to = strdup(t->id);
     mesg->message = strdup(msg);
-    mesg->isRead = isRead;
+    mesg->isRead = r;
     mesg->next = NULL;
     mesg_sec = dup_msg(mesg);
     while (f_msg && f_msg->next)
         f_msg = f_msg->next;
     while (t_msg && t_msg->next)
         t_msg = t_msg->next;
-    (f_msg) ? (f_msg->next = mesg) : (from->messages = mesg);
-    (t_msg) ? (t_msg->next = mesg_sec) : (to->messages = mesg_sec);
+    (f_msg) ? (f_msg->next = mesg) : (f->messages = mesg);
+    (t_msg) ? (t_msg->next = mesg_sec) : (t->messages = mesg_sec);
 }
 
 char *alloc_message(char *from_id, char *to_id, char *message, int is_read)
@@ -68,7 +68,7 @@ void send_message_connected_user(struct client_s *cli
     for (; curr->next; curr = curr->next);
     for (users_t *u = data->users; u; u = u->next) {
         if (u->info->id == user->id) {
-            asprintf(&line, "201\a%s\a%s\a%s\n", curr->from, curr->to, msg);
+            asprintf(&line, "211\a%s\a%s\n", curr->from, msg);
             u->client->data_send = add_send(u->client->data_send, line);
             u->client->status = WRITE;
         }

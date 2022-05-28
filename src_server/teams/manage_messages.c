@@ -38,6 +38,7 @@ void free_message(message_t *msgs)
         free(msgs->from);
         free(msgs->to);
         free(msgs->message);
+        free(msgs);
         msgs = next;
     }
     return;

@@ -7,45 +7,7 @@
 
 #include "my_teams.h"
 
-int login(struct client_s *c, char **arg, data_server_t *data)
-{
-    if (c->user) {
-        c->data_send = add_send(c->data_send, "102 Already logged-in.\n");
-        c->status = WRITE;
-        return (0);
-    } else if (len_array(arg) != 2) {
-        c->data_send = add_send(c->data_send, "502 Missing arguments.\n");
-        c->status = WRITE;
-        return (0);
-    }
-    if (!get_user_info_by_name(arg[1], data)) {
-        c->user = init_user(arg[1], data, NULL);
-        c->data_send = add_send(c->data_send, "301 User created.\n");
-    } else {
-        c->user = init_user(arg[1], data, get_user_info_by_name(arg[1], data));
-        c->data_send = add_send(c->data_send, "302 User connected.\n");
-        load_unread_messages(c, data);
-    }
-    c->status = WRITE;
-    c->user->client = c;
-    return (0);
-}
-
-int logout(struct client_s *c, char **arg, data_server_t *data)
-{
-    if (c->user) {
-        c->data_send = add_send(c->data_send, "303 - User disconnected.\n");
-        c->status = WRITE;
-        server_event_user_logged_out(c->user->info->id);
-        c->user = NULL;
-    } else {
-        c->data_send = add_send(c->data_send, "503 - Not logged-in.\n");
-        c->status = WRITE;
-    }
-    return (0);
-}
-
-int send_msg(struct client_s *c, char **arg, data_server_t *data)
+int send_msg(client_t *c, char **arg, data_server_t *data)
 {
     if (!c->user) {
         c->data_send = add_send(c->data_send, "503 - Not logged-in.\n");
@@ -67,12 +29,13 @@ int send_msg(struct client_s *c, char **arg, data_server_t *data)
 
 int info(struct client_s *c, char **arg, data_server_t *data)
 {
-    int context = (c->user->team != NULL) + (c->user->channel != NULL) + 
+    int context = (c->user->team != NULL) + (c->user->channel != NULL) +
     (c->user->thread != NULL);
     int (*f[4])(struct client_s *, data_server_t *) = {
         &info_user, &info_team, &info_channel, &info_thread
     };
 
+    (void) arg;
     if (!c->user) {
         c->data_send = add_send(c->data_send, "503 - Not logged-in.\n");
         c->status = WRITE;
@@ -81,25 +44,25 @@ int info(struct client_s *c, char **arg, data_server_t *data)
     return f[context](c, data);
 }
 
-int sort_command(struct client_s *c, data_server_t *data, char *cmd)
+int sort_command(client_t *c, data_server_t *data, char *cmd)
 {
-    char **tab = my_str_to_word_array(clear_str(cmd));
-    char **commands = my_str_to_word_array("LOGIN LOGOUT SEND INFO");
-    int (*cmds[4])(struct client_s *, char **, data_server_t *) = { \
-                                                login, logout, send_msg, info};
+    bool find = false;
+    char **tab = str_to_word_array_separator(clear_str(cmd), '\a');
+    char **commands = my_str_to_word_array("LOGIN LOGOUT CREATE SEND "
+                                            "SUBSCRIBE UNSUBSCRIBE INFO");
+    int (*cmds[7])(client_t *, char **, data_server_t *) = { login, logout,
+                            sort_create, send_msg, subscribe, unsubscribe,
+                            info};
 
-    for (int i = 0; commands[i]; i++) {
+    for (int i = 0; commands[i] && !find; i++) {
         if (strcmp(commands[i], tab[0]) == 0) {
             printf("Nice command: %s\n", commands[i]);
             cmds[i](c, tab, data);
-            free_array(commands);
-            free_array(tab);
-            return (0);
+            find = true;
         }
     }
-    free_array(tab);
+    !find ? c->data_send = add_send(c->data_send, "500 command unkwon\n") : 0;
     free_array(commands);
-    c->data_send = add_send(c->data_send, "500 command unknown\n");
-    c->status = WRITE;
+    free_array(tab);
     return (0);
 }

@@ -16,11 +16,7 @@ int read_client(server_t *info, client_t *client)
     if (!read_buffer)
         return (-1);
     read_value = read(client->socket, read_buffer, LENGTH_COMMAND);
-    if (read_value == -1) {
-        free(read_buffer);
-        return (-1);
-    }
-    if (read_value == 0) {
+    if (read_value == -1 || read_value == 0) {
         remove_client(info, client->socket);
         free(read_buffer);
         return (-1);
@@ -49,9 +45,21 @@ void write_client(server_t *info, int s_client)
     }
     free(data);
     client->status = (get_size_data_to_send(client->data_send)) ? WRITE : READ;
-    if (w_value < 0 || client->isQuit) {
-        remove_client(info, s_client);
+    if (w_value <= 0 || client->isQuit) {
         (client->isQuit) ? close(s_client) : 0;
+        remove_client(info, s_client);
+    }
+}
+
+void free_data_send(data_send_t *send)
+{
+    data_send_t *next = NULL;
+
+    while (send) {
+        next = send->next;
+        free(send->data);
+        free(send);
+        send = next;
     }
 }
 
@@ -59,6 +67,7 @@ void free_data(data_server_t *data)
 {
     file_io_destroy(data->list);
     free_user_infos(data->userinfos);
+    free_teams(data->teams);
     free_users(data->users);
     free(data);
 }
@@ -73,6 +82,7 @@ void close_server(server_t *info)
     while (temp) {
         next = temp->next;
         free(temp->buff_read);
+        free_data_send(temp->data_send);
         free(temp);
         temp = next;
     }
