@@ -21,7 +21,6 @@ line_t *create_line(char *line)
         new_line->type = MESSAGE;
     else
         new_line->type = (line[0] == 'C') ? CREATE : SUBSCRIBED;
-    printf("%d excepted: %d\n", new_line->type, SUBSCRIBED);
     new_line->next = NULL;
     return new_line;
 }
@@ -37,7 +36,6 @@ void append_to_list(line_t **list, char *line)
         *list = new_line;
         return;
     }
-    printf("loop struct\n");
     while (curr->next && curr->next->type <= new_line->type)
         curr = curr->next;
     new_line->next = curr->next;
