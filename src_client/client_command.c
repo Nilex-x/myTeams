@@ -30,6 +30,7 @@ void get_server_command(info_t *info)
         return;
     valread = read(info->socket, buffer, LENGTH_COMMAND);
     if (valread == -1 || valread == 0) {
+        free(buffer);
         info->quit = 1;
         return;
     }
@@ -49,31 +50,26 @@ void get_user_command(info_t *info)
     int valread;
     size_t buffsize = 0;
 
-    info->write_buffer = malloc(1);
-    printf("MALLOC\n");
     valread = getline(&info->write_buffer, &buffsize, stdin);
     if (valread == -1 || valread == 0) {
         info->quit = 1;
         free(info->write_buffer);
-        printf("FREE\n");
         return;
     }
     info->read_write = WRITE;
     if (user_command(info) == -2) {
         free(info->write_buffer);
-        printf("FREE\n");
         info->write_buffer = NULL;
     }
 }
 
 void write_command(info_t *info)
 {
-    if (info->write_buffer)
+    if (info->write_buffer) {
         write(info->socket, info->write_buffer, strlen(info->write_buffer));
-    else
+        free(info->write_buffer);
+    } else
         printf("missing double_quotes\n");
-    free(info->write_buffer);
-    printf("FREE\n");
     info->read_write = READ;
 }
 
