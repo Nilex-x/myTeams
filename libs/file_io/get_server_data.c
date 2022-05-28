@@ -22,3 +22,25 @@ struct data_server_s *get_server_data(char *file_name)
     data->users = NULL;
     return data;
 }
+
+void remove_subscribed(file_io_t *f_io, char *id, char *uid)
+{
+    line_t *curr = f_io->lines->next;
+    line_t *last = f_io->lines;
+    char *p = NULL;
+
+    asprintf(&p, "SUBSCRIBED\a%s\a%s", id, uid);
+    if (last->type == SUBSCRIBED && strcmp(last->line, p) == 0) {
+        f_io->lines = curr;
+        return;
+    }
+    for (; curr; curr = curr->next) {
+        if (curr->type == SUBSCRIBED && strcmp(curr->line, p) == 0) {
+            last->next = curr->next;
+            free(curr);
+            break;
+        }
+        last = curr;
+    }
+    free(p);
+}

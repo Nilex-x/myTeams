@@ -7,7 +7,7 @@
 
 #include "my_teams.h"
 
-int send_notif_team(data_server_t *data, users_t *user, team_t *t)
+static int send_notif_team(data_server_t *data, users_t *user, team_t *t)
 {
     users_t *temp = data->users;
     char *text = NULL;
@@ -24,7 +24,7 @@ int send_notif_team(data_server_t *data, users_t *user, team_t *t)
     return (0);
 }
 
-int add_teams(client_t *c, char **args, data_server_t *data)
+static int add_teams(client_t *c, char **args, data_server_t *data)
 {
     team_t *new_team = get_teams_by_name(args[1], data);
     char *line = NULL;
@@ -32,7 +32,7 @@ int add_teams(client_t *c, char **args, data_server_t *data)
 
     if (!new_team) {
         new_team = create_add_teams(args[1], args[2], data);
-        asprintf(&new_line, "CREATE\aTEAM\a%s\a%s\a%s\n", new_team->id,
+        asprintf(&new_line, "CREATE\aTEAM\a%s\a%s\a%s", new_team->id,
                             new_team->name, new_team->description);
         append_to_list(&data->list->lines, new_line);
         free(new_line);
@@ -49,6 +49,9 @@ int add_teams(client_t *c, char **args, data_server_t *data)
 
 int send_comment(client_t *client, char **args, data_server_t *data)
 {
+    (void) client;
+    (void) args;
+    (void) data;
     return (0);
 }
 

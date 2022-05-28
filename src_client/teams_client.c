@@ -55,7 +55,6 @@ void client_loop(info_t *info)
 int main(int argc, char **argv)
 {
     int client_socket;
-    int run = 1;
     info_t *info = NULL;
 
     if (argc != 3)
