@@ -32,15 +32,17 @@ void load_unread_messages(struct client_s *c, data_server_t *data)
 
     if (!c || !data)
         return;
-    for (message_t *curr = c->user->info->messages; curr; curr = curr->next)
+    for (message_t *curr = c->user->info->messages; curr; curr = curr->next) {
+        printf("zebi sent login\n");
         if (!curr->isRead && strncmp(curr->to, to, 36) == 0) {
-            cur_msg = find_unread_message(data->list, curr->from, 
+            cur_msg = find_unread_message(data->list, curr->from,
             to, curr->message);
             (cur_msg) ? (cur_msg->line)[8] = 'R' : 0;
             line = malloc(82 + strlen(curr->message));
-            sprintf(line, "201\a%s\a%s\a%s\n", curr->from, to, curr->message);
+            sprintf(line, "211\a%s\a%s\n", curr->from, curr->message);
             c->data_send = add_send(c->data_send, line);
             free(line);
             curr->isRead = true;
         }
+    }
 }

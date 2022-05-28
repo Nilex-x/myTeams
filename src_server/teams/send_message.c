@@ -71,8 +71,8 @@ void send_message_connected_user(struct client_s *cli
             asprintf(&line, "211\a%s\a%s\n", curr->from, msg);
             u->client->data_send = add_send(u->client->data_send, line);
             u->client->status = WRITE;
+            free(line);
         }
-        (line) ? free(line) : 0;
     }
     server_event_private_message_sended(cli->user->info->id, user->id, msg);
 }
@@ -89,7 +89,7 @@ int send_message(struct client_s *c, struct userinfo_s *user
         return (c->status = WRITE);
     }
     if (strlen(message) > 512)
-        c->data_send = add_send(c->data_send, "504 - Command too long.\n");
+        c->data_send = add_send(c->data_send, "503 - Command too long.\n");
     else if (!get_user_by_uuid(user->id, data)) {
         append_message_to_udata(user, c->user->info, message, false);
         line = alloc_message(c->user->info->id, user->id, message, 0);
