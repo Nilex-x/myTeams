@@ -55,9 +55,9 @@ void client_loop(info_t *info)
 int main(int argc, char **argv)
 {
     int client_socket;
-    int run = 1;
     info_t *info = NULL;
 
+    (void) argc;
     client_socket = connect_client(argv[1], atoi(argv[2]));
     if (client_socket < 0)
         return 84;

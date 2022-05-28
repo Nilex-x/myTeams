@@ -7,6 +7,7 @@
 
 #ifndef FILE_IO_H_
     #define FILE_IO_H_
+    #define _GNU_SOURCE
 
     #include <unistd.h>
     #include <stdio.h>
@@ -72,6 +73,9 @@ struct channel_s *get_channels(file_io_t *file_io, char *team_id);
 
 /* Get a chained list of threads with it's messages */
 struct thread_s *get_threads(file_io_t *file_io, char *team_id, char *chan_id);
+
+/* Remove subscribed to linked list */
+void remove_subscribed(file_io_t *f_io, char *id, char *uid);
 
 /*                   SERVER                   */
 /* Get all the server data from the save file */

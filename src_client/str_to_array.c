@@ -12,7 +12,7 @@ int remove_dquotes(char *str)
     int nb_quotes = 0;
     int i = 0;
 
-    while ((i + nb_quotes) < strlen(str)) {
+    while ((i + nb_quotes) < (int) strlen(str)) {
         if (str[i + nb_quotes] == '"')
             nb_quotes++;
         else {
@@ -61,7 +61,6 @@ char **str_to_array(char *str, char c)
 
 void free_array(char **array)
 {
-    int i = 0;
     for (int i = 0; array[i] != NULL; i++)
         free(array[i]);
     free(array);

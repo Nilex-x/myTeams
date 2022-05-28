@@ -57,6 +57,7 @@ int unsubscribe(client_t *c, char **args, data_server_t *data)
     if (team && !get_subscribe_by_id(team, c->user->info->id))
         asprintf(&response, "513\a%s\n", team->id);
     if (team && get_subscribe_by_id(team, c->user->info->id)) {
+        remove_subscribed(data->list, team->id, c->user->info->id);
         unsubscribe_user(team, c->user);
         asprintf(&response, "318\a%s\a%s\n", c->user->info->id, team->id);
     }
