@@ -37,6 +37,7 @@ void get_server_command(info_t *info)
     add_to_write(&info->read_buffer, buffer, LENGTH_COMMAND);
     free(buffer);
     response = read_to_buffer(&info->read_buffer, '\n', LENGTH_COMMAND);
+    // printf("[%s]\n", response);
     if (response && response[0] != '\n')
         server_response(response, info);
     else

@@ -25,7 +25,8 @@ SRC_SERV	=		src_server/server/teams_serv.c \
 					src_server/teams/manage_info_cmd.c \
 					src_server/teams/manage_connection.c \
 					src_server/teams/manage_subscribe.c \
-					src_server/teams/manage_unsubscribe.c
+					src_server/teams/manage_unsubscribe.c \
+					src_server/teams/send_list.c
 
 OBJ_SERV	=		$(SRC_SERV:.c=.o)
 

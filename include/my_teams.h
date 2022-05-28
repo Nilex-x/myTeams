@@ -20,6 +20,8 @@
     #define FILEPATH_SAVE "./info.save"
     #define UUID_REGEX "([0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-\
                         [0-9a-fA-F]{4}\b-[0-9a-fA-F]{12})"
+    #define COMMANDS "LOGIN LOGOUT CREATE SEND SUBSCRIBE "\
+                    "UNSUBSCRIBE INFO USER USERS"
 
 typedef struct message_s
 {
@@ -224,6 +226,7 @@ void add_message(userinfo_t *info, char *from, char *message);
  * @param msgs
  */
 void free_message(message_t *msgs);
+
 /**
  * @brief send message to user even if disconnected
  *
@@ -382,5 +385,17 @@ int login(client_t *client, char **arg, data_server_t *data);
  * @return int
  */
 int logout(client_t *client, char **arg, data_server_t *data);
+
+/*                          List                                         */
+
+/**
+ * @brief Send list of users
+ *
+ * @param c Client who do command
+ * @param arg,Array of command arguments
+ * @param data Server data struct
+ * @return int
+ */
+int send_list_of_users(client_t *c, char **arg, data_server_t *data);
 
 #endif /* !MY_TEAMS_H_ */
