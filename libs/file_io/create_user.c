@@ -30,24 +30,21 @@ char *get_uid_by_name(file_io_t *file_io, char *name)
 message_t *create_message(line_t *c, char *id)
 {
     message_t *msg = malloc(sizeof(message_t));
+    char *ts = strndup(c->line + 84, 10);
 
+    msg->timestamp = atoi(ts);
+    free(ts);
+    msg->message = strdup(c->line + 95);
+    msg->isRead = (c->line[8] == 'R') ? true : false;
+    msg->next = NULL;
     if (strncmp(c->line + 10, id, 36) == 0) {
         msg->from = strdup(id);
         msg->to = strndup(c->line + 47, 36);
-        msg->message = strndup(c->line + 84, strlen(c->line + 84));
-        msg->isRead = (c->line[8] == 'R') ? true : false;
-        msg->next = NULL;
-        return msg;
-    } else if (strncmp(c->line + 47, id, 36) == 0) {
-        msg->from = strndup(c->line + 10, 36);
-        msg->to = strdup(id);
-        msg->message = strdup(c->line + 84);
-        msg->isRead = (c->line[8] == 'R') ? true : false;
-        msg->next = NULL;
         return msg;
     }
-    free(msg);
-    return NULL;
+    msg->from = strndup(c->line + 10, 36);
+    msg->to = strdup(id);
+    return msg;
 }
 
 message_t *get_messages_by_user(file_io_t *file_io, char *id)
