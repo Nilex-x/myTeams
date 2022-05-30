@@ -44,7 +44,7 @@ void append_message_to_udata(userinfo_t *f, userinfo_t *t, char *msg, bool r)
     (t_msg) ? (t_msg->next = mesg_sec) : (t->messages = mesg_sec);
 }
 
-char *alloc_message(char *from_id, char *to_id, char *message, int is_read)
+char *alloc_message(char *from_id, char *to_id, char *message, bool is_read)
 {
     char *line = NULL;
     time_t ts = time(NULL);
@@ -93,10 +93,10 @@ int send_message(struct client_s *c, struct userinfo_s *user
         return (c->status = WRITE);
     }
     if (strlen(message) > 512)
-        c->data_send = add_send(c->data_send, "504 - Command too long.\n");
+        c->data_send = add_send(c->data_send, "503 - Command too long.\n");
     else if (!get_user_by_uuid(user->id, data)) {
         append_message_to_udata(user, c->user->info, message, false);
-        line = alloc_message(c->user->info->id, user->id, message, 0);
+        line = alloc_message(c->user->info->id, user->id, message, false);
         append_to_list(&data->list->lines, line);
         free(line);
         c->data_send = add_send(c->data_send, "313 - Message sent.\n");

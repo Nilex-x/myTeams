@@ -17,7 +17,7 @@ int notif_connection(data_server_t *data, users_t *user, bool isLog)
     asprintf(&res, "%d\a%s\a%s\n", isLog ? 201 : 202, user->info->id,
                                                         user->info->name);
     while (temp) {
-        if (temp != user)
+        if (temp != user && strcmp(temp->info->id, user->info->id) != 0)
             temp->client->data_send = add_send(temp->client->data_send, res);
         temp = temp->next;
     }
@@ -56,7 +56,7 @@ int login(client_t *c, char **arg, data_server_t *data)
     c->user = init_user(arg[1], data, info, c);
     send_log_to_client(c, data, !info ? true : false, true);
     notif_connection(data, c->user, true);
-    // load_unread_messages(c, data);
+    load_unread_messages(c, data);
     return (0);
 }
 

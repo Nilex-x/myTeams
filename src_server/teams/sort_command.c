@@ -37,7 +37,7 @@ static int info(struct client_s *c, char **arg, data_server_t *data)
 
     (void) arg;
     if (!c->user) {
-        c->data_send = add_send(c->data_send, "503 - Not logged-in.\n");
+        c->data_send = add_send(c->data_send, "502 - Not logged-in.\n");
         c->status = WRITE;
         return (0);
     }
@@ -49,10 +49,12 @@ static int send_user_info(client_t *c, char **arg, data_server_t *data)
     userinfo_t *info = NULL;
     char *response = NULL;
 
-    if (len_array(arg) != 2) {
+    if (len_array(arg) != 2)
         c->data_send = add_send(c->data_send, "501\n");
+    if (!c->user)
+        c->data_send = add_send(c->data_send, "502\n");
+    if (len_array(arg) != 2 && !c->user)
         return (0);
-    }
     info = get_user_info_by_uuid(arg[1], data);
     if (!info) {
         asprintf(&response, "521\a%s\n", arg[1]);
@@ -65,14 +67,26 @@ static int send_user_info(client_t *c, char **arg, data_server_t *data)
     return (0);
 }
 
+static int help(client_t *c, char **arg, data_server_t *data)
+{
+    (void) arg;
+    (void) data;
+    c->data_send = add_send(c->data_send, "101\aHELP\aLOGIN\aLOGOUT\aUSERS"
+                                        "\aUSER\aSEND\aMESSAGES\aSUBSCRIBE"
+                                        "\aSUBSCRIBED\aUNSUBSCRIBE\aUSE"
+                                        "\aCREATE\aLIST\aINFO\n");
+    return (0);
+}
+
 int sort_command(client_t *c, data_server_t *data, char *cmd)
 {
     bool find = false;
     char **tab = str_to_word_array_separator(clear_str(cmd), '\a');
     char **commands = my_str_to_word_array(COMMANDS);
-    int (*cmds[9])(client_t *, char **, data_server_t *) = { login, logout,
+    int (*cmds[11])(client_t *, char **, data_server_t *) = { login, logout,
                             sort_create, send_msg, subscribe, unsubscribe,
-                            info, send_user_info, send_list_of_users};
+                            info, send_user_info, send_list_of_users, help,
+                            cmd_messages};
 
     for (int i = 0; commands[i] && !find; i++) {
         if (strcmp(commands[i], tab[0]) == 0) {
