@@ -38,6 +38,21 @@ static int add_to_list(team_t *team, userinfo_t *info, data_server_t *data)
     return (0);
 }
 
+int send_subscribed(client_t *c, team_t *team, data_server_t *data)
+{
+    subscribed_t *subs = team->subcribed;
+    char *response = NULL;
+
+    while (subs) {
+        asprintf(&response, "316\a%s\a%s\a%d\n", subs->user->id, subs->user->name,
+            get_user_by_uuid(subs->user->id, data) ? 1 : 0);
+        c->data_send = add_send(c->data_send, response);
+        subs = subs->next;
+    }
+    free(response);
+    return (0);
+}
+
 int subscribe(client_t *c, char **args, data_server_t *data)
 {
     team_t *team = NULL;

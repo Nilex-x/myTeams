@@ -18,6 +18,7 @@ int send_list_of_users(client_t *c, char **arg, data_server_t *data)
         asprintf(&response, "311\a%s\a%s\a%d\n", users->id, users->name,
                                 get_user_by_uuid(users->id, data) ? 1 : 0);
         c->data_send = add_send(c->data_send, response);
+        free(response);
         users = users->next;
     }
     free(response);
@@ -49,18 +50,60 @@ static int send_all_messages(client_t *user, userinfo_t *to)
 int cmd_messages(client_t *c, char **arg, data_server_t *data)
 {
     userinfo_t *user = NULL;
+    char *response = NULL;
 
     if (len_array(arg) != 2)
-        c->data_send = add_send(c->data_send, "\n");
+        c->data_send = add_send(c->data_send, "501\n");
     if (!c->user)
-        c->data_send = add_send(c->data_send, "\n");
+        c->data_send = add_send(c->data_send, "502\n");
     if (len_array(arg) != 2 || !c->user)
         return (0);
     user = get_user_info_by_uuid(arg[1], data);
     if (!user) {
-        c->data_send = add_send(c->data_send, "\n");
+        asprintf(&response, "521\a%s\n", arg[1]);
+        c->data_send = add_send(c->data_send, response);
         return (0);
     }
-    send_all_messages(c, user);
+    else
+        send_all_messages(c, user);
+    return (0);
+}
+
+int send_team_subscribed(client_t *c, userinfo_t *user, data_server_t *data)
+{
+    team_t *team = data->teams;
+    char *response = NULL;
+
+    while (team) {
+        if (get_subscribe_by_id(team, user->id)) {
+            asprintf(&response, "317\a%s\a%s\a%s\n", team->id, team->name,
+                                                    team->description);
+            c->data_send = add_send(c->data_send, response);
+        }
+        team = team->next;
+    }
+    free(response);
+    return (0);
+}
+
+int cmd_subscribed(client_t *c, char **arg, data_server_t *data)
+{
+    team_t *team = NULL;
+    char *response = NULL;
+
+    if (!c->user) {
+        c->data_send = add_send(c->data_send, "502\n");
+        return (0);
+    }
+    if (len_array(arg) == 2) {
+        team = get_teams_by_id(arg[1], data);
+        if (!team) {
+            asprintf(&response, "522\a%s\n", arg[1]);
+            c->data_send = add_send(c->data_send, response);
+            free(response);
+        } else
+            send_subscribed(c, team, data);
+    } else
+        send_team_subscribed(c, c->user->info, data);
     return (0);
 }

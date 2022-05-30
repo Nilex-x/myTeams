@@ -7,37 +7,19 @@
 
 #include "my_teams.h"
 
-static int send_notif_team(data_server_t *data, users_t *user, team_t *t)
-{
-    users_t *temp = data->users;
-    char *text = NULL;
-
-    if (!temp)
-        return (0);
-    asprintf(&text, "221\a%s\a%s\a%s\n", t->id, t->name, t->description);
-    while (temp) {
-        if (temp != user)
-            temp->client->data_send = add_send(temp->client->data_send, text);
-        temp = temp->next;
-    }
-    free(text);
-    return (0);
-}
-
 static int add_teams(client_t *c, char **args, data_server_t *data)
 {
     team_t *new_team = get_teams_by_name(args[1], data);
     char *line = NULL;
-    char *new_line = NULL;
 
-    if (!new_team) {
-        new_team = create_add_teams(args[1], args[2], data);
-        asprintf(&new_line, "CREATE\aTEAM\a%s\a%s\a%s", new_team->id,
-                            new_team->name, new_team->description);
-        append_to_list(&data->list->lines, new_line);
-        free(new_line);
+    if (new_team) {
+        c->data_send = add_send(c->data_send, "512 teams already exists\n");
+        return (0);
     }
-    c->user->team = new_team;
+    new_team = create_add_teams(args[1], args[2], data);
+    asprintf(&line, "CREATE\aTEAM\a%s\a%s\a%s", new_team->id,
+                        new_team->name, new_team->description);
+    append_to_list(&data->list->lines, line);
     asprintf(&line, "321\a%s\a%s\a%s\n", new_team->id, new_team->name,
                                 new_team->description);
     c->data_send = add_send(c->data_send, line);
@@ -47,7 +29,28 @@ static int add_teams(client_t *c, char **args, data_server_t *data)
     return (0);
 }
 
-int send_comment(client_t *client, char **args, data_server_t *data)
+static int add_channel(client_t *c, char **args, data_server_t *data)
+{
+    channel_t *channel = get_channel_by_name(args[1], c->user->team);
+    char *line = NULL;
+
+    if (channel) {
+        c->data_send = add_send(c->data_send, "512 teams already exists\n");
+        return (0);
+    }
+    channel = create_add_channel(args[1], args[2], c->user->team);
+    asprintf(&line, "CREATE\aCHANNEL\a%s\a%s\a%s\n", c->user->team->id,
+        channel->id, channel->name, channel->description);
+    append_to_list(&data->list->lines, line);
+    asprintf(&line, "322\a%s\a%s\a%s\n", channel->id, channel->name,
+                                channel->description);
+    c->data_send = add_send(c->data_send, line);
+    free(line);
+    server_event_channel_created(c->user->team->id, channel->id,
+                                                channel->name);
+}
+
+static int send_comment(client_t *client, char **args, data_server_t *data)
 {
     (void) client;
     (void) args;
