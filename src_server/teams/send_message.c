@@ -17,6 +17,7 @@ message_t *dup_msg(message_t *msg)
     new->to = strdup(msg->to);
     new->message = strdup(msg->message);
     new->isRead = msg->isRead;
+    new->timestamp = msg->timestamp;
     new->next = NULL;
     return new;
 }
@@ -33,6 +34,7 @@ void append_message_to_udata(userinfo_t *f, userinfo_t *t, char *msg, bool r)
     mesg->message = strdup(msg);
     mesg->isRead = r;
     mesg->next = NULL;
+    mesg->timestamp = time(NULL);
     mesg_sec = dup_msg(mesg);
     while (f_msg && f_msg->next)
         f_msg = f_msg->next;
@@ -45,11 +47,12 @@ void append_message_to_udata(userinfo_t *f, userinfo_t *t, char *msg, bool r)
 char *alloc_message(char *from_id, char *to_id, char *message, int is_read)
 {
     char *line = NULL;
+    time_t ts = time(NULL);
 
     if (is_read)
-        asprintf(&line, "MESSAGE\aR\a%s\a%s\a%s", from_id, to_id, message);
+        asprintf(&line, "MESSAGE\aR\a%s\a%s\a%ld\a%s", from_id, to_id, ts, message);
     else
-        asprintf(&line, "MESSAGE\aN\a%s\a%s\a%s", from_id, to_id, message);
+        asprintf(&line, "MESSAGE\aN\a%s\a%s\a%ld\a%s", from_id, to_id, ts, message);
     return (line);
 }
 
@@ -58,22 +61,23 @@ void send_message_connected_user(struct client_s *cli
 {
     char *line = NULL;
     message_t *curr = NULL;
+    time_t t = time(NULL);
 
     append_message_to_udata(cli->user->info, user, msg, true);
-    line = alloc_message(cli->user->info->id, user->id, msg, 1);
+    asprintf(&line, "MESSAGE\aR\a%s\a%s\a%ld\a%s", cli->user->info->id
+    , user->id, t, msg);
     append_to_list(&data->list->lines, line);
     free(line);
     cli->data_send = add_send(cli->data_send, "313 - Message sent.\n");
     curr = user->messages;
     for (; curr->next; curr = curr->next);
-    for (users_t *u = data->users; u; u = u->next) {
+    for (users_t *u = data->users; u; u = u->next)
         if (u->info->id == user->id) {
-            asprintf(&line, "211\a%s\a%s\n", curr->from, msg);
+            asprintf(&line, "211\a%s\a%s\a%ld\n", curr->from, msg, t);
             u->client->data_send = add_send(u->client->data_send, line);
             u->client->status = WRITE;
+            free(line);
         }
-        (line) ? free(line) : 0;
-    }
     server_event_private_message_sended(cli->user->info->id, user->id, msg);
 }
 
