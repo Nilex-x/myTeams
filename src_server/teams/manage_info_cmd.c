@@ -59,7 +59,7 @@ int info_thread(struct client_s *c, data_server_t *data)
     time_t ts = c->user->thread->timestamp;
 
     (void) data;
-    asprintf(&line, "344\a%s\a%s\a%d\a%s\a%s\n", auth, uuid, ts, title, body);
+    asprintf(&line, "344\a%s\a%s\a%ld\a%s\a%s\n", auth, uuid, ts, title, body);
     c->data_send = add_send(c->data_send, line);
     free(line);
     return 0;

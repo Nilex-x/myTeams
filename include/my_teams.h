@@ -29,6 +29,7 @@ typedef struct message_s
     char *from;
     char *to;
     bool isRead;
+    time_t timestamp;
     struct message_s *next;
 } message_t;
 
