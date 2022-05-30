@@ -42,7 +42,7 @@ void append_message_to_udata(userinfo_t *f, userinfo_t *t, char *msg, bool r)
     (t_msg) ? (t_msg->next = mesg_sec) : (t->messages = mesg_sec);
 }
 
-char *alloc_message(char *from_id, char *to_id, char *message, int is_read)
+char *alloc_message(char *from_id, char *to_id, char *message, bool is_read)
 {
     char *line = NULL;
 
@@ -60,7 +60,7 @@ void send_message_connected_user(struct client_s *cli
     message_t *curr = NULL;
 
     append_message_to_udata(cli->user->info, user, msg, true);
-    line = alloc_message(cli->user->info->id, user->id, msg, 1);
+    line = alloc_message(cli->user->info->id, user->id, msg, true);
     append_to_list(&data->list->lines, line);
     free(line);
     cli->data_send = add_send(cli->data_send, "313 - Message sent.\n");
@@ -92,7 +92,7 @@ int send_message(struct client_s *c, struct userinfo_s *user
         c->data_send = add_send(c->data_send, "503 - Command too long.\n");
     else if (!get_user_by_uuid(user->id, data)) {
         append_message_to_udata(user, c->user->info, message, false);
-        line = alloc_message(c->user->info->id, user->id, message, 0);
+        line = alloc_message(c->user->info->id, user->id, message, false);
         append_to_list(&data->list->lines, line);
         free(line);
         c->data_send = add_send(c->data_send, "313 - Message sent.\n");

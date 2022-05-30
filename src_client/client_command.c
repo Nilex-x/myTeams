@@ -50,18 +50,15 @@ void get_user_command(info_t *info)
     size_t buffsize = 0;
 
     info->write_buffer = malloc(1);
-    printf("MALLOC\n");
     valread = getline(&info->write_buffer, &buffsize, stdin);
     if (valread == -1 || valread == 0) {
         info->quit = 1;
         free(info->write_buffer);
-        printf("FREE\n");
         return;
     }
     info->read_write = WRITE;
     if (user_command(info) == -2) {
         free(info->write_buffer);
-        printf("FREE\n");
         info->write_buffer = NULL;
     }
 }
@@ -73,7 +70,6 @@ void write_command(info_t *info)
     else
         printf("missing double_quotes\n");
     free(info->write_buffer);
-    printf("FREE\n");
     info->read_write = READ;
 }
 
