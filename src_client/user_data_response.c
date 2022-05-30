@@ -10,21 +10,17 @@
 // Users
 void code_311(char *response)
 {
-    char **sep_usr = str_to_array(response, '\r');
-    char **usr_info = NULL;
+    char **data = str_to_array(response, '\a');
 
-    for (int i = 0; sep_usr[i] != NULL; i++) {
-        usr_info = str_to_array(sep_usr[i], '\a');
-        client_print_users(usr_info[0], usr_info[1], usr_info[2]);
-        free_array(usr_info);
-    }
-    free_array(sep_usr);
+    client_print_user(data[0], data[1], atoi(data[2]));
 }
 
-// User
+// User user "uuid"
 void code_312(char *response)
 {
-    printf("312 -> Show user informations.\n");
+    char **data = str_to_array(response, '\a');
+
+    client_print_user(data[0], data[1], atoi(data[2]));
 }
 
 void code_314(char *response)

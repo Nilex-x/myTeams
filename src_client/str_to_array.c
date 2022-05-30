@@ -52,6 +52,7 @@ char **str_to_array(char *str, char c)
             res[word_count] = strndup(str + (i - word_len), word_len);
             word_count++;
             word_len = 0;
+            i++;
         }
         word_len++;
     }

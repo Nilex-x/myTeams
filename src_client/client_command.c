@@ -30,6 +30,7 @@ void get_server_command(info_t *info)
         return;
     valread = read(info->socket, buffer, LENGTH_COMMAND);
     if (valread == -1 || valread == 0) {
+        free(buffer);
         info->quit = 1;
         return;
     }
@@ -37,10 +38,11 @@ void get_server_command(info_t *info)
     add_to_write(&info->read_buffer, buffer, LENGTH_COMMAND);
     free(buffer);
     response = read_to_buffer(&info->read_buffer, '\n', LENGTH_COMMAND);
-    if (response && response[0] != '\n')
-        server_response(response, info);
-    else
-        free(response);
+    while (response && response[0] != '\n') {
+        (response && response[0] != '\n') ? server_response(response, info) :
+                                                free(response);
+        response = read_to_buffer(&info->read_buffer, '\n', LENGTH_COMMAND);
+    }
 }
 
 void get_user_command(info_t *info)
@@ -48,10 +50,10 @@ void get_user_command(info_t *info)
     int valread;
     size_t buffsize = 0;
 
-    info->write_buffer = malloc(1);
     valread = getline(&info->write_buffer, &buffsize, stdin);
     if (valread == -1 || valread == 0) {
         info->quit = 1;
+        free(info->write_buffer);
         return;
     }
     info->read_write = WRITE;

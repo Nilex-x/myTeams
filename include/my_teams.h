@@ -20,6 +20,8 @@
     #define FILEPATH_SAVE "./info.save"
     #define UUID_REGEX "([0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-\
                         [0-9a-fA-F]{4}\b-[0-9a-fA-F]{12})"
+    #define COMMANDS "LOGIN LOGOUT CREATE SEND SUBSCRIBE "\
+                    "UNSUBSCRIBE INFO USER USERS HELP MESSAGES"
 
 typedef struct message_s
 {
@@ -27,6 +29,7 @@ typedef struct message_s
     char *from;
     char *to;
     bool isRead;
+    time_t timestamp;
     struct message_s *next;
 } message_t;
 
@@ -224,6 +227,7 @@ void add_message(userinfo_t *info, char *from, char *message);
  * @param msgs
  */
 void free_message(message_t *msgs);
+
 /**
  * @brief send message to user even if disconnected
  *
@@ -235,6 +239,53 @@ void free_message(message_t *msgs);
  */
 int send_message(struct client_s *c, struct userinfo_s *user
 , char *message, data_server_t *data);
+
+/**
+ * @brief loads messages received while disconnected and send them to the user
+ *
+ * @param c client who received the message
+ * @param data data_server_t struct
+ * @return void
+ */
+void load_unread_messages(struct client_s *c, data_server_t *data);
+
+/*                                  infos                                  */
+
+/**
+ * @brief sends infos of the current user to the user
+ *
+ * @param c client who asked for information
+ * @param data data_server_t struct
+ * @return 0 on succeed, 1 on fail
+ */
+int info_user(struct client_s *c, data_server_t *data);
+
+/**
+ * @brief sends infos of the team he is in to the user
+ *
+ * @param c client who asked for information
+ * @param data data_server_t struct
+ * @return 0 on succeed, 1 on fail
+ */
+int info_team(struct client_s *c, data_server_t *data);
+
+/**
+ * @brief sends infos of the channel he is in to the user
+ *
+ * @param c client who asked for information
+ * @param data data_server_t struct
+ * @return 0 on succeed, 1 on fail
+ */
+int info_channel(struct client_s *c, data_server_t *data);
+
+/**
+ * @brief sends infos of the thread he is in to the user
+ *
+ * @param c client who asked for information
+ * @param data data_server_t struct
+ * @return 0 on succeed, 1 on fail
+ */
+int info_thread(struct client_s *c, data_server_t *data);
 
 /*                          team                                         */
 
@@ -335,5 +386,27 @@ int login(client_t *client, char **arg, data_server_t *data);
  * @return int
  */
 int logout(client_t *client, char **arg, data_server_t *data);
+
+/*                          List                                         */
+
+/**
+ * @brief Send list of users
+ *
+ * @param c Client who do command
+ * @param arg,Array of command arguments
+ * @param data Server data struct
+ * @return int
+ */
+int send_list_of_users(client_t *c, char **arg, data_server_t *data);
+
+/**
+ * @brief Send all message to client
+ *
+ * @param c Client who do command
+ * @param arg,Array of command arguments
+ * @param data Server data struct
+ * @return int
+ */
+int cmd_messages(client_t *c, char **arg, data_server_t *data);
 
 #endif /* !MY_TEAMS_H_ */
