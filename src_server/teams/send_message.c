@@ -95,7 +95,7 @@ int send_message(struct client_s *c, struct userinfo_s *user
     if (strlen(message) > 512)
         c->data_send = add_send(c->data_send, "503 - Command too long.\n");
     else if (!get_user_by_uuid(user->id, data)) {
-        append_message_to_udata(user, c->user->info, message, false);
+        append_message_to_udata(c->user->info, user, message, false);
         line = alloc_message(c->user->info->id, user->id, message, false);
         append_to_list(&data->list->lines, line);
         free(line);
