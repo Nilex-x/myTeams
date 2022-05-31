@@ -11,6 +11,8 @@ void code_201(char *response)
 {
     char **data = str_to_array(response, '\a');
 
+    printf("name: [%s] id: [%s]\n", data[0], data[1]);
+
     client_event_logged_in(data[0], data[1]);
     free_array(data);
 }

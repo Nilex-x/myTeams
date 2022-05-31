@@ -26,7 +26,10 @@ SRC_SERV	=		src_server/server/teams_serv.c \
 					src_server/teams/manage_connection.c \
 					src_server/teams/manage_subscribe.c \
 					src_server/teams/manage_unsubscribe.c \
-					src_server/teams/send_list.c
+					src_server/teams/send_list.c \
+					src_server/teams/manage_notif.c \
+					src_server/teams/manage_channels.c \
+					src_server/teams/manage_thread.c
 
 OBJ_SERV	=		$(SRC_SERV:.c=.o)
 
@@ -66,7 +69,9 @@ LIB_SO_NAME	=		myteams
 
 CLIENT_NAME	=		myteams_cli
 
-CFLAGS		=		-W -Wall -Wextra -I$(HEADER_DIR) -L$(LIB_PATH) -l$(NAME_LIB) -l$(LIB_SO_NAME) -g3
+CFLAGS		=		-W -Wall -Wextra -I$(HEADER_DIR)
+
+LDFLAGS		=		-Llibs 	-Llibs/myteams -lmy_teams -lmyteams -lfile_io -luuid
 
 all: compil_lib compil_server compil_client
 
@@ -74,18 +79,14 @@ compil_lib:
 	@make -C $(LIB_PATH)
 
 compil_server: $(OBJ_SERV)
-	$(CC) -o $(SERV_NAME) $(OBJ_SERV) -I$(HEADER_DIR) -L$(LIB_PATH) -L$(LIB_PATH)/$(LIB_SO_PATH)  -l$(NAME_LIB) -l$(FILE_LIB) -l$(LIB_SO_NAME) -luuid
+	$(CC) -o $(SERV_NAME) $(OBJ_SERV) $(LDFLAGS)
 
 compil_client: $(OBJ_CLIENT)
-	$(CC) -o $(CLIENT_NAME) $(OBJ_CLIENT) -I$(HEADER_DIR) -L$(LIB_PATH) -L$(LIB_PATH)/$(LIB_SO_PATH) -l$(NAME_LIB) -l$(LIB_SO_NAME)
+	$(CC) -o $(CLIENT_NAME) $(OBJ_CLIENT) $(LDFLAGS)
 
-debug:compil_lib debug_server debug_client
 
-debug_server: $(OBJ_SERV)
-	$(CC) -o $(SERV_NAME) $(OBJ_SERV) -I$(HEADER_DIR) -L$(LIB_PATH) -L$(LIB_PATH)/$(LIB_SO_PATH) -l$(NAME_LIB) -l$(FILE_LIB) -l$(LIB_SO_NAME) -luuid -g3
-
-debug_client: $(OBJ_CLIENT)
-	$(CC) -o $(CLIENT_NAME) $(OBJ_CLIENT) -I$(HEADER_DIR) -L$(LIB_PATH) -L$(LIB_PATH)/$(LIB_SO_PATH) -l$(NAME_LIB) -l$(FILE_LIB) -l$(LIB_SO_NAME) -g3
+debug: CFLAGS += -g3
+debug: compil_lib compil_server compil_client
 
 clean:
 	@make clean -C $(LIB_PATH)

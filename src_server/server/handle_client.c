@@ -16,7 +16,6 @@ void init_client(server_t *info)
         return;
     list_client->next = NULL;
     list_client->prev = NULL;
-    list_client->status = READ;
     list_client->socket = info->fd_server;
     list_client->user = NULL;
     list_client->isQuit = false;
@@ -98,7 +97,6 @@ void accept_connect(server_t *info)
     FD_SET(incomming_fd, &info->wfds);
     new_client = add_client(info, incomming_fd);
     new_client->data_send = add_send(new_client->data_send, "220\n");
-    new_client->status = WRITE;
     if (incomming_fd > info->max_fd)
         info->max_fd = incomming_fd;
 }

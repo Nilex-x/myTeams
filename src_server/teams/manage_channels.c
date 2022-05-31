@@ -31,7 +31,7 @@ channel_t *get_channel_by_name(char *name, team_t *team)
     return NULL;
 }
 
-team_t *create_add_channel(char *name, char *desc, team_t *team)
+channel_t *create_add_channel(char *name, char *desc, team_t *team)
 {
     channel_t *new_channel = malloc(sizeof(channel_t));
     channel_t *temp = team->channels;

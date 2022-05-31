@@ -5,6 +5,7 @@
 ** manage_server
 */
 
+#include <sys/select.h>
 #include "teams_serv.h"
 
 void clear_list(server_t *info)

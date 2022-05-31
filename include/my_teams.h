@@ -16,6 +16,7 @@
     #include <unistd.h>
     #include <string.h>
     #include <uuid/uuid.h>
+    #include <sys/select.h>
 
     #define FILEPATH_SAVE "./info.save"
     #define UUID_REGEX "([0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-\
@@ -457,7 +458,7 @@ channel_t *get_channel_by_name(char *name, team_t *team);
  * @param team Team who add channel
  * @return team_t*
  */
-team_t *create_add_channel(char *name, char *desc, team_t *team);
+channel_t *create_add_channel(char *name, char *desc, team_t *team);
 
 /**
  * @brief Free all channel list
@@ -477,5 +478,54 @@ void free_channels(channel_t *channel);
  * @return int
  */
 int send_notif_team(data_server_t *data, users_t *user, team_t *t);
+
+/**
+ * @brief
+ *
+ * @param data
+ * @param user
+ * @param t
+ * @param c
+ * @return int
+ */
+int send_notif_channel(data_server_t *data, users_t *user, team_t *t, channel_t *c);
+
+/*                              thread                                   */
+
+/**
+ * @brief Get the thread by uuid string
+ *
+ * @param uuid Uuid to find
+ * @param channel In channel to find
+ * @return thread_t*
+ */
+thread_t *get_thread_by_uuid(char *uuid, channel_t *channel);
+
+/**
+ * @brief Get the thread by title string
+ *
+ * @param title Title to find
+ * @param channel In channel to find
+ * @return thread_t*
+ */
+thread_t *get_thread_by_title(char *title, channel_t *channel);
+
+/**
+ * @brief Free thread
+ *
+ * @param thread thread list to free
+ */
+void free_thread(thread_t *thread);
+
+/**
+ * @brief Create or add thread
+ *
+ * @param title Title of thread
+ * @param body Body of thread
+ * @param channel Channel where is created
+ * @param info Info of created
+ * @return thread_t*
+ */
+thread_t *create_add_thread(char *title, char *body, channel_t *channel, userinfo_t *info);
 
 #endif /* !MY_TEAMS_H_ */

@@ -11,17 +11,14 @@ static int send_msg(client_t *c, char **arg, data_server_t *data)
 {
     if (!c->user) {
         c->data_send = add_send(c->data_send, "503 - Not logged-in.\n");
-        c->status = WRITE;
         return (0);
     }
     if (len_array(arg) != 3) {
         c->data_send = add_send(c->data_send, "502 - Missing arguments.\n");
-        c->status = WRITE;
         return (0);
     }
     if (!get_user_info_by_uuid(arg[1], data)) {
         c->data_send = add_send(c->data_send, "521 - Wrong user uuid.\n");
-        c->status = WRITE;
         return (0);
     }
     return send_message(c, get_user_info_by_uuid(arg[1], data), arg[2], data);
@@ -38,7 +35,6 @@ static int info(struct client_s *c, char **arg, data_server_t *data)
     (void) arg;
     if (!c->user) {
         c->data_send = add_send(c->data_send, "502 - Not logged-in.\n");
-        c->status = WRITE;
         return (0);
     }
     return f[context](c, data);

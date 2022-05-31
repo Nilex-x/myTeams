@@ -23,9 +23,11 @@ void handle_command(server_t *info, client_t *cli)
         free(value);
         return;
     }
-    if (cli->socket == 0 && strstr(value, "quit")) {
+    if (cli->socket == 0) {
+        if (strstr(value, "quit"))
+            close_server(info);
         free(value);
-        close_server(info);
+        return;
     }
     printf("value client [%s]\n", value);
     sort_command(cli, info->data, value);
