@@ -6,6 +6,15 @@
 */
 
 #include "teams_serv.h"
+#include <signal.h>
+
+static server_t info;
+
+void interrupt_signal(int signo)
+{
+    if (signo == SIGINT)
+        close_server(&info);
+}
 
 void print_help(void)
 {
@@ -15,8 +24,6 @@ void print_help(void)
 
 int main(int argc, char **argv)
 {
-    server_t info;
-
     if ((argc == 2 && strcmp(argv[1], "-help") == 0) || argc != 2) {
         print_help();
         return (84);
@@ -28,6 +35,7 @@ int main(int argc, char **argv)
     }
     if (create_socket(&info) == -1)
         return (84);
+    signal(SIGINT, interrupt_signal);
     handler_connection(&info);
     close(info.fd_server);
     return (0);
