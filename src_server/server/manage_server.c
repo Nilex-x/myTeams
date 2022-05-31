@@ -5,10 +5,12 @@
 ** manage_server
 */
 
-#include <sys/select.h>
 #include "teams_serv.h"
+#include <sys/socket.h>
+#include <netinet/ip.h>
+#include <sys/select.h>
 
-void clear_list(server_t *info)
+static void clear_list(server_t *info)
 {
     client_t *temp = info->list_client;
 
@@ -25,7 +27,7 @@ void clear_list(server_t *info)
     }
 }
 
-void sort_client(client_t *client, server_t *info)
+static void sort_client(client_t *client, server_t *info)
 {
     if (client->socket == info->fd_server) {
         accept_connect(info);
@@ -35,7 +37,7 @@ void sort_client(client_t *client, server_t *info)
         handle_command(info, client);
 }
 
-void find_socket(server_t *info)
+static void find_socket(server_t *info)
 {
     client_t *temp = info->list_client;
     client_t *next = NULL;

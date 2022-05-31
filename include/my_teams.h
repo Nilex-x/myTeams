@@ -11,12 +11,6 @@
     #include "teams_serv.h"
     #include "file_io.h"
     #include <stdbool.h>
-    #include <stdio.h>
-    #include <stdlib.h>
-    #include <unistd.h>
-    #include <string.h>
-    #include <uuid/uuid.h>
-    #include <sys/select.h>
 
     #define FILEPATH_SAVE "./info.save"
     #define UUID_REGEX "([0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-\

@@ -6,6 +6,7 @@
 */
 
 #include "teams_client.h"
+#include <stdio.h>
 
 void code_201(char *response)
 {

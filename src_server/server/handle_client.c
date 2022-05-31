@@ -6,6 +6,8 @@
 */
 
 #include "teams_serv.h"
+#include <sys/socket.h>
+#include <netinet/ip.h>
 
 void init_client(server_t *info)
 {

@@ -32,7 +32,6 @@ void load_unread_messages(struct client_s *c, data_server_t *data)
 
     if (!c || !data)
         return;
-    printf("verif sent login: %s\n", c->user->info->name);
     for (message_t *curr = c->user->info->messages; curr; curr = curr->next) {
         if (!curr->isRead && strncmp(curr->to, to, 36) == 0) {
             cur_msg = find_unread_message(data->list, curr->from,

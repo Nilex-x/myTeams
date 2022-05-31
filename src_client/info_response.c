@@ -6,6 +6,7 @@
 */
 
 #include "teams_client.h"
+#include <stdio.h>
 
 // info no context
 void code_341(char *response)

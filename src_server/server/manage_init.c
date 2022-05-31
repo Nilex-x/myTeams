@@ -6,6 +6,7 @@
 */
 
 #include "teams_serv.h"
+#include <signal.h>
 
 void init_buff_client(client_t *node)
 {
@@ -20,12 +21,6 @@ void handle_command(server_t *info, client_t *cli)
     char *value = NULL;
     value = read_to_buffer(cli->buff_read, '\n', LENGTH_COMMAND);
     if (!value || value[0] == '\n') {
-        free(value);
-        return;
-    }
-    if (cli->socket == 0) {
-        if (strstr(value, "quit"))
-            close_server(info);
         free(value);
         return;
     }
