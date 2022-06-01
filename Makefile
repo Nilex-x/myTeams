@@ -29,7 +29,8 @@ SRC_SERV	=		src_server/server/teams_serv.c \
 					src_server/teams/send_list.c \
 					src_server/teams/manage_notif.c \
 					src_server/teams/manage_channels.c \
-					src_server/teams/manage_thread.c
+					src_server/teams/manage_thread.c \
+					src_server/teams/manage_use_cmd.c
 
 OBJ_SERV	=		$(SRC_SERV:.c=.o)
 

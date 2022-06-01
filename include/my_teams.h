@@ -476,10 +476,10 @@ int send_notif_team(data_server_t *data, users_t *user, team_t *t);
 /**
  * @brief
  *
- * @param data
- * @param user
- * @param t
- * @param c
+ * @param data Server data struct
+ * @param user User who do command
+ * @param t Team contain channel created
+ * @param c Channel created
  * @return int
  */
 int send_notif_channel(data_server_t *data, users_t *user, team_t *t, channel_t *c);
@@ -521,5 +521,17 @@ void free_thread(thread_t *thread);
  * @return thread_t*
  */
 thread_t *create_add_thread(char *title, char *body, channel_t *channel, userinfo_t *info);
+
+/*                                   use                                 */
+
+/**
+ * @brief Use command function
+ *
+ * @param c Client who do command
+ * @param arg Argument of command
+ * @param data Server data struct
+ * @return int
+ */
+int cmd_use(client_t *c, char **arg, data_server_t *data);
 
 #endif /* !MY_TEAMS_H_ */
