@@ -28,7 +28,7 @@ void code_314(char *response)
 {
     char **data = str_to_array(response, '\a');
 
-    client_private_message_print_messages(data[0], atoi(data[1]), data[2]);
+    client_private_message_print_messages(data[0], (time_t) strtol(data[1], NULL, 10), data[2]);
 }
 
 // subscribed "team"
