@@ -9,7 +9,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 char *my_strncpy_n(char *dest, char *str, int index, int n);
 
 int count_arg_separator(char *str, char separator)

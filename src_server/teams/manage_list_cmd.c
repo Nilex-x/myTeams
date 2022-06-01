@@ -56,12 +56,6 @@ static int list_comments(struct client_s *c, data_server_t *data)
     (void) line;
     (void) c;
     (void) data;
-    // for (char *curr = c->user->channel->threads->comment; curr; curr = curr->next) {
-    //     asprintf(&line, "333\a%s\a%s\a%ld\a%s\a%s\n", c->user->info->id
-    //     , c->user->info->id, 1111111111, c->user->info->id, c->user->info->id);
-    //     c->data_send = add_send(c->data_send, line);
-    //     free(line);
-    // }
     return 0;
 }
 

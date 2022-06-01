@@ -31,7 +31,7 @@ void code_333(char *response)
     char **data = str_to_array(response, '\a');
 
     client_channel_print_threads(data[0], data[1],
-     atoi(data[2]), data[3], data[4]);
+        atoi(data[2]), data[3], data[4]);
 }
 
 // LIST replies
@@ -40,5 +40,5 @@ void code_334(char *response)
     char **data = str_to_array(response, '\a');
 
     client_thread_print_replies(data[0], data[1],
-     atoi(data[2]), data[3]);
+        atoi(data[2]), data[3]);
 }

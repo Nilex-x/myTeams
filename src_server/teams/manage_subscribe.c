@@ -44,8 +44,8 @@ int send_subscribed(client_t *c, team_t *team, data_server_t *data)
     char *response = NULL;
 
     while (subs) {
-        asprintf(&response, "316\a%s\a%s\a%d\n", subs->user->id, subs->user->name,
-            get_user_by_uuid(subs->user->id, data) ? 1 : 0);
+        asprintf(&response, "316\a%s\a%s\a%d\n", subs->user->id,
+        subs->user->name, get_user_by_uuid(subs->user->id, data) ? 1 : 0);
         c->data_send = add_send(c->data_send, response);
         subs = subs->next;
     }

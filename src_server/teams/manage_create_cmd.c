@@ -81,8 +81,6 @@ static int send_comment(client_t *client, char **args, data_server_t *data)
     (void) client;
     (void) args;
     (void) data;
-
-
     return (0);
 }
 
