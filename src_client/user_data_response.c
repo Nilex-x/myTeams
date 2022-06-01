@@ -23,9 +23,12 @@ void code_312(char *response)
     client_print_user(data[0], data[1], atoi(data[2]));
 }
 
+// messages
 void code_314(char *response)
 {
-    printf("314 -> List exchanged messages.\n");
+    char **data = str_to_array(response, '\a');
+
+    client_private_message_print_messages(data[0], atoi(data[1]), data[2]);
 }
 
 // subscribed "team"

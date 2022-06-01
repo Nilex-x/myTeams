@@ -6,6 +6,7 @@
 */
 
 #include "teams_serv.h"
+#include <signal.h>
 
 void init_buff_client(client_t *node)
 {
@@ -22,10 +23,6 @@ void handle_command(server_t *info, client_t *cli)
     if (!value || value[0] == '\n') {
         free(value);
         return;
-    }
-    if (cli->socket == 0 && strstr(value, "quit")) {
-        free(value);
-        close_server(info);
     }
     printf("value client [%s]\n", value);
     sort_command(cli, info->data, value);
