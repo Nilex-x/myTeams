@@ -16,7 +16,7 @@
     #define UUID_REGEX "([0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-\
                         [0-9a-fA-F]{4}\b-[0-9a-fA-F]{12})"
     #define COMMANDS "LOGIN LOGOUT CREATE SEND SUBSCRIBE "\
-        "UNSUBSCRIBE INFO USER USERS HELP MESSAGES SUBSCRIBED LIST"
+        "UNSUBSCRIBE INFO USER USERS HELP MESSAGES SUBSCRIBED LIST USE"
 
 typedef struct message_s
 {

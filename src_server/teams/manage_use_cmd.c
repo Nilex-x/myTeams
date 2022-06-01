@@ -9,21 +9,63 @@
 
 static void use_root(client_t *c, char **arg, data_server_t *data)
 {
+    users_t *user = c->user;
+
+    if (user->team)
+        user->team = NULL;
+    if (user->channel)
+        user->channel = NULL;
+    if (user->thread)
+        user->thread = NULL;
     return;
 }
 
 static void use_team(client_t *c, char **arg, data_server_t *data)
 {
+    team_t *team = get_teams_by_id(arg[1], data);
+
+    if (!team) {
+        c->data_send = add_send(c->data_send, "522\n");
+        return;
+    }
+    c->user->team = team;
+    c->data_send = add_send(c->data_send, "319\n");
     return;
 }
 
 static void use_channel(client_t *c, char **arg, data_server_t *data)
 {
+    team_t *team = get_teams_by_id(arg[1], data);
+    channel_t *channel = get_channel_by_uuid(arg[2], team);
+
+    if (!team || !channel) {
+        c->data_send = add_send(c->data_send, team ? "523\n" : "522\n");
+        return;
+    }
+    c->user->team = team;
+    c->user->channel = channel;
+    c->data_send = add_send(c->data_send, "319\n");
     return;
 }
 
 static void use_thread(client_t *c, char **arg, data_server_t *data)
 {
+    team_t *team = get_teams_by_id(arg[1], data);
+    channel_t *channel = get_channel_by_uuid(arg[2], team);
+    thread_t *thread = get_thread_by_uuid(arg[3], channel);
+
+    if (!team)
+        c->data_send = add_send(c->data_send, "522\n");
+    if (!channel)
+        c->data_send = add_send(c->data_send, "523\n");
+    if (!thread)
+        c->data_send = add_send(c->data_send, "524\n");
+    if (!team || !channel || !thread)
+        return;
+    c->user->team = team;
+    c->user->channel = channel;
+    c->user->thread = thread;
+    c->data_send = add_send(c->data_send, "319\n");
     return;
 }
 
