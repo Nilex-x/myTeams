@@ -8,6 +8,7 @@
 #include "teams_client.h"
 #include <stdio.h>
 
+// send
 void code_313(char *response)
 {
     printf("313 -> Message sent.\n");
@@ -31,6 +32,7 @@ void code_318(char *response)
     free_array(data);
 }
 
+// use
 void code_319(char *response)
 {
     printf("319 -> New context specified.\n");
