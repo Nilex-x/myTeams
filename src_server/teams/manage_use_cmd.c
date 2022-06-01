@@ -11,6 +11,8 @@ static void use_root(client_t *c, char **arg, data_server_t *data)
 {
     users_t *user = c->user;
 
+    (void) arg;
+    (void) data;
     if (user->team)
         user->team = NULL;
     if (user->channel)
@@ -80,7 +82,7 @@ int cmd_use(client_t *c, char **arg, data_server_t *data)
     if (len > 4)
         c->data_send = add_send(c->data_send, "501\n");
     if (!c->user || len > 4)
-        return;
+        return (0);
     context[len - 1](c, arg, data);
     return (0);
 }
