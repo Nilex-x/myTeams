@@ -7,6 +7,7 @@
 
 #include "teams_client.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 void code_201(char *response)
 {
@@ -36,5 +37,5 @@ void code_211(char *response)
 
 void code_212(char *response)
 {
-
+    printf("New thread msg\n");
 }

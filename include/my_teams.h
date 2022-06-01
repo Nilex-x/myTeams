@@ -15,8 +15,8 @@
     #define FILEPATH_SAVE "./info.save"
     #define UUID_REGEX "([0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-\
                         [0-9a-fA-F]{4}\b-[0-9a-fA-F]{12})"
-    #define COMMANDS "LOGIN LOGOUT CREATE SEND SUBSCRIBE UNSUBSCRIBE INFO" \
-                    " USER USERS HELP MESSAGES SUBSCRIBED"
+    #define COMMANDS "LOGIN LOGOUT CREATE SEND SUBSCRIBE "\
+        "UNSUBSCRIBE INFO USER USERS HELP MESSAGES SUBSCRIBED LIST"
 
 typedef struct message_s
 {
@@ -413,6 +413,10 @@ int send_list_of_users(client_t *c, char **arg, data_server_t *data);
  * @return int
  */
 int cmd_messages(client_t *c, char **arg, data_server_t *data);
+
+/*                          LIST                          */
+
+int list(struct client_s *c, char **arg, data_server_t *data);
 
 /**
  * @brief Send list of subscribed user or list of subscribed teams

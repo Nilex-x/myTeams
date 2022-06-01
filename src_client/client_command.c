@@ -36,6 +36,7 @@ void get_server_command(info_t *info)
     if (!buffer)
         return;
     valread = read(info->socket, buffer, LENGTH_COMMAND);
+    printf("SERV:[%s]\n", buffer);
     if (valread == -1 || valread == 0) {
         free(buffer);
         info->quit = 1;
