@@ -21,7 +21,7 @@ int send_list_of_users(client_t *c, char **arg, data_server_t *data)
         free(response);
         users = users->next;
     }
-    free(response);
+    // free(response);
     return (0);
 }
 
@@ -31,19 +31,15 @@ static int send_all_messages(client_t *user, userinfo_t *to)
     char *res = NULL;
 
     while (msg) {
-        if (strcmp(msg->from, to->id) == 0) {
+        printf("msg info from: [%s] to: [%s] msg: [%s] status: [%s]\n", msg->from, msg->to, msg->message, msg->isRead ? "read" : "pending");
+        if (strcmp(msg->from, to->id) == 0 || strcmp(msg->to, to->id) == 0) {
             printf("nice msg: [%s] from: [%s]\n", msg->message, msg->from);
-            asprintf(&res, "314\a%s\a%d\a%s\n", msg->from, 0, msg->message);
-            user->data_send = add_send(user->data_send, res);
-        }
-        if (strcmp(msg->to, to->id) == 0) {
-            printf("nice msg: [%s] to: [%s]\n", msg->message, msg->to);
             asprintf(&res, "314\a%s\a%d\a%s\n", msg->to, 0, msg->message);
             user->data_send = add_send(user->data_send, res);
+            free(res);
         }
         msg = msg->next;
     }
-    free(res);
     return (0);
 }
 
