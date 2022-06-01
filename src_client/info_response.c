@@ -41,9 +41,7 @@ void code_344(char *response)
 {
     printf("344 -> info replies.\n");
     char **data = str_to_array(response, '\a');
-    time_t tim_t;
 
-    strptime(data[2], "%Y-%m-%d %H:%M:%S", tim_t);
-    client_print_thread(data[0], data[1], tim_t, data[3], data[4]);
+    client_print_thread(data[0], data[1], atoi(data[2]), data[3], data[4]);
     free_array(data);
 }
