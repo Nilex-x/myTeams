@@ -17,7 +17,7 @@ line_t *create_line(char *line)
     new_line->line_cpy = strdup(line);
     if (line[0] == 'U')
         new_line->type = USER;
-    else if (line[0] == 'M')
+    if (line[0] == 'M')
         new_line->type = MESSAGE;
     else
         new_line->type = (line[0] == 'C') ? CREATE : SUBSCRIBED;

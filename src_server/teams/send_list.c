@@ -18,9 +18,9 @@ int send_list_of_users(client_t *c, char **arg, data_server_t *data)
         asprintf(&response, "311\a%s\a%s\a%d\n", users->id, users->name,
                                 get_user_by_uuid(users->id, data) ? 1 : 0);
         c->data_send = add_send(c->data_send, response);
+        free(response);
         users = users->next;
     }
-    free(response);
     return (0);
 }
 

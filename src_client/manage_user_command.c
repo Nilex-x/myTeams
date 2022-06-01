@@ -75,19 +75,15 @@ int client_cmd(char *command, char *args, const char **cmds, char **to_send)
 int user_command(info_t *info)
 {
     char *to_send = NULL;
-    char *command = NULL;
-    char *args = NULL;
-    int index;
-    const char *commands[14] = {"HELP", "LOGIN", "LOGOUT"
-    , "USERS", "USER", "SEND", "MESSAGES", "SUBSCRIBE"
-    , "SUBSCRIBED", "UNSUBSCRIBE", "USE", "CREATE"
-    , "LIST", "INFO"};
+    char *command = get_cmd(info->write_buffer);;
+    char *args = get_args(info->write_buffer, strlen(command));
+    const char *commands[14] = {"HELP", "LOGIN", "LOGOUT", "USERS", "USER",
+    "SEND", "MESSAGES", "SUBSCRIBE", "SUBSCRIBED", "UNSUBSCRIBE", "USE",
+    "CREATE", "LIST", "INFO"};
+    int index = client_cmd(command, args, commands, &to_send);
 
-    command = get_cmd(info->write_buffer);
     if (!command)
         return -1;
-    args = get_args(info->write_buffer, strlen(command));
-    index = client_cmd(command, args, commands, &to_send);
     if (index == -1) {
         free(to_send);
         return -2;

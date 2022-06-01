@@ -24,7 +24,7 @@ void get_server_command(info_t *info)
 {
     int valread;
     char *buffer = malloc(LENGTH_COMMAND);
-    char *response = NULL;
+    char *res = NULL;
 
     if (!buffer)
         return;
@@ -37,11 +37,10 @@ void get_server_command(info_t *info)
     buffer[valread] = '\0';
     add_to_write(&info->read_buffer, buffer, LENGTH_COMMAND);
     free(buffer);
-    response = read_to_buffer(&info->read_buffer, '\n', LENGTH_COMMAND);
-    while (response && response[0] != '\n') {
-        (response && response[0] != '\n') ? server_response(response, info) :
-                                                free(response);
-        response = read_to_buffer(&info->read_buffer, '\n', LENGTH_COMMAND);
+    res = read_to_buffer(&info->read_buffer, '\n', LENGTH_COMMAND);
+    while (res && res[0] != '\n') {
+        (res && res[0] != '\n') ? server_response(res, info) : free(res);
+        res = read_to_buffer(&info->read_buffer, '\n', LENGTH_COMMAND);
     }
 }
 

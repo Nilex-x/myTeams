@@ -33,5 +33,5 @@ void code_211(char *response)
 
 void code_212(char *response)
 {
-
+    return;
 }
