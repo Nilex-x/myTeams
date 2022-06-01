@@ -486,7 +486,8 @@ int send_notif_team(data_server_t *data, users_t *user, team_t *t);
  * @param c Channel created
  * @return int
  */
-int send_notif_channel(data_server_t *data, users_t *user, team_t *t, channel_t *c);
+int send_notif_channel(data_server_t *data, users_t *user, team_t *t,
+channel_t *c);
 
 /*                              thread                                   */
 
@@ -524,7 +525,8 @@ void free_thread(thread_t *thread);
  * @param info Info of created
  * @return thread_t*
  */
-thread_t *create_add_thread(char *title, char *body, channel_t *channel, userinfo_t *info);
+thread_t *create_add_thread(char *title, char *body, channel_t *channel,
+userinfo_t *info);
 
 /*                                   use                                 */
 
