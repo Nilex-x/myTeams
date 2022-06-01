@@ -9,6 +9,8 @@
 
 static int send_msg(client_t *c, char **arg, data_server_t *data)
 {
+    char *line = NULL;
+
     if (!c->user) {
         c->data_send = add_send(c->data_send, "503 - Not logged-in.\n");
         c->status = WRITE;
@@ -20,7 +22,9 @@ static int send_msg(client_t *c, char **arg, data_server_t *data)
         return (0);
     }
     if (!get_user_info_by_uuid(arg[1], data)) {
-        c->data_send = add_send(c->data_send, "521 - Wrong user uuid.\n");
+        asprintf(&line, "521\a%s\n", arg[1]);
+        c->data_send = add_send(c->data_send, line);
+        free(line);
         c->status = WRITE;
         return (0);
     }
