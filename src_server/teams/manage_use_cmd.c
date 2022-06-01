@@ -19,19 +19,23 @@ static void use_root(client_t *c, char **arg, data_server_t *data)
         user->channel = NULL;
     if (user->thread)
         user->thread = NULL;
+    c->data_send = add_send(c->data_send, "319\n");
     return;
 }
 
 static void use_team(client_t *c, char **arg, data_server_t *data)
 {
     team_t *team = get_teams_by_id(arg[1], data);
+    char *line = NULL;
 
     if (!team) {
-        c->data_send = add_send(c->data_send, "522\n");
-        return;
+        asprintf(&line, "522\a%s\n", arg[1]);
+    } else {
+        c->user->team = team;
+        asprintf(&line, "319\n");
     }
-    c->user->team = team;
-    c->data_send = add_send(c->data_send, "319\n");
+    c->data_send = add_send(c->data_send, line);
+    free(line);
     return;
 }
 
@@ -39,14 +43,19 @@ static void use_channel(client_t *c, char **arg, data_server_t *data)
 {
     team_t *team = get_teams_by_id(arg[1], data);
     channel_t *channel = get_channel_by_uuid(arg[2], team);
+    char *line = NULL;
 
-    if (!team || !channel) {
-        c->data_send = add_send(c->data_send, team ? "523\n" : "522\n");
-        return;
+    if (!team)
+        asprintf(&line, "522\a%s\n", arg[1]);
+    if (!channel)
+        asprintf(&line, "523\a%s\n", arg[2]);
+    if (team && channel) {
+        c->user->team = team;
+        c->user->channel = channel;
+        asprintf(&line, "319\n");
     }
-    c->user->team = team;
-    c->user->channel = channel;
-    c->data_send = add_send(c->data_send, "319\n");
+    c->data_send = add_send(c->data_send, line);
+    free(line);
     return;
 }
 
@@ -55,19 +64,22 @@ static void use_thread(client_t *c, char **arg, data_server_t *data)
     team_t *team = get_teams_by_id(arg[1], data);
     channel_t *channel = get_channel_by_uuid(arg[2], team);
     thread_t *thread = get_thread_by_uuid(arg[3], channel);
+    char *line = NULL;
 
     if (!team)
-        c->data_send = add_send(c->data_send, "522\n");
+        asprintf(&line, "522\a%s\n", arg[1]);
     if (!channel)
-        c->data_send = add_send(c->data_send, "523\n");
+        asprintf(&line, "523\a%s\n", arg[2]);
     if (!thread)
-        c->data_send = add_send(c->data_send, "524\n");
-    if (!team || !channel || !thread)
-        return;
-    c->user->team = team;
-    c->user->channel = channel;
-    c->user->thread = thread;
-    c->data_send = add_send(c->data_send, "319\n");
+        asprintf(&line, "524\a%s\n", arg[3]);
+    if (team && channel && thread) {
+        c->user->team = team;
+        c->user->channel = channel;
+        c->user->thread = thread;
+        asprintf(&line, "319\n");
+    }
+    c->data_send = add_send(c->data_send, line);
+    free(line);
     return;
 }
 

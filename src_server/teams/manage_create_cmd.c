@@ -64,7 +64,7 @@ static int add_thread(client_t *c, char **args, data_server_t *data)
     thread = create_add_thread(args[1], args[2], c->user->channel,
                                                     c->user->info);
     asprintf(&line, "CREATE\aTHREAD\a%s\a%s\a%s\a%s\a%ld\a%s\a%s\n",
-        c->user->thread->id, c->user->channel->id, thread->id,
+        thread->id, c->user->channel->id, thread->id,
         thread->creator_id, thread->timestamp, thread->title, thread->body);
     append_to_list(&data->list->lines, line);
     asprintf(&line, "323\a%s\a%s\a%ld\a%s\a%s\n", thread->id,
