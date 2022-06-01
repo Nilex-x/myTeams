@@ -6,6 +6,8 @@
 */
 
 #include "teams_client.h"
+#include <string.h>
+#include <stdlib.h>
 
 static int return_code(char *response)
 {

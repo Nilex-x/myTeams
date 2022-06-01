@@ -6,6 +6,7 @@
 */
 
 #include "teams_client.h"
+#include <stdio.h>
 
 // wrong user uuid
 void code_521(char *response)

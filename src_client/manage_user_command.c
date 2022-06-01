@@ -5,7 +5,11 @@
 ** manage_user_command
 */
 
+#define _GNU_SOURCE
 #include "teams_client.h"
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 
 int check_command(char *cmd)
 {

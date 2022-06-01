@@ -6,6 +6,13 @@
 */
 
 #include "teams_client.h"
+#include <stdlib.h>
+#include <sys/select.h>
+#include <sys/socket.h>
+#include <netinet/ip.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
 
 void clear_list(info_t *info)
 {
@@ -23,7 +30,7 @@ void clear_list(info_t *info)
 void get_server_command(info_t *info)
 {
     int valread;
-    char *buffer = malloc(LENGTH_COMMAND);
+    char *buffer = calloc(1, LENGTH_COMMAND);
     char *res = NULL;
 
     if (!buffer)

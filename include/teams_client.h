@@ -9,11 +9,6 @@
     #define TEAMS_CLIENT_H_
     #define _GNU_SOURCE
 
-    #include <arpa/inet.h>
-    #include <stdio.h>
-    #include <string.h>
-    #include <sys/socket.h>
-    #include <unistd.h>
     #include <sys/select.h>
 
     #include "lib.h"
