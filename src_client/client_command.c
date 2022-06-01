@@ -30,13 +30,12 @@ void clear_list(info_t *info)
 void get_server_command(info_t *info)
 {
     int valread;
-    char *buffer = malloc(LENGTH_COMMAND);
+    char *buffer = calloc(1, LENGTH_COMMAND);
     char *response = NULL;
 
     if (!buffer)
         return;
     valread = read(info->socket, buffer, LENGTH_COMMAND);
-    printf("SERV:[%s]\n", buffer);
     if (valread == -1 || valread == 0) {
         free(buffer);
         info->quit = 1;
