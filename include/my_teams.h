@@ -21,7 +21,7 @@
     #define UUID_REGEX "([0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-\
                         [0-9a-fA-F]{4}\b-[0-9a-fA-F]{12})"
     #define COMMANDS "LOGIN LOGOUT CREATE SEND SUBSCRIBE "\
-                    "UNSUBSCRIBE INFO USER USERS HELP MESSAGES"
+                    "UNSUBSCRIBE INFO USER USERS HELP MESSAGES LIST"
 
 typedef struct message_s
 {
@@ -408,5 +408,10 @@ int send_list_of_users(client_t *c, char **arg, data_server_t *data);
  * @return int
  */
 int cmd_messages(client_t *c, char **arg, data_server_t *data);
+
+/*                          LIST                          */
+
+int list(struct client_s *c, char **arg, data_server_t *data);
+
 
 #endif /* !MY_TEAMS_H_ */
