@@ -11,17 +11,14 @@ static int send_msg(client_t *c, char **arg, data_server_t *data)
 {
     if (!c->user) {
         c->data_send = add_send(c->data_send, "503 - Not logged-in.\n");
-        c->status = WRITE;
         return (0);
     }
     if (len_array(arg) != 3) {
         c->data_send = add_send(c->data_send, "502 - Missing arguments.\n");
-        c->status = WRITE;
         return (0);
     }
     if (!get_user_info_by_uuid(arg[1], data)) {
         c->data_send = add_send(c->data_send, "521 - Wrong user uuid.\n");
-        c->status = WRITE;
         return (0);
     }
     return send_message(c, get_user_info_by_uuid(arg[1], data), arg[2], data);
@@ -38,7 +35,6 @@ static int info(struct client_s *c, char **arg, data_server_t *data)
     (void) arg;
     if (!c->user) {
         c->data_send = add_send(c->data_send, "502 - Not logged-in.\n");
-        c->status = WRITE;
         return (0);
     }
     return f[context](c, data);
@@ -83,10 +79,10 @@ int sort_command(client_t *c, data_server_t *data, char *cmd)
     bool find = false;
     char **tab = str_to_word_array_separator(clear_str(cmd), '\a');
     char **commands = my_str_to_word_array(COMMANDS);
-    int (*cmds[11])(client_t *, char **, data_server_t *) = { login, logout,
+    int (*cmds[14])(client_t *, char **, data_server_t *) = { login, logout,
                             sort_create, send_msg, subscribe, unsubscribe,
                             info, send_user_info, send_list_of_users, help,
-                            cmd_messages};
+                            cmd_messages, cmd_subscribed, list, cmd_use};
 
     for (int i = 0; commands[i] && !find; i++) {
         if (strcmp(commands[i], tab[0]) == 0) {

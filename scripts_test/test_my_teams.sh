@@ -1,3 +1,10 @@
+##
+## EPITECH PROJECT, 2022
+## test_my_teams.sh
+## File description:
+## test_my_teams
+##
+
 #!/bin/bash
 
 if [ "$#" -ne 2 ]; then

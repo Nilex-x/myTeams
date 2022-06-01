@@ -8,11 +8,6 @@
 #ifndef LIB_H_
     #define LIB_H_
     #define _GNU_SOURCE
-    #include <stdlib.h>
-    #include <stdio.h>
-    #include <unistd.h>
-    #include <string.h>
-    #include <netinet/in.h>
 
 typedef struct buffer_s {
     char buffer[512];

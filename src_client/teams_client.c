@@ -6,6 +6,10 @@
 */
 
 #include "teams_client.h"
+#include <stdlib.h>
+#include <sys/socket.h>
+#include <netinet/ip.h>
+#include <arpa/inet.h>
 
 static info_t *init_info(int socket)
 {

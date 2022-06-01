@@ -7,14 +7,14 @@
 
 #include "my_teams.h"
 
-line_t *find_unread_message(file_io_t *fio, char *from, char *to, char *msg, time_t ts)
+line_t *find_unread_message(file_io_t *fio, char *from, char *to,
+char *msg, time_t ts)
 {
     line_t *curr = fio->lines;
     char *line = NULL;
 
     asprintf(&line, "MESSAGE\aN\a%s\a%s\a%ld\a%s", from, to, ts, msg);
     while (curr) {
-        printf("[%s] [%s] - diff %d\n", curr->line, line, strcmp(curr->line, line));
         if (strcmp(curr->line, line) == 0) {
             free(line);
             return curr;
