@@ -6,6 +6,7 @@
 */
 
 #include "teams_client.h"
+#include <stdio.h>
 
 // send
 void code_313(char *response)

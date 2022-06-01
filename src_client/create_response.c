@@ -6,6 +6,8 @@
 */
 
 #include "teams_client.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 // new team created
 void code_321(char *response)

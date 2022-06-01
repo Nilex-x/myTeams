@@ -75,7 +75,6 @@ void send_message_connected_user(struct client_s *cli
         if (u->info->id == user->id) {
             asprintf(&line, "211\a%s\a%s\a%ld\n", curr->from, msg, t);
             u->client->data_send = add_send(u->client->data_send, line);
-            u->client->status = WRITE;
             free(line);
         }
     server_event_private_message_sended(cli->user->info->id, user->id, msg);

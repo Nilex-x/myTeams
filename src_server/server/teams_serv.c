@@ -7,16 +7,17 @@
 
 #include "teams_serv.h"
 #include <signal.h>
+#include <stdio.h>
 
 static server_t info;
 
-void interrupt_signal(int signo)
+static void interrupt_signal(int signo)
 {
     if (signo == SIGINT)
         close_server(&info);
 }
 
-void print_help(void)
+static void print_help(void)
 {
     printf("USAGE:\t./myteams_server port\n\n\tport ");
     printf("is the port number on which the server socket listens\n\n");

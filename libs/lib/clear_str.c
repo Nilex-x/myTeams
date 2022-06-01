@@ -6,7 +6,6 @@
 */
 
 #include <stdlib.h>
-#include <stdio.h>
 
 char *clear_str(char *str)
 {

@@ -6,6 +6,8 @@
 */
 
 #include "teams_client.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 // LIST teams
 void code_331(char *response)

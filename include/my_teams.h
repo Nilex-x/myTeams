@@ -11,17 +11,12 @@
     #include "teams_serv.h"
     #include "file_io.h"
     #include <stdbool.h>
-    #include <stdio.h>
-    #include <stdlib.h>
-    #include <unistd.h>
-    #include <string.h>
-    #include <uuid/uuid.h>
 
     #define FILEPATH_SAVE "./info.save"
     #define UUID_REGEX "([0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-\
                         [0-9a-fA-F]{4}\b-[0-9a-fA-F]{12})"
     #define COMMANDS "LOGIN LOGOUT CREATE SEND SUBSCRIBE "\
-                    "UNSUBSCRIBE INFO USER USERS HELP MESSAGES LIST"
+        "UNSUBSCRIBE INFO USER USERS HELP MESSAGES SUBSCRIBED LIST"
 
 typedef struct message_s
 {
@@ -353,6 +348,16 @@ int unsubscribe(client_t *c, char **args, data_server_t *data);
  */
 userinfo_t *get_subscribe_by_id(team_t *team, char *uuid);
 
+/**
+ * @brief Send subscribed user to client
+ *
+ * @param c Client who do command
+ * @param team Team to subscribed users
+ * @param data Server data struct
+ * @return int
+ */
+int send_subscribed(client_t *c, team_t *team, data_server_t *data);
+
 /*                         create                                        */
 
 /**
@@ -413,5 +418,112 @@ int cmd_messages(client_t *c, char **arg, data_server_t *data);
 
 int list(struct client_s *c, char **arg, data_server_t *data);
 
+/**
+ * @brief Send list of subscribed user or list of subscribed teams
+ *
+ * @param c Client who do command
+ * @param arg,Array of command arguments
+ * @param data Server data struct
+ * @return int
+ */
+int cmd_subscribed(client_t *c, char **arg, data_server_t *data);
+
+/*                            channels                                   */
+
+/**
+ * @brief Get the channel by uuid string
+ *
+ * @param uuid Uuid to find
+ * @param team Teams who have channel to find
+ * @return channel_t*
+ */
+channel_t *get_channel_by_uuid(char *uuid, team_t *team);
+
+/**
+ * @brief Get the channel by name string
+ *
+ * @param name Name to find
+ * @param team Teams who have channel to find
+ * @return channel_t*
+ */
+channel_t *get_channel_by_name(char *name, team_t *team);
+
+/**
+ * @brief Create new channel
+ *
+ * @param name Name of new channel
+ * @param desc Description of new channel
+ * @param team Team who add channel
+ * @return team_t*
+ */
+channel_t *create_add_channel(char *name, char *desc, team_t *team);
+
+/**
+ * @brief Free all channel list
+ *
+ * @param channel Channel list free
+ */
+void free_channels(channel_t *channel);
+
+/*                              notif                                    */
+
+/**
+ * @brief Send notif of creation of team
+ *
+ * @param data Server data struct
+ * @param user User who do command
+ * @param t New team created
+ * @return int
+ */
+int send_notif_team(data_server_t *data, users_t *user, team_t *t);
+
+/**
+ * @brief
+ *
+ * @param data
+ * @param user
+ * @param t
+ * @param c
+ * @return int
+ */
+int send_notif_channel(data_server_t *data, users_t *user, team_t *t, channel_t *c);
+
+/*                              thread                                   */
+
+/**
+ * @brief Get the thread by uuid string
+ *
+ * @param uuid Uuid to find
+ * @param channel In channel to find
+ * @return thread_t*
+ */
+thread_t *get_thread_by_uuid(char *uuid, channel_t *channel);
+
+/**
+ * @brief Get the thread by title string
+ *
+ * @param title Title to find
+ * @param channel In channel to find
+ * @return thread_t*
+ */
+thread_t *get_thread_by_title(char *title, channel_t *channel);
+
+/**
+ * @brief Free thread
+ *
+ * @param thread thread list to free
+ */
+void free_thread(thread_t *thread);
+
+/**
+ * @brief Create or add thread
+ *
+ * @param title Title of thread
+ * @param body Body of thread
+ * @param channel Channel where is created
+ * @param info Info of created
+ * @return thread_t*
+ */
+thread_t *create_add_thread(char *title, char *body, channel_t *channel, userinfo_t *info);
 
 #endif /* !MY_TEAMS_H_ */

@@ -6,6 +6,8 @@
 */
 
 #include "teams_client.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 // Users
 void code_311(char *response)
