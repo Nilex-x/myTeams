@@ -31,7 +31,8 @@ thread_t *get_thread_by_title(char *title, channel_t *channel)
     return NULL;
 }
 
-thread_t *create_add_thread(char *title, char *body, channel_t *channel, userinfo_t *info)
+thread_t *create_add_thread(char *title, char *body, channel_t *channel,
+userinfo_t *info)
 {
     thread_t *thread = malloc(sizeof(thread_t));
     thread_t *temp = channel->threads;
@@ -43,7 +44,7 @@ thread_t *create_add_thread(char *title, char *body, channel_t *channel, userinf
     thread->title = strdup(title);
     thread->body = strdup(body);
     thread->timestamp = time(NULL);
-    thread->comment = NULL;
+    thread->replies = NULL;
     thread->next = NULL;
     if (!channel->threads) {
         channel->threads = thread;

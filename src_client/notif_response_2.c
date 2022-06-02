@@ -29,6 +29,7 @@ void code_223(char *response)
 {
     char **data = str_to_array(response, '\a');
 
-    client_event_thread_created(data[0], data[1], atoi(data[2]), data[3], data[4]);
+    client_event_thread_created(data[0], data[1], atoi(data[2]),
+        data[3], data[4]);
     free_array(data);
 }

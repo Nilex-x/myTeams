@@ -44,15 +44,18 @@ void append_message_to_udata(userinfo_t *f, userinfo_t *t, char *msg, bool r)
     (t_msg) ? (t_msg->next = mesg_sec) : (t->messages = mesg_sec);
 }
 
-char *alloc_message(char *from_id, char *to_id, char *message, bool is_read)
+static char *alloc_message(char *from_id, char *to_id, char *message,
+bool is_read)
 {
     char *line = NULL;
     time_t ts = time(NULL);
 
     if (is_read)
-        asprintf(&line, "MESSAGE\aR\a%s\a%s\a%ld\a%s", from_id, to_id, ts, message);
+        asprintf(&line, "MESSAGE\aR\a%s\a%s\a%ld\a%s", from_id, to_id,
+                                                        ts, message);
     else
-        asprintf(&line, "MESSAGE\aN\a%s\a%s\a%ld\a%s", from_id, to_id, ts, message);
+        asprintf(&line, "MESSAGE\aN\a%s\a%s\a%ld\a%s", from_id, to_id,
+                                                        ts, message);
     return (line);
 }
 
@@ -64,8 +67,8 @@ void send_message_connected_user(struct client_s *cli
     time_t t = time(NULL);
 
     append_message_to_udata(cli->user->info, user, msg, true);
-    asprintf(&line, "MESSAGE\aR\a%s\a%s\a%ld\a%s", cli->user->info->id
-    , user->id, t, msg);
+    asprintf(&line, "MESSAGE\aR\a%s\a%s\a%ld\a%s", cli->user->info->id,
+    user->id, t, msg);
     append_to_list(&data->list->lines, line);
     free(line);
     cli->data_send = add_send(cli->data_send, "313 - Message sent.\n");
@@ -81,7 +84,7 @@ void send_message_connected_user(struct client_s *cli
 }
 
 int send_message(struct client_s *c, struct userinfo_s *user
-, char *message, data_server_t *data)
+, char *msg, data_server_t *data)
 {
     char *line = NULL;
 
@@ -91,16 +94,16 @@ int send_message(struct client_s *c, struct userinfo_s *user
         free(line);
         return (c->status = WRITE);
     }
-    if (strlen(message) > 512)
+    if (strlen(msg) > 512)
         c->data_send = add_send(c->data_send, "503 - Command too long.\n");
-    else if (!get_user_by_uuid(user->id, data)) {
-        append_message_to_udata(c->user->info, user, message, false);
-        line = alloc_message(c->user->info->id, user->id, message, false);
+    if (!get_user_by_uuid(user->id, data) && strlen(msg) <= 512) {
+        append_message_to_udata(c->user->info, user, msg, false);
+        line = alloc_message(c->user->info->id, user->id, msg, false);
         append_to_list(&data->list->lines, line);
         free(line);
         c->data_send = add_send(c->data_send, "313 - Message sent.\n");
-        server_event_private_message_sended(c->user->info->id, user->id, message);
-    } else
-        send_message_connected_user(c, user, message, data);
+        server_event_private_message_sended(c->user->info->id, user->id, msg);
+    } else if (strlen(msg) <= 512)
+        send_message_connected_user(c, user, msg, data);
     return (c->status = WRITE);
 }

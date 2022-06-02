@@ -7,7 +7,8 @@
 
 #include "my_teams.h"
 
-line_t *find_unread_message(file_io_t *fio, char *from, char *to, char *msg, time_t ts)
+line_t *find_unread_message(file_io_t *fio, char *from, char *to,
+char *msg, time_t ts)
 {
     line_t *curr = fio->lines;
     char *line = NULL;

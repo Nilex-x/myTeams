@@ -67,17 +67,13 @@ message_t *get_messages_by_user(file_io_t *file_io, char *id)
 userinfo_t *create_user_by_name(file_io_t *file_io, char *name)
 {
     userinfo_t *user = malloc(sizeof(userinfo_t));
-    uuid_t uid;
     char *line = NULL;
 
     if (!user)
         return NULL;
     if (!get_uid_by_name(file_io, name)) {
-        uuid_generate(uid);
-        user->id = malloc(sizeof(char) * 37);
-        uuid_unparse(uid, user->id);
-        line = malloc(sizeof(char) * (strlen(name) + 45));
-        sprintf(line, "USER\a%s\a%s", user->id, name);
+        user->id = generate_uuid();
+        asprintf(&line, "USER\a%s\a%s", user->id, name);
         append_to_list(&file_io->lines, line);
         user->messages = NULL;
         user->name = strdup(name);
@@ -88,7 +84,6 @@ userinfo_t *create_user_by_name(file_io_t *file_io, char *name)
     free(user);
     return NULL;
 }
-
 
 userinfo_t *get_all_user_infos(file_io_t *file_io)
 {
