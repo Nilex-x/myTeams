@@ -53,9 +53,13 @@ static int list_comments(struct client_s *c, data_server_t *data)
 {
     char *line = NULL;
 
-    (void) line;
-    (void) c;
     (void) data;
+    for (reply_t *curr = c->user->thread->replies; curr; curr = curr->next) {
+        asprintf(&line, "334\a%s\a%s\a%ld\a%s\n", c->user->thread->id
+        , curr->creator_id, curr->timestamp, curr->body);
+        c->data_send = add_send(c->data_send, line);
+        free(line);
+    }
     return 0;
 }
 

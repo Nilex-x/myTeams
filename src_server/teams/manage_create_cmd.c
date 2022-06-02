@@ -81,11 +81,15 @@ static int send_comment(client_t *c, char **args, data_server_t *data)
     reply_t *reply = NULL;
     char *line = NULL;
 
-    if (get_subscribe_by_id(c->user->team, c->user->info->id)) {
+    if (!get_subscribe_by_id(c->user->team, c->user->info->id)) {
         c->data_send = add_send(c->data_send, "513\n");
         return (0);
     }
     reply = create_add_reply(args[1], c->user->info, c->user->thread);
+    asprintf(&line, "CREATE\aREPLY\a%s\a%s\a%s\a%s\a%ld\a%s\n"
+    , c->user->thread->id, reply->id, reply->creator_id, reply->body
+    , reply->timestamp, reply->body);
+    append_to_list(&data->list->lines, line);
     asprintf(&line, "324\a%s\a%s\a%ld\a%s\n", c->user->thread->id,
     c->user->info->id, reply->timestamp, reply->body);
     c->data_send = add_send(c->data_send, line);

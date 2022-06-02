@@ -7,6 +7,6 @@ MESSAGE <BEL> N <BEL> azertyuiop <BEL> ihgvbzregz <BEL> Ouais Salut ouais !
 CREATE <BEL> TEAM <BEL> teamID <BEL> teamName <BEL> teamDesc
 CREATE <BEL> CHANNEL <BEL> teamID <BEL> channelId <BEL> channelName <BEL> channelDescr
 CREATE <BEL> THREAD <BEL> teamID <BEL> channelId <BEL> threadID <BEL> authorID <BEL> timestamp <BEL> threadTitle <BEL> threadBody
-CREATE <BEL> COMMENT <BEL> threadID <BEL> ComContent
+CREATE <BEL> REPLY <BEL> threadID <BEL> replyID <BEL> authorID <BEL> timestamp <BEL> ReplyContent
 
 SUBSCRIBED <BEL> teamID <BEL> userID
