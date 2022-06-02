@@ -13,7 +13,7 @@ void code_313(char *response)
 {
     (void)response;
 
-    printf("313 -> Message sent.\n");
+    printf("Message sent.\n");
 }
 
 // succesfully subscribed
@@ -39,5 +39,5 @@ void code_319(char *response)
 {
     (void)response;
 
-    printf("319 -> New context specified.\n");
+    printf("New context specified.\n");
 }
