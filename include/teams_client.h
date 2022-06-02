@@ -32,21 +32,21 @@ typedef struct info_s {
 /**
  * @brief Get the server response in the client's structure.
  * Check for Ctrl+C and wrong cmds.
- * 
- * @param info The client's struct. 
+ *
+ * @param info The client's struct.
  */
 void get_server_command(info_t *info);
 
 /**
  * @brief Get the user command in the client's structure.
- * 
+ *
  * @param info The client's struct.
  */
 void get_user_command(info_t *info);
 
 /**
  * @brief Write the user command to the server.
- * 
+ *
  * @param info The client's struct.
  */
 void write_command(info_t *info);
@@ -60,36 +60,35 @@ void manage_client(info_t *info);
 
 /**
  * @brief Set read and write lists to ZERO.
- * 
+ *
  * @param info The client's struct.
  */
 void clear_list(info_t *info);
 
-
 /**
  * @brief Translate user commands to client commands.
- * 
+ *
  * @param info The client's struct.
  */
 int user_command(info_t *info);
 
 /**
  * @brief Remove double quotes from the str.
- * 
- * @param str 
+ *
+ * @param str
  */
 int remove_dquotes(char *str);
 
 /**
  * @brief Replaces every spaces excluding those inside double-quotes by '\\a'.
- * 
- * @param str 
+ *
+ * @param str
  */
 void replace_char(char *str);
 
 /**
  * @brief Split a str to multiple str separated by a given character.
- * 
+ *
  * @param str To split.
  * @param c Given char.
  */
@@ -97,20 +96,18 @@ char **str_to_array(char *str, char c);
 
 /**
  * @brief Free the array returned by (str_to_char).
- * 
+ *
  * @param array The splited array.
  */
 void free_array(char **array);
 
-
 /**
  * @brief Interpret the code received by the server.
- * 
+ *
  * @param response The server response
  * @param info The client's struct.
  */
 void server_response(char *response, info_t *info);
-
 
 //Display help
 void code_101(char *response);

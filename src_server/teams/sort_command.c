@@ -86,7 +86,6 @@ int sort_command(client_t *c, data_server_t *data, char *cmd)
 
     for (int i = 0; commands[i] && !find; i++) {
         if (strcmp(commands[i], tab[0]) == 0) {
-            printf("Nice command: %s\n", commands[i]);
             cmds[i](c, tab, data);
             find = true;
         }

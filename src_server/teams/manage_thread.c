@@ -66,6 +66,7 @@ void free_thread(thread_t *thread)
         free(thread->body);
         free(thread->title);
         free(thread->creator_id);
+        free_replies(thread->replies);
         free(thread);
         thread = next;
     }
