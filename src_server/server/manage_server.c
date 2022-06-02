@@ -67,7 +67,6 @@ int handler_connection(server_t *info)
     FD_SET(info->fd_server, &info->rfds);
     info->data = get_server_data(FILEPATH_SAVE);
     init_client(info);
-    add_client(info, 0);
     while (1) {
         clear_list(info);
         if (select(info->max_fd + 1, &info->rfds, &info->wfds,
