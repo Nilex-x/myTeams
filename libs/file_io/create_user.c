@@ -88,18 +88,18 @@ userinfo_t *create_user_by_name(file_io_t *file_io, char *name)
 userinfo_t *get_all_user_infos(file_io_t *file_io)
 {
     userinfo_t *users = NULL;
-    userinfo_t *user = NULL;
-    userinfo_t *cuser = NULL;
+    userinfo_t *last = NULL;
+    userinfo_t *tmp = NULL;
 
     for (line_t *c = file_io->lines; c; c = c->next) {
         if (c->type == USER) {
-            user = malloc(sizeof(userinfo_t));
-            user->id = strndup(c->line + 5, 36);
-            user->name = strdup(c->line + 42);
-            user->messages = get_messages_by_user(file_io, user->id);
-            user->next = NULL;
-            (user) ? (users) ? (cuser->next = user) : (users = user) : 0;
-            (user) ? cuser = user : 0;
+            tmp = malloc(sizeof(userinfo_t));
+            tmp->id = strndup(c->line + 5, 36);
+            tmp->name = strdup(c->line + 42);
+            tmp->messages = get_messages_by_user(file_io, tmp->id);
+            tmp->next = NULL;
+            (users) ? (last->next = tmp) : (users = tmp);
+            last = tmp;
         }
     }
     return users;
