@@ -42,7 +42,7 @@ thread_t *get_threads(file_io_t *file_io, char *team_id, char *chan_id)
             tmp->title = strdup(strtok(NULL, "\a\n"));
             tmp->body = strdup(strtok(NULL, "\a\n"));
             tmp->next = NULL;
-            tmp->comment = get_comments(file_io, tmp->id);
+            // tmp->comment = get_comments(file_io, tmp->id);
             (threads) ? (last->next = tmp) : (threads = tmp);
             last = tmp;
         }

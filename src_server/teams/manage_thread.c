@@ -44,7 +44,7 @@ userinfo_t *info)
     thread->title = strdup(title);
     thread->body = strdup(body);
     thread->timestamp = time(NULL);
-    thread->comment = NULL;
+    thread->replies = NULL;
     thread->next = NULL;
     if (!channel->threads) {
         channel->threads = thread;
