@@ -35,6 +35,8 @@ void code_211(char *response)
 
 void code_212(char *response)
 {
-    (void) response;
-    printf("New thread msg\n");
+    char **data = str_to_array(response, '\a');
+
+    client_event_thread_reply_received(data[0], data[1], data[2], data[3]);
+    free_array(data);
 }

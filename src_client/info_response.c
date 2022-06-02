@@ -21,7 +21,6 @@ void code_341(char *response)
 // info team defined
 void code_342(char *response)
 {
-    printf("342 -> info channel.\n");
     char **data = str_to_array(response, '\a');
 
     client_print_team(data[0], data[1], data[2]);
@@ -31,7 +30,6 @@ void code_342(char *response)
 //info channel defined
 void code_343(char *response)
 {
-    printf("343 -> info threads.\n");
     char **data = str_to_array(response, '\a');
 
     client_print_channel(data[0], data[1], data[2]);
@@ -41,7 +39,6 @@ void code_343(char *response)
 //info thread defined
 void code_344(char *response)
 {
-    printf("344 -> info replies.\n");
     char **data = str_to_array(response, '\a');
 
     client_print_thread(data[0], data[1], atoi(data[2]), data[3], data[4]);
