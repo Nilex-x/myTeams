@@ -28,6 +28,8 @@ static void use_team(client_t *c, char **arg, data_server_t *data)
     team_t *team = get_teams_by_id(arg[1], data);
     char *line = NULL;
 
+    c->user->channel = NULL;
+    c->user->thread = NULL;
     if (!team) {
         asprintf(&line, "522\a%s\n", arg[1]);
     } else {
@@ -45,6 +47,7 @@ static void use_channel(client_t *c, char **arg, data_server_t *data)
     channel_t *channel = get_channel_by_uuid(arg[2], team);
     char *line = NULL;
 
+    c->user->thread = NULL;
     if (!team)
         asprintf(&line, "522\a%s\n", arg[1]);
     if (!channel)

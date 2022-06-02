@@ -44,7 +44,7 @@ userinfo_t *info)
     thread->title = strdup(title);
     thread->body = strdup(body);
     thread->timestamp = time(NULL);
-    thread->comment = NULL;
+    thread->replies = NULL;
     thread->next = NULL;
     if (!channel->threads) {
         channel->threads = thread;
@@ -66,6 +66,7 @@ void free_thread(thread_t *thread)
         free(thread->body);
         free(thread->title);
         free(thread->creator_id);
+        free_replies(thread->replies);
         free(thread);
         thread = next;
     }

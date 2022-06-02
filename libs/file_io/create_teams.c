@@ -7,23 +7,26 @@
 
 #include "file_io.h"
 
-char **get_comments(file_io_t *file_io, char *thread_id)
+reply_t *get_replies(file_io_t *file_io, char *thread_id)
 {
-    int size = 1;
-    char **comms = malloc(sizeof(char *));
-    int len = strlen(thread_id) + 16;
-    char *p = malloc(len);
+    reply_t *replies = NULL;
+    reply_t *last = NULL;
+    reply_t *tmp = NULL;
 
-    sprintf(p, "CREATE\aCOMMENT\a%s", thread_id);
     for (line_t *curr = file_io->lines; curr; curr = curr->next)
-        if (curr->type == CREATE && !strncmp(curr->line, p, len)) {
-            comms = realloc(comms, (size + 1) * sizeof(char *));
-            comms[size - 1] = strdup(curr->line + len + 1);
-            size++;
+        if (curr->type == CREATE && !strncmp(curr->line + 7, "REPLY", 5)
+        && !strncmp(curr->line + 13, thread_id, 36)) {
+            tmp = malloc(sizeof(reply_t));
+            tmp->id = strndup(curr->line + 50, 36);
+            tmp->creator_id = strndup(curr->line + 87, 36);
+            tmp->timestamp = (time_t) strtol(strtok(curr->line + 124, "\a\n")
+            , NULL, 10);
+            tmp->body = strdup(curr->line + 135);
+            tmp->next = NULL;
+            (replies) ? (last->next = tmp) : (replies = tmp);
+            last = tmp;
         }
-    comms[size - 1] = 0;
-    free(p);
-    return comms;
+    return (replies);
 }
 
 thread_t *get_threads(file_io_t *file_io, char *team_id, char *chan_id)
@@ -42,7 +45,7 @@ thread_t *get_threads(file_io_t *file_io, char *team_id, char *chan_id)
             tmp->title = strdup(strtok(NULL, "\a\n"));
             tmp->body = strdup(strtok(NULL, "\a\n"));
             tmp->next = NULL;
-            tmp->comment = get_comments(file_io, tmp->id);
+            tmp->replies = get_replies(file_io, tmp->id);
             (threads) ? (last->next = tmp) : (threads = tmp);
             last = tmp;
         }

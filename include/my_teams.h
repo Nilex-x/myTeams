@@ -42,6 +42,15 @@ typedef struct userinfo_s
     struct userinfo_s *next;
 } userinfo_t;
 
+typedef struct reply_s
+{
+    char *id;
+    char *body;
+    char *creator_id;
+    time_t timestamp;
+    struct reply_s *next;
+} reply_t;
+
 typedef struct thread_s
 {
     char *id;
@@ -49,7 +58,7 @@ typedef struct thread_s
     char *title;
     char *body;
     time_t timestamp;
-    char **comment;
+    reply_t *replies;
     struct thread_s *next;
 } thread_t;
 
@@ -468,7 +477,7 @@ void free_channels(channel_t *channel);
 /*                              notif                                    */
 
 /**
- * @brief Send notif of creation of team
+ * @brief Send notification when a team was created
  *
  * @param data Server data struct
  * @param user User who do command
@@ -478,16 +487,34 @@ void free_channels(channel_t *channel);
 int send_notif_team(data_server_t *data, users_t *user, team_t *t);
 
 /**
- * @brief
+ * @brief Send notification when a channel was created
  *
  * @param data Server data struct
  * @param user User who do command
- * @param t Team contain channel created
  * @param c Channel created
  * @return int
  */
-int send_notif_channel(data_server_t *data, users_t *user, team_t *t,
-channel_t *c);
+int send_notif_channel(data_server_t *data, users_t *user, channel_t *c);
+
+/**
+ * @brief Send notification when a thread was created
+ *
+ * @param data Server data struct
+ * @param user User who do command
+ * @param trd Thread created
+ * @return int
+ */
+int send_notif_thread(data_server_t *data, users_t *user, thread_t *trd);
+
+/**
+ * @brief Send notification when a reply was created
+ *
+ * @param data Server data struct
+ * @param user User who do command
+ * @param r Reply created
+ * @return int
+ */
+int send_notif_reply(data_server_t *data, users_t *user, reply_t *r);
 
 /*                              thread                                   */
 
@@ -539,5 +566,33 @@ userinfo_t *info);
  * @return int
  */
 int cmd_use(client_t *c, char **arg, data_server_t *data);
+
+/*                                  replies                              */
+
+/**
+ * @brief Get the reply by id string
+ *
+ * @param id Id to find
+ * @param thread Thread contain replies
+ * @return reply_t*
+ */
+reply_t *get_reply_by_id(char *id, thread_t *thread);
+
+/**
+ * @brief Create and add reply struct to thread
+ *
+ * @param body Body of reply
+ * @param user User who do reply
+ * @param thread Thread contain reply
+ * @return reply_t*
+ */
+reply_t *create_add_reply(char *body, userinfo_t *user, thread_t *thread);
+
+/**
+ * @brief Free replies list given in parameter
+ *
+ * @param replies List replies to free
+ */
+void free_replies(reply_t *replies);
 
 #endif /* !MY_TEAMS_H_ */
