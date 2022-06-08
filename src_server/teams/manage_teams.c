@@ -54,6 +54,17 @@ team_t *create_add_teams(char *name, char *desc, data_server_t *data)
     return new_team;
 }
 
+void free_subscribed(subscribed_t *subs)
+{
+    subscribed_t *next = NULL;
+
+    while (subs) {
+        next = subs->next;
+        free(subs);
+        subs = next;
+    }
+}
+
 void free_teams(team_t *teams)
 {
     team_t *next = NULL;
@@ -63,6 +74,8 @@ void free_teams(team_t *teams)
         free(teams->name);
         free(teams->description);
         free(teams->id);
+        free_subscribed(teams->subcribed);
+        free_channels(teams->channels);
         free(teams);
         teams = next;
     }

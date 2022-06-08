@@ -62,6 +62,7 @@ void free_channels(channel_t *channel)
         free(channel->name);
         free(channel->description);
         free(channel->id);
+        free_thread(channel->threads);
         free(channel);
         channel = next;
     }
