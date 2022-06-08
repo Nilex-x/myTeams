@@ -14,7 +14,7 @@ void code_311(char *response)
 {
     char **data = str_to_array(response, '\a');
 
-    client_print_user(data[0], data[1], atoi(data[2]));
+    client_print_users(data[0], data[1], atoi(data[2]));
     free_array(data);
 }
 
