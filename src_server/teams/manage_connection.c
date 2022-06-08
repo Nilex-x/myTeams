@@ -17,7 +17,7 @@ int notif_connection(data_server_t *data, users_t *user, bool isLog)
     asprintf(&res, "%d\a%s\a%s\n", isLog ? 201 : 202, user->info->id,
                                                         user->info->name);
     while (temp) {
-        if (temp != user && strcmp(temp->info->id, user->info->id) != 0)
+        if (temp != user)
             temp->client->data_send = add_send(temp->client->data_send, res);
         temp = temp->next;
     }
